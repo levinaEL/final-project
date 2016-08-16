@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking edit</title>
+    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h2 class="text-center">Room Reservation</h2>
+
+<form class="border-forms">
+    <div class="form-group">
+        <h4>Dates</h4>
+
+        <div>
+            <label>From</label>
+
+            <div class="input-group date" data-provide="datepicker">
+                <input type="text" class="form-control">
+
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <label>To</label>
+
+            <div class="input-group date" data-provide="datepicker">
+                <input type="text" class="form-control">
+
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <h4>Room info</h4>
+
+        <div>
+            <label for="quantity">Quantity</label>
+            <select class="form-control" id="quantity">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+        <div>
+            <label for="room-type">Room type</label>
+            <select class="form-control" id="room-type">
+                <option>Single</option>
+                <option>Double</option>
+                <option>Twin</option>
+                <option>Lux</option>
+                <option>Family</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="preferences">Preferences</label>
+        <textarea id="preferences" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="button-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="btn btn-default pull-right" href="#">Cancel</a>
+    </div>
+</form>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../../https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../assets/js/bootstrap.min.js"></script>
+<script src="../../assets/js/bootstrap-datepicker.min.js"></script>
+</body>
+</html>

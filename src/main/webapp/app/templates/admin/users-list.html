@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users list</title>
+    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="admin-home-prot.html">Liza app</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="nav navbar-nav">
+                <li><a href="../common/booking-edit-form.html">Booking</a></li>
+                <li><a href="users-list.html">Clients List</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a class="new-user" href="../common/personal-info.html">New Client</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <h3>Clients list</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Passport Series</th>
+            <th>PassportNumber</th>
+            <th>Personal Number</th>
+            <th>Ban</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Ivanov</td>
+            <td>Ivan</td>
+            <td>ivanovi@gmail.com</td>
+            <td>+375293546789</td>
+            <td> MP</td>
+            <td>2812132</td>
+            <td>27869A7654B65</td>
+            <td>
+                <a href="#">
+                    <span class="glyphicon glyphicon-ok-circle"></span>
+                </a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>Morozova</td>
+            <td>Masha</td>
+            <td>morozovaMA@gmail.com</td>
+            <td>+3752936726789</td>
+            <td> MP</td>
+            <td>2876132</td>
+            <td>24543SQ654B65</td>
+            <td>
+                <a href="#">
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

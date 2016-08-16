@@ -1,0 +1,93 @@
+.login-background{
+    background-image: url(../../assets/images/Sea-Wallpaper-HD.jpg);
+    background-size: cover ;
+    height: 800px;
+}
+.border-forms {
+    max-width: 660px;
+    padding: 15px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 3px;
+    border: 1px solid #c7d0d2;
+    box-shadow: inset 0 2px 3px rgba(190, 190, 190, .4), 0 0 0 5px #f5f7f8;
+}
+
+.login-h2{
+    color: #ffffff;
+    font-size: 21px;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.form-signin .form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.passport-series {
+    width: 14%;
+    float: left;
+    margin-right: 1%;
+}
+
+.passport-number {
+    width: 85%;
+}
+
+.passport-personal-number {
+    margin-top: 10px;
+}
+
+.passport-info-header {
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.left {
+    margin-left: 25px;
+}
+
+.client-booking {
+    padding: 0 20px;
+}
+
+.new-account {
+    color: #ffffff;
+    font-size: 18px;
+    display: block;
+    margin-top: 10px;
+}
+
+.new-user{
+    background-color: #c7ddef
+}
+
+.glyphicon-ok-circle:after{
+    color: red;
+}
