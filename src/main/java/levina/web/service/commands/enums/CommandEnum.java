@@ -22,14 +22,9 @@ public enum CommandEnum {
             this.command = new RegisterCommand();
         }
     },
-    ADD_CLIENT {
+    CREATE_CLIENT {
         {
             this.command = new CreateClientCommand();
-
-        }
-    },
-    UPDATE_CLIENT {
-        {
 
         }
     },
@@ -52,6 +47,23 @@ public enum CommandEnum {
         {
             this.command = new BookingListCommand();
         }
+    },
+    GET_CLIENT {
+        {
+            this.command = new GetClientCommand();
+        }
+    },
+    GET_REQUEST {
+        {
+            this.command = new GetRequestCommand();
+        }
+
+    },
+    CANCEL_REQUEST {
+        {
+            this.command = new CancelRequestCommand();
+        }
+
     };
     ActionCommand command;
 

@@ -14,9 +14,11 @@ public interface RequestDao {
 
     void save(Request request);
 
-    void delete(Long id);
+    void cancel(Long id);
 
     Collection<Request> getAll();
+
+    Collection<Request> getAllClientsRequests(Long id);
 
     void updateBookingStatus(Long id);
 }

@@ -20,7 +20,8 @@
 <h2 class="text-center">Room Reservation</h2>
 
 <form class="border-forms" action="controller" method="post">
-    <input type="hidden" name="command" value="booking" />
+    <input type="hidden" name="command" value="booking"/>
+
     <div class="form-group">
         <h4>Dates</h4>
 
@@ -72,14 +73,13 @@
         </div>
     </div>
 
-
     <div class="button-group">
         <button type="submit" class="btn btn-primary">Submit</button>
         <c:if test="${role==true}">
-            <a class="btn btn-default pull-right" href="admin-home-prot.jsp">Cancel</a>
+            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
         </c:if>
         <c:if test="${role==false}">
-            <a class="btn btn-default pull-right" href="client-home-prot.jsp">Cancel</a>
+            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
         </c:if>
     </div>
 </form>

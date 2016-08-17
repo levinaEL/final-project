@@ -34,11 +34,14 @@ public class Controller extends HttpServlet {
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(request);
 
-        page = command.execute(request);
+        page = command.execute(request, response);
 
         if (page != null) {
+
             RequestDispatcher dispatch = request.getRequestDispatcher(page);
             dispatch.forward(request, response);
+
+
         } else {
 
             response.sendRedirect("login.jsp");

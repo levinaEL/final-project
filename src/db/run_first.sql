@@ -35,18 +35,17 @@ CREATE TABLE CLIENTS(
 );
 
 CREATE TABLE TYPE_ROOM(
-  type_id int(11) NOT NULL AUTO_INCREMENT,
   room_type VARCHAR(30) NOT NULL,
   cost DECIMAL NOT NULL,
-  PRIMARY KEY (type_id)
+  PRIMARY KEY (room_type)
 );
 
 CREATE TABLE ROOM(
   room_id int(11) NOT NULL AUTO_INCREMENT,
-  type_id int(11) NOT NULL,
+  room_type VARCHAR(30) NOT NULL,
   numb_seats int NOT NULL,
-  FOREIGN KEY (type_id)
-              REFERENCES TYPE_ROOM(type_id)ON DELETE CASCADE,
+  FOREIGN KEY (room_type)
+              REFERENCES TYPE_ROOM(room_type)ON DELETE CASCADE,
   PRIMARY KEY (room_id)
 );
 
@@ -54,6 +53,7 @@ CREATE TABLE REQUESTS(
   req_id int(11) NOT NULL AUTO_INCREMENT,
   client_id int(11) NOT NUll,
   room_id int(11)  NULL,
+  room_type VARCHAR(30) NOT NULL,
   req_date TIMESTAMP(4) NOT NULL ,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,

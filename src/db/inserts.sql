@@ -44,37 +44,43 @@ INSERT INTO CLIENTS
         "st Kozlova 1", "+375293946177", 0);
 
 
-INSERT INTO TYPE_ROOM (room_type, cost) VALUES ("standard", 70);
-INSERT INTO TYPE_ROOM (room_type, cost) VALUES ("semi-lux", 100);
-INSERT INTO TYPE_ROOM (room_type, cost) VALUES ("lux", 150);
+INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('single', 70);
+INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('double', 150);
+INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('twin', 150);
+INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('lux', 200);
+INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('family', 240);
 
-INSERT INTO ROOM (type_id, numb_seats) VALUES (1, 2);
-INSERT INTO ROOM (type_id, numb_seats) VALUES (2, 1);
-INSERT INTO ROOM (type_id, numb_seats) VALUES (3, 1);
-INSERT INTO ROOM (type_id, numb_seats) VALUES (1, 2);
-INSERT INTO ROOM (type_id, numb_seats) VALUES (1, 3);
-INSERT INTO ROOM (type_id, numb_seats) VALUES (2, 1);
-INSERT INTO ROOM (type_id, numb_seats) VALUES (1, 3);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 1);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('double', 2);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('twin', 1);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 2);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 3);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('double', 2);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('lux', 2);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('twin', 1);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('double', 2);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 1);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('family', 1);
 
 
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (2, 1, '2016-06-21', '2016-07-21', '2016-08-08', 2, 'approved');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (2, 1, '2016-06-21', '2015-07-21', '2015-08-08', 2, 'approved');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (2, NULL, '2016-06-21', '2016-07-15', '2016-07-20', 2, 'pending');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (3, 2, '2015-04-21', '2015-05-15', '2015-05-25', 1, 'approved');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (4, NULL, '2016-06-21', '2016-07-21', '2016-08-02', 3, 'pending');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (4, NULL, '2015-06-21', '2015-07-01', '2015-07-14', 2, 'cancel');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (5, NULL, '2016-06-05', '2016-08-02', '2016-08-10', 1, 'pending');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (3, 3, '2016-05-05', '2016-08-15', '2016-09-01', 1, 'approved');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (6, 3, '2012-03-05', '2012-05-15', '2016-05-23', 1, 'approved');
-INSERT INTO REQUESTS (client_id, room_id, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (6, 1, '2014-06-05', '2014-07-29', '2014-08-10', 1, 'approved');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (1, 1, 'single', '2016-06-21', '2016-07-21', '2016-08-08', 1, 'approved');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (1, 1, 'single','2016-06-21', '2015-07-21', '2015-08-08', 1, 'approved');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (1, NULL, 'twin', '2016-06-21', '2016-07-15', '2016-07-20', 2, 'pending');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (3, 2, 'double', '2015-04-21', '2015-05-15', '2015-05-25', 2, 'approved');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (4, NULL, 'family', '2016-06-21', '2016-07-21', '2016-08-02', 3, 'pending');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (4, NULL, 'double', '2015-06-21', '2015-07-01', '2015-07-14', 2, 'cancel');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (5, NULL, 'single', '2016-06-05', '2016-08-02', '2016-08-10', 1, 'pending');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (3, 4, 'lux','2016-05-05', '2016-08-15', '2016-09-01', 1, 'approved');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (6, 3, 'twin', '2012-03-05', '2012-05-15', '2016-05-23', 2, 'approved');
+INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
+                      (6, 1, 'single', '2014-06-05', '2014-07-29', '2014-08-10', 1, 'approved');
 

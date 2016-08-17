@@ -23,9 +23,10 @@
     <form name="logout" method=post action=controller>
         <input type="hidden" name="command" value="logout"/>
     </form>
-    <form name="booking" method=post action=controller>
-        <input type="hidden" name="command" value="booking"/>
-    </form>
+
+    <%--<form name="booking" method="post" action="controller">--%>
+    <%--<input type="hidden" name="command" value="booking"/>--%>
+    <%--</form>--%>
 
 
     <nav class="navbar navbar-default">
@@ -38,18 +39,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="admin-home-prot.jsp">Liza app</a>
+                <a class="navbar-brand" href="controller?command=booking_list">Liza app</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="javascript:document.booking.submit()">
-                            Booking
-                        </a>
-                    </li>
-                    <li>
+
                         <a href="javascript:document.clients.submit()">
                             Clients List
                         </a>
@@ -83,12 +80,13 @@
             <th>PassportNumber</th>
             <th>Personal Number</th>
             <th>Ban</th>
+            <th>Action</th>
             </thead>
             <tbody>
             <c:forEach items="${clients}" var="client">
-                <%--<input type="hidden" name="clientId" value="${user.id}">--%>
+
                 <tr>
-                    <td><a href="PersonalInfo?id=${client.id}">${client.id}</a></td>
+                    <td><a href="controller?command=get_client&id=${client.id}">${client.id}</a></td>
                     <td><c:out value="${client.lastName}"/></td>
                     <td><c:out value="${client.firstName}"/></td>
                     <td><c:out value="${client.email}"/></td>
@@ -99,10 +97,18 @@
                     <td><c:out value="${client.personalNumber}"/></td>
                     <td>
                         <c:if test="${client.ban == true}">
-                        <%--<a  href="javascript:document.ban.submit()" >--%>
                             <span class="glyphicon glyphicon-ok-circle"></span>
-                        <%--</a>--%>
                         </c:if>
+                    </td>
+                    <td>
+                        <%--<form name="booking" method="post" action="controller">--%>
+                            <%--<input type="hidden" name="command" value="booking">--%>
+                            <%--<input type="hidden" name="id" value="${client.id}">--%>
+                        <%--</form>--%>
+
+                        <a href="controller?command=get_request&id=${client.id}" title="booking">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
                     </td>
                 </tr>
             </c:forEach>
@@ -112,5 +118,4 @@
 </main>
 </body>
 
-<script src="app/assets/js/helper.js"></script>
 </html>

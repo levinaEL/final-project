@@ -88,6 +88,13 @@
     background-color: #c7ddef
 }
 
-.glyphicon-ok-circle:after{
-    color: red;
+.booking-form{
+    max-width: 450px;
+    margin-left:35px
+}
+
+.table-rooms{
+    max-width: 580px;
+    margin-right: 40px;
+    margin-top: 50px
 }

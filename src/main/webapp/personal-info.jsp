@@ -24,15 +24,9 @@
 
 <h2 class="text-center">Personal Information</h2>
 
-<form class="form-horizontal border-forms" method="post" action="PersonalInfo">
-    <div class="form-group">
-        <label for="id" class="col-sm-2 control-label">Id</label>
-
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="id" name="id" value="${client.id}"
-                  placeholder="id name"/>
-        </div>
-    </div>
+<form class="form-horizontal border-forms" method="post" action="controller">
+    <input type="hidden" name="command" value="create_client"/>
+    <input type="hidden" name="id" value="${client.id}"/>
 
     <div class="form-group">
         <label for="fname" class="col-sm-2 control-label">First Name</label>
@@ -113,12 +107,12 @@
         <button type="submit" class="btn btn-primary">Save</button>
 
         <c:if test="${role==true}">
-            <a class="btn btn-default pull-right" href="admin-home-prot.jsp">Cancel</a>
+            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
         </c:if>
         <c:if test="${role==false}">
-            <a class="btn btn-default pull-right" href="client-home-prot.jsp">Cancel</a>
+            <a class="btn btn-default pull-right"  href="controller?command=booking_list">Cancel</a>
         </c:if>
-        <c:if test="${role==true}">
+        <c:if test="${role==true and  not empty client.id}">
             <a href="javascript:document.ban.submit()" class="btn btn-danger">Ban</a>
         </c:if>
     </div>

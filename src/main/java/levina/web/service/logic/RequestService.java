@@ -3,6 +3,7 @@ package levina.web.service.logic;
 import levina.web.dao.RequestDao;
 import levina.web.dao.impl.InMemoryRequestDao;
 import levina.web.model.Request;
+import levina.web.model.enums.RoomType;
 import levina.web.model.enums.StatusRequest;
 
 import java.sql.Date;
@@ -20,16 +21,21 @@ public class RequestService {
         requestDao = InMemoryRequestDao.instance;
     }
 
+    public Collection<Request> getAllClientsRequests(Long id){
+        return requestDao.getAllClientsRequests(id);
+    }
+
     public Collection<Request> getAll() {
         return requestDao.getAll();
     }
 
-    public void createNew(Long clientID, Long roomID, Date startDate, Date endDate,
+    public void createNew(Long clientID, Long roomID, RoomType type, Date startDate, Date endDate,
                           int personsCount, StatusRequest status) {
         Request request = new Request();
         Timestamp reqDate = new Timestamp(Calendar.getInstance().getTime().getTime());
         request.setClientID(clientID);
         request.setRoomID(roomID);
+        request.setRoomType(type);
         request.setRequestDate(reqDate);
         request.setStartDate(startDate);
         request.setEndDate(endDate);
@@ -38,5 +44,9 @@ public class RequestService {
 
         requestDao.save(request);
 
+    }
+
+    public void delete(Long id){
+         requestDao.cancel(id);
     }
 }

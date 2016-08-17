@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="client-home-prot.jsp">Liza app</a>
+                <a class="navbar-brand" href="controller?command=booking_list">Liza app</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -44,7 +44,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="PersonalInfo?id=${client.id}">Personal information</a></li>
+                    <li><a href="controller?command=get_client&id=${client.id}">Personal information</a></li>
                     <li>
                         <a href="javascript:document.logout.submit()">
                             Logout
@@ -66,6 +66,7 @@
             <th>End Date</th>
             <th>Quantity</th>
             <th>Room Type</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -76,10 +77,11 @@
                 <td><c:out value="${request.startDate}"/></td>
                 <td><c:out value="${request.endDate}"/></td>
                 <td><c:out value="${request.personsCount}"/></td>
-                <td>Single</td>
+                <td><c:out value="${request.roomType}"/></td>
+                <td><c:out value="${request.statusRequest}"/></td>
                 <td>
 
-                    <a href="#">
+                    <a href="controller?command=cancel_request&id=${request.requestID}" title="cancel">
                         <span class="glyphicon glyphicon-trash"></span>
                     </a>
 

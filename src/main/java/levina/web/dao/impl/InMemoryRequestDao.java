@@ -2,6 +2,7 @@ package levina.web.dao.impl;
 
 import levina.web.dao.RequestDao;
 import levina.web.model.Request;
+import levina.web.model.enums.RoomType;
 import levina.web.model.enums.StatusRequest;
 
 import java.sql.*;
@@ -104,14 +105,15 @@ public class InMemoryRequestDao implements RequestDao {
     public void save(Request request) {
         Long clientID = request.getClientID();
         Long roomID = request.getRoomID();
+        RoomType roomType = request.getRoomType();
         Timestamp reqDate = request.getRequestDate();
         Date startDate = request.getStartDate();
         Date endDate = request.getEndDate();
         int count = request.getPersonsCount();
         StatusRequest status = request.getStatusRequest();
 
-        String insertTableSQL = "insert into requests (client_id, room_id, req_date, start_date, end_date, persons_count, status) " +
-                "values(?,?,?,?,?,?,?)";
+        String insertTableSQL = "insert into requests (client_id, room_id, room_type, req_date, start_date, end_date, persons_count, status) " +
+                "values(?,?,?,?,?,?,?,?)";
         try {
             Connection connection = ConnectorDB.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
@@ -125,11 +127,12 @@ public class InMemoryRequestDao implements RequestDao {
             }else{
                 preparedStatement.setNull(2, Types.INTEGER);
             }
-            preparedStatement.setTimestamp(3, reqDate);
-            preparedStatement.setDate(4, startDate);
-            preparedStatement.setDate(5, endDate);
-            preparedStatement.setInt(6, count);
-            preparedStatement.setString(7, String.valueOf(status));
+            preparedStatement.setString(3, String.valueOf(roomType));
+            preparedStatement.setTimestamp(4, reqDate);
+            preparedStatement.setDate(5, startDate);
+            preparedStatement.setDate(6, endDate);
+            preparedStatement.setInt(7, count);
+            preparedStatement.setString(8, String.valueOf(status));
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -141,13 +144,13 @@ public class InMemoryRequestDao implements RequestDao {
     }
 
 @Override
-    public void delete(Long id) {
-        String deleteFromTableSQL = "DELETE FROM requests "
-                + "WHERE req_id = ?";
+    public void cancel(Long id) {
+        String deleteFromTableSQL = "UPDATE requests SET status = ? WHERE req_id = ?";
         try (Connection connection = ConnectorDB.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement(deleteFromTableSQL);
-            preparedStatement.setLong(1, id);
+            preparedStatement.setString(1, String.valueOf(StatusRequest.CANCEL));
+            preparedStatement.setLong(2, id);
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -161,31 +164,28 @@ public class InMemoryRequestDao implements RequestDao {
 
     @Override
     public Collection<Request> getAll() {
-        Collection<Request> requests = new ArrayList<Request>();
-        String selectTableSQL = "SELECT "
-                + "req_id, "
-                + "req_date, "
-                + "start_date, "
-                + "end_date, "
-                + "persons_count, "
-                + "status, "
-                + "from requests";
+        Collection<Request> requests = new ArrayList<>();
+        String selectTableSQL = "SELECT * FROM requests JOIN clients c USING (client_id) " +
+                "WHERE status = 'pending' ";
         ResultSet rs;
         try (Connection connection = ConnectorDB.getConnection()){
 
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
-                Long id = Long.parseLong(rs.getString("user_id"));
+                Long id = Long.parseLong(rs.getString("req_id"));
+                Long clientID = Long.parseLong(rs.getString("client_id"));
+                RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
                 Timestamp reqDate = rs.getTimestamp("req_date");
                 Date start = rs.getDate("start_date");
                 Date end = rs.getDate("end_date");
                 int persons = rs.getInt("persons_count");
-                StatusRequest status = StatusRequest.valueOf(rs.getString("status"));
+                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
 
                 Request request = new Request();
                 request.setRequestID(id);
-
+                request.setClientID(clientID);
+                request.setRoomType(type);
                 request.setRequestDate(reqDate);
                 request.setStartDate(start);
                 request.setEndDate(end);
@@ -195,6 +195,50 @@ public class InMemoryRequestDao implements RequestDao {
                 requests.add(request);
             }
             statement.close();
+            rs.close();
+            connection.close();
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+        return requests;
+    }
+
+
+    @Override
+    public Collection<Request> getAllClientsRequests(Long clientID) {
+        Collection<Request> requests = new ArrayList<>();
+        String selectTableSQL = "SELECT * FROM requests WHERE client_id = ? AND status != ?";
+        ResultSet rs;
+        try (Connection connection = ConnectorDB.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
+            preparedStatement.setLong(1, clientID);
+            preparedStatement.setString(2, String.valueOf(StatusRequest.APPROVED));
+            rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Long reqID = rs.getLong("req_id");
+                RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
+                Timestamp reqDate = rs.getTimestamp("req_date");
+                Date start = rs.getDate("start_date");
+                Date end = rs.getDate("end_date");
+                int persons = rs.getInt("persons_count");
+                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
+
+                Request request = new Request();
+                request.setRequestID(reqID);
+                request.setClientID(clientID);
+                request.setRoomType(type);
+                request.setRequestDate(reqDate);
+                request.setStartDate(start);
+                request.setEndDate(end);
+                request.setPersonsCount(persons);
+                request.setStatusRequest(status);
+
+                requests.add(request);
+            }
+            int size = requests.size();
+            preparedStatement.close();
             rs.close();
             connection.close();
 

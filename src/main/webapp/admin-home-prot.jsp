@@ -36,17 +36,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="admin-home-prot.jsp">Liza app</a>
+                <a class="navbar-brand" href="controller?command=booking_list">Liza app</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="booking-edit-form.jsp">
-                            Booking
-                        </a>
-                    </li>
+
                     <li>
                         <a href="javascript:document.clients.submit()">
                             Clients List
@@ -75,52 +71,37 @@
             <tr>
                 <th>#</th>
                 <th>Last Name</th>
-                <th>First Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Quantity</th>
                 <th>Room Type</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><a>1</a></td>
-                <td>Ivanov</td>
-                <td>Ivan</td>
-                <td>12.08.2016</td>
-                <td>19.08.2016</td>
-                <td>1</td>
-                <td>Single</td>
-                <td>
+            <c:forEach items="${requests}" var="request" varStatus="loop">
+                <tr>
+                    <td><a>${request.requestID}</a></td>
+                    <td>${clientsName[loop.index]}</td>
+                    <td><c:out value="${request.startDate}"/></td>
+                    <td><c:out value="${request.endDate}"/></td>
+                    <td><c:out value="${request.personsCount}"/></td>
+                    <td><c:out value="${request.roomType}"/></td>
+                    <td><c:out value="${request.statusRequest}"/></td>
+                    <td>
 
-                    <a href="#">
-                        <span style="color: green" class="glyphicon glyphicon-ok"></span>
-                    </a>
-                    <a href="#">
-                        <span style="color:red;" class="glyphicon glyphicon-remove left"></span>
-                    </a>
+                        <a href="#">
+                            <span style="color: green" class="glyphicon glyphicon-ok"></span>
+                        </a>
+                        <a href="#">
+                            <span style="color:red;" class="glyphicon glyphicon-remove left"></span>
+                        </a>
 
-                </td>
-            </tr>
-            <tr>
-                <td><a>2</a></td>
-                <td>Morozova</td>
-                <td>Masha</td>
-                <td>11.07.2016</td>
-                <td>20.07.2016</td>
-                <td>2</td>
-                <td>Double</td>
-                <td>
-                    <a href="#">
-                        <span style="color: green" class="glyphicon glyphicon-ok"></span>
-                    </a>
-                    <a href="#">
-                        <span style="color:red;" class="glyphicon glyphicon-remove left"></span>
-                    </a>
+                    </td>
+                </tr>
+            </c:forEach>
 
-                </td>
-            </tr>
             </tbody>
         </table>
     </div>

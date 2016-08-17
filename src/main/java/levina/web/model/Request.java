@@ -1,5 +1,6 @@
 package levina.web.model;
 
+import levina.web.model.enums.RoomType;
 import levina.web.model.enums.StatusRequest;
 
 import java.sql.Date;
@@ -12,6 +13,7 @@ public class Request {
     private Long requestID;
     private Long clientID;
     private Long roomID;
+    private RoomType roomType;
     private Timestamp requestDate;
     private Date startDate;
     private Date endDate;
@@ -26,7 +28,13 @@ public class Request {
         this.roomID = roomID;
     }
 
+    public RoomType getRoomType() {
+        return roomType;
+    }
 
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
     public Long getRequestID() {
         return requestID;
     }
