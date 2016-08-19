@@ -101,14 +101,16 @@
                         </c:if>
                     </td>
                     <td>
-                        <%--<form name="booking" method="post" action="controller">--%>
-                            <%--<input type="hidden" name="command" value="booking">--%>
-                            <%--<input type="hidden" name="id" value="${client.id}">--%>
-                        <%--</form>--%>
+                        <form name="booking" action="controller">
+                            <input type="hidden" name="command" value="get_request">
+                            <input type="hidden" name="book" value="create_book">
+                            <input type="hidden" name="clientId" value="${client.id}">
+                            <button type="submit" class="btn-link" title="booking">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                        </form>
 
-                        <a href="controller?command=get_request&id=${client.id}" title="booking">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
+
                     </td>
                 </tr>
             </c:forEach>

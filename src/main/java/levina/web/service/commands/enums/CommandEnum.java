@@ -1,7 +1,14 @@
 package levina.web.service.commands.enums;
 
-import levina.web.service.commands.*;
+import levina.web.service.commands.client.BanCommand;
+import levina.web.service.commands.client.ClientsListCommand;
+import levina.web.service.commands.client.CreateClientCommand;
+import levina.web.service.commands.client.GetClientCommand;
 import levina.web.service.commands.interfaces.ActionCommand;
+import levina.web.service.commands.request.*;
+import levina.web.service.commands.user.LoginCommand;
+import levina.web.service.commands.user.LogoutCommand;
+import levina.web.service.commands.user.RegisterCommand;
 
 /**
  * Created by MY on 11.08.2016.
@@ -63,7 +70,11 @@ public enum CommandEnum {
         {
             this.command = new CancelRequestCommand();
         }
-
+    },
+    APPROVE_REQUEST{
+        {
+            this.command = new ApproveRequestCommand();
+        }
     };
     ActionCommand command;
 

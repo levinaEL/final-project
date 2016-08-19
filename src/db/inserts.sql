@@ -16,12 +16,12 @@ INSERT INTO CLIENTS
         (user_id, last_name, first_name, patronymic_name, email,
                   pasp_series, pasp_number, pasp_prsl_number, birthday, address, telephone, is_banned) VALUES
         (2, "Levina", "Anna", "Leonidovna","anyutalevina@mail.ru", "MP", 2812123, "4190205AO16PB4", '1993-06-12',
-        "st Kozlova 5", "+375293746177", 0);
+        "Kozlova 5, 21", "+375293746177", 0);
 INSERT INTO CLIENTS
         (user_id, last_name, first_name, patronymic_name, email,
                   pasp_series, pasp_number, pasp_prsl_number, birthday, address, telephone, is_banned) VALUES
         (3, "Polyakova", "Maria", "Aleksandrovna", "polyakovaM@mail.ru", "MP", 2812153, "4190195RE16PB4", '1963-11-12',
-        "st Kozlova 5", "+375293746177", 0);
+        "Masherova 5, 12", "+375296784323", 0);
 INSERT INTO CLIENTS
         (user_id, last_name, first_name, patronymic_name, email,
                   pasp_series, pasp_number, pasp_prsl_number, birthday, address, telephone, is_banned) VALUES
@@ -36,7 +36,7 @@ INSERT INTO CLIENTS
         (user_id, last_name, first_name, patronymic_name, email,
                   pasp_series, pasp_number, pasp_prsl_number, birthday, address, telephone, is_banned) VALUES
         (6, "Sidorov", "Andrey", "Aleksandrovich", "sidorovia@gmail.com", "MP", 2812923, "4190176AO16PB4",'1990-12-05',
-         "st Kozlova 12", "+375293746177", 0);
+         "st Kozlova 12", "+375296541223", 0);
 INSERT INTO CLIENTS
         (last_name, first_name, patronymic_name, email,
                   pasp_series, pasp_number, pasp_prsl_number, birthday, address, telephone, is_banned) VALUES
@@ -53,8 +53,8 @@ INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('family', 240);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 1);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('double', 2);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('twin', 1);
-INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 2);
-INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 3);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 1);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 1);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('double', 2);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('lux', 2);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('twin', 1);
@@ -64,13 +64,13 @@ INSERT INTO ROOM (room_type, numb_seats) VALUES ('family', 1);
 
 
 INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (1, 1, 'single', '2016-06-21', '2016-07-21', '2016-08-08', 1, 'approved');
+                      (1, 1, 'single', '2015-05-15', '2015-06-21', '2015-06-30', 1, 'approved');
 INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (1, 1, 'single','2016-06-21', '2015-07-21', '2015-08-08', 1, 'approved');
+                      (1, 1, 'single','2016-06-15', '2016-07-01', '2016-07-15', 1, 'approved');
 INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (1, NULL, 'twin', '2016-06-21', '2016-07-15', '2016-07-20', 2, 'pending');
+                      (1, NULL, 'twin', '2016-05-15', '2016-06-15', '2016-05-21', 2, 'pending');
 INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
-                      (3, 2, 'double', '2015-04-21', '2015-05-15', '2015-05-25', 2, 'approved');
+                      (3, 2, 'double', '2015-05-15', '2015-05-15', '2015-05-25', 2, 'approved');
 INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES
                       (4, NULL, 'family', '2016-06-21', '2016-07-21', '2016-08-02', 3, 'pending');
 INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES

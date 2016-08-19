@@ -1,4 +1,4 @@
-package levina.web.service.commands;
+package levina.web.service.commands.client;
 
 import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
@@ -15,8 +15,8 @@ public class GetClientCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
-        Client client = null;
-        Long id = null;
+        Client client;
+        Long id;
         ClientService clientService = new ClientService();
         HttpSession session = request.getSession();
         boolean role = (boolean) session.getAttribute("role");
@@ -28,10 +28,6 @@ public class GetClientCommand implements ActionCommand {
         } else {
             client = clientService.getByUserId(userID);
         }
-//        if ( !req.getParameter("id").equals("")) {
-//            id = Long.parseLong(req.getParameter("id"));
-//            client = clientService.getById(id);
-//        }
 
         if (client == null) {
             client = new Client();

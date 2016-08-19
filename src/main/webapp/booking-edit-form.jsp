@@ -19,6 +19,11 @@
 <body>
 <h2 class="text-center">Room Reservation</h2>
 
+<form name="availableRooms" action="controller" method="post">
+    <%--<input type="hidden" name="requestId" value="${request.requestID}">--%>
+    <input type="hidden" name="command" value="available_room"/>
+</form>
+
 <form class="border-forms" action="controller" method="post">
     <input type="hidden" name="command" value="booking"/>
 
@@ -26,10 +31,10 @@
         <h4>Dates</h4>
 
         <div>
-            <label>From</label>
+            <label for="start">From</label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="start" class="form-control">
+                <input type="text" name="start" id="start" class="form-control">
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
@@ -37,10 +42,10 @@
             </div>
         </div>
         <div>
-            <label>To</label>
+            <label for="end">To</label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="end" class="form-control">
+                <input type="text" name="end" id="end" class="form-control">
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>

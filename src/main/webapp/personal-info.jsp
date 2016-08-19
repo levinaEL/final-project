@@ -33,7 +33,7 @@
 
         <div class="col-sm-10">
             <input type="text" class="form-control" id="fname" name="fname" value="${client.firstName}"
-                   pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="First name"/>
+                   pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="First name" required/>
         </div>
     </div>
     <div class="form-group">
@@ -41,7 +41,7 @@
 
         <div class="col-sm-10">
             <input type="text" class="form-control" id="patronymic" name="pname" value="${client.patronymicName}"
-                   pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="Patronymic">
+                   pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="Patronymic" required>
         </div>
     </div>
     <div class="form-group">
@@ -49,7 +49,7 @@
 
         <div class="col-sm-10">
             <input type="text" class="form-control" id="lname" name="lname" value="${client.lastName}"
-                   pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="Last name">
+                   pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="Last name" required>
         </div>
     </div>
 
@@ -58,7 +58,7 @@
 
         <div class="col-sm-10">
             <input type="date" class="form-control" id="birthday" value="${client.birthday}" name="birthday"
-                   pattern="(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d">
+                   pattern="(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d" required>
         </div>
     </div>
 
@@ -67,12 +67,12 @@
 
         <div class="col-sm-10">
             <input type="text" class="form-control passport-series" id="pSeries" name="pSeries"
-                   value="${client.passportSeries}" placeholder="Series">
+                   value="${client.passportSeries}" placeholder="Series" required>
             <input type="text" class="form-control passport-number" id="pNumber" name="pNumber"
-                   value="${client.passportNumber}" placeholder="Number">
+                   value="${client.passportNumber}" placeholder="Number" required>
 
             <input type="text" class="form-control passport-personal-number" id="prslNumber"
-                   value="${client.personalNumber}" name="prslNumber" placeholder="Personal number">
+                   value="${client.personalNumber}" name="prslNumber" placeholder="Personal number" required>
         </div>
     </div>
 

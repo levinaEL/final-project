@@ -16,9 +16,10 @@ public interface RequestDao {
 
     void cancel(Long id);
 
+    void approve(Long id, Long roomId);
+
     Collection<Request> getAll();
 
     Collection<Request> getAllClientsRequests(Long id);
 
-    void updateBookingStatus(Long id);
 }

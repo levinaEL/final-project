@@ -1,4 +1,4 @@
-package levina.web.service.commands;
+package levina.web.service.commands.client;
 
 import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class CreateClientCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page = null;
+        String page ;
         ClientService clientService = new ClientService();
 
         HttpSession session = request.getSession();
@@ -69,13 +69,12 @@ public class CreateClientCommand implements ActionCommand {
                         birthday);
             }
         }
-//        if (role) {
-//            page = "admin-home-prot.jsp";
-//           // resp.sendRedirect("admin-home-prot.jsp");
-//        } else {
-//            page = "controller?command=booking_list";
-//        }
-        page = "controller?command=booking_list";
+        if (role) {
+            page = "controller?command=clients_list";
+        } else {
+            page = "controller?command=booking_list";
+        }
+
         return page;
     }
 }

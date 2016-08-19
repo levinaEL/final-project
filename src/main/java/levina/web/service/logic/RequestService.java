@@ -21,6 +21,14 @@ public class RequestService {
         requestDao = InMemoryRequestDao.instance;
     }
 
+    public Request getById(Long id){
+        return requestDao.getById(id);
+    }
+
+    public Request getByClientId(Long id){
+        return requestDao.getByClientId(id);
+    }
+
     public Collection<Request> getAllClientsRequests(Long id){
         return requestDao.getAllClientsRequests(id);
     }
@@ -48,5 +56,9 @@ public class RequestService {
 
     public void delete(Long id){
          requestDao.cancel(id);
+    }
+
+    public void approve(Long reqId, Long roomId){
+        requestDao.approve(reqId, roomId);
     }
 }

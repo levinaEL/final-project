@@ -24,9 +24,7 @@
     <form name="logout" method=post action=controller>
         <input type="hidden" name="command" value="logout"/>
     </form>
-    <form name="booking" method=post action=controller>
-        <input type="hidden" name="command" value="booking"/>
-    </form>
+
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -76,7 +74,7 @@
             <label>From</label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="start" class="form-control" value="${request.startDate}">
+                <input type="text" name="start" value="${request.startDate}" class="form-control">
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
@@ -87,7 +85,7 @@
             <label>To</label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="end" class="form-control" value="${request.endDate}">
+                <input type="text" name="end" value="${request.endDate}" class="form-control">
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
@@ -121,22 +119,25 @@
             </select>
         </div>
     </div>
-    <c:if test="${role==true}">
-        <div class="form-group">
-            <label for="room">Room</label>
+    <div class="form-group">
+        <label for="room">Room</label>
+        <c:if test="${roomNotFound==true}">
+            <div class="alert alert-danger" role="alert">Room is not found!</div>
+        </c:if>
+        <input type="text" class="form-control" id="room" name="room" value="Room"
+               placeholder="Room">
 
-            <input type="text" class="form-control" id="room" name="room"
-                   placeholder="Room">
-
-        </div>
-    </c:if>
+    </div>
     <div class="button-group">
         <button type="submit" class="btn btn-primary">Submit</button>
+        <%--<a class="btn btn-success" href="controller?command=approve_request">Approve</a>--%>
+        <input type="submit" name="availableRoom" value="Show Room" class="btn btn-info"/>
+
         <c:if test="${role==true}">
-            <a class="btn btn-default pull-right" href="admin-home-prot.jsp">Cancel</a>
+            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
         </c:if>
         <c:if test="${role==false}">
-            <a class="btn btn-default pull-right" href="client-home-prot.jsp">Cancel</a>
+            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
         </c:if>
     </div>
 </form>
@@ -152,12 +153,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <th><a>101</a></th>
-        <th>Single</th>
-        <th>1</th>
-        <th>300</th>
-    </tr>
+    <c:forEach items="${rooms}" var="room">
+        <tr>
+            <td><a href="controller?command=approve_request&roomId=${room.roomID}">${room.roomID}</a></td>
+            <td><c:out value="${room.roomType}"/></td>
+            <td><c:out value="${room.numberSeats}"/></td>
+            <td><c:out value="${room.cost}"/></td>
+        </tr>
+    </c:forEach>
     </tbody>
 </table>
 

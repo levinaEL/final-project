@@ -1,4 +1,4 @@
-package levina.web.service.commands;
+package levina.web.service.commands.request;
 
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.RequestService;

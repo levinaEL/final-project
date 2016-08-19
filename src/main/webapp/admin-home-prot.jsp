@@ -82,7 +82,7 @@
             <tbody>
             <c:forEach items="${requests}" var="request" varStatus="loop">
                 <tr>
-                    <td><a>${request.requestID}</a></td>
+                    <td>loop.index</td>
                     <td>${clientsName[loop.index]}</td>
                     <td><c:out value="${request.startDate}"/></td>
                     <td><c:out value="${request.endDate}"/></td>
@@ -90,13 +90,14 @@
                     <td><c:out value="${request.roomType}"/></td>
                     <td><c:out value="${request.statusRequest}"/></td>
                     <td>
-
-                        <a href="#">
-                            <span style="color: green" class="glyphicon glyphicon-ok"></span>
-                        </a>
-                        <a href="#">
-                            <span style="color:red;" class="glyphicon glyphicon-remove left"></span>
-                        </a>
+                        <form name="booking" action="controller">
+                            <input type="hidden" name="command" value="get_request">
+                            <input type="hidden" name="book" value="approve_book">
+                            <input type="hidden" name="requestId" value="${request.requestID}">
+                            <button type="submit" class="btn-link" title="booking">
+                                <span class="glyphicon glyphicon-check"></span>
+                            </button>
+                        </form>
 
                     </td>
                 </tr>
