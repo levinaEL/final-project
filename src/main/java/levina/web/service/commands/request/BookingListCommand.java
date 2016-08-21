@@ -23,7 +23,7 @@ public class BookingListCommand implements ActionCommand {
         ClientService clientService = new ClientService();
         if(role){
             request.setAttribute("clientsName", getClientsName());
-            request.setAttribute("requests", requestService.getAll());
+            request.setAttribute("requests", requestService.getAdminRequests());
             page = "admin-home-prot.jsp";
         }else{
             Long userID = (Long)request.getSession().getAttribute("userID");
@@ -33,8 +33,6 @@ public class BookingListCommand implements ActionCommand {
                 Long clientID = client.getId();
                 request.setAttribute("requests", requestService.getAllClientsRequests(clientID));
             }
-
-           // request.setAttribute("requests", requestService.getAll());
 
             page = "client-home-prot.jsp";
         }
@@ -46,7 +44,7 @@ public class BookingListCommand implements ActionCommand {
         Collection namesCollection = new ArrayList<>();
         RequestService requestService = new RequestService();
         ClientService clientService = new ClientService();
-        Collection<Request> requests = requestService.getAll();
+        Collection<Request> requests = requestService.getAdminRequests();
         for(Request request : requests){
            Long id = request.getClientID();
            Client client = clientService.getById(id);

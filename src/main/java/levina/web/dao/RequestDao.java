@@ -3,6 +3,7 @@ package levina.web.dao;
 import levina.web.model.Request;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by MY on 15.08.2016.
@@ -18,8 +19,12 @@ public interface RequestDao {
 
     void approve(Long id, Long roomId);
 
-    Collection<Request> getAll();
+    Collection<Request> getAdminRequests();
 
     Collection<Request> getAllClientsRequests(Long id);
+
+    Collection<Request> getAll();
+
+    Map<Long, Integer> countClientRequest();
 
 }

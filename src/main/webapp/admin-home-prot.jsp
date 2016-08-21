@@ -26,6 +26,9 @@
     <form name="booking" method=post action=controller>
         <input type="hidden" name="command" value="booking"/>
     </form>
+    <form name="requests" method=post action=controller>
+        <input type="hidden" name="command" value="HISTORY_REQUESTS"/>
+    </form>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -42,10 +45,14 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav">
-
                     <li>
                         <a href="javascript:document.clients.submit()">
                             Clients List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:document.requests.submit()">
+                            History Of Booking
                         </a>
                     </li>
                 </ul>
@@ -82,7 +89,7 @@
             <tbody>
             <c:forEach items="${requests}" var="request" varStatus="loop">
                 <tr>
-                    <td>loop.index</td>
+                    <td><c:out value="${loop.index + 1}"/></td>
                     <td>${clientsName[loop.index]}</td>
                     <td><c:out value="${request.startDate}"/></td>
                     <td><c:out value="${request.endDate}"/></td>

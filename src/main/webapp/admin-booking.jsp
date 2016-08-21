@@ -24,6 +24,9 @@
     <form name="logout" method=post action=controller>
         <input type="hidden" name="command" value="logout"/>
     </form>
+    <form name="requests" method=post action=controller>
+        <input type="hidden" name="command" value="requests_list"/>
+    </form>
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -41,10 +44,14 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav">
-
                     <li>
                         <a href="javascript:document.clients.submit()">
                             Clients List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:document.requests.submit()">
+                            History Of Booking
                         </a>
                     </li>
                 </ul>
@@ -61,11 +68,12 @@
         </div>
     </nav>
 </header>
-
+<main>
 <h2 class="container">Processing Requests</h2>
 
-<form class="pull-left booking-form" action="controller" method="post">
+<form class="pull-left booking-form" action="controller" method="post" id="book" target="available_frame">
     <input type="hidden" name="command" value="booking"/>
+    <input type="hidden" name="requestId" value="${request.requestID}"/>
 
     <div class="form-group">
         <h4>Dates</h4>
@@ -120,18 +128,16 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="room">Room</label>
-        <c:if test="${roomNotFound==true}">
-            <div class="alert alert-danger" role="alert">Room is not found!</div>
-        </c:if>
-        <input type="text" class="form-control" id="room" name="room" value="Room"
+        <label for="roomId">Room</label>
+
+        <input type="text" class="form-control" id="roomId" name="roomId"
                placeholder="Room">
 
     </div>
     <div class="button-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <%--<a class="btn btn-success" href="controller?command=approve_request">Approve</a>--%>
-        <input type="submit" name="availableRoom" value="Show Room" class="btn btn-info"/>
+        <button id="create" type="submit" class="btn btn-primary">Submit</button>
+
+        <input name="availableRoom" value="Show Room" type="submit" class="btn btn-info">
 
         <c:if test="${role==true}">
             <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
@@ -141,29 +147,27 @@
         </c:if>
     </div>
 </form>
+</main>
+<aside class="pull-right table-rooms">
+    <c:if test="${roomNotFound==true}">
+        <div class="alert alert-danger" role="alert">Room is not found!</div>
+    </c:if>
+<iframe id="available_frame" name="available_frame" src="available-rooms.jsp"  width="550px"
+        height="900px" frameborder="0px"></iframe>
 
+</aside>
+<script>
+    var form = document.getElementById('book');
+    //    form.submit = function() {
+    //        form.target = '_self';
+    //    };
 
-<table class="table table-striped table-bordered pull-right table-rooms">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Type Room</th>
-        <th>Number Seats</th>
-        <th>Cost</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${rooms}" var="room">
-        <tr>
-            <td><a href="controller?command=approve_request&roomId=${room.roomID}">${room.roomID}</a></td>
-            <td><c:out value="${room.roomType}"/></td>
-            <td><c:out value="${room.numberSeats}"/></td>
-            <td><c:out value="${room.cost}"/></td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+    document.getElementById('create').onclick = function () {
+        form.target = '_self';
+        form.submit();
+    }
 
+</script>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

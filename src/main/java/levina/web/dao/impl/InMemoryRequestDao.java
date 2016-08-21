@@ -8,6 +8,8 @@ import levina.web.model.enums.StatusRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,12 +133,12 @@ public class InMemoryRequestDao implements RequestDao {
             }else{
                 preparedStatement.setNull(2, Types.INTEGER);
             }
-            preparedStatement.setString(3, String.valueOf(roomType));
+            preparedStatement.setString(3, String.valueOf(roomType).toUpperCase());
             preparedStatement.setTimestamp(4, reqDate);
             preparedStatement.setDate(5, startDate);
             preparedStatement.setDate(6, endDate);
             preparedStatement.setInt(7, count);
-            preparedStatement.setString(8, String.valueOf(status));
+            preparedStatement.setString(8, String.valueOf(status).toUpperCase());
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -165,14 +167,13 @@ public class InMemoryRequestDao implements RequestDao {
     }
     @Override
     public void approve(Long requestId, Long roomId) {
-        String deleteFromTableSQL = "UPDATE requests SET status = ?, room_id = ? " +
-                " WHERE req_id = ?";
+        String deleteFromTableSQL = "UPDATE requests SET status = ?, room_id = ? WHERE req_id = ? ";
         try (Connection connection = ConnectorDB.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement(deleteFromTableSQL);
-            preparedStatement.setString(1, String.valueOf(StatusRequest.APPROVED));
-            preparedStatement.setLong(2, requestId);
-            preparedStatement.setLong(3, roomId);
+            preparedStatement.setString(1, String.valueOf(StatusRequest.APPROVED).toUpperCase());
+            preparedStatement.setLong(2, roomId);
+            preparedStatement.setLong(3, requestId);
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -184,7 +185,7 @@ public class InMemoryRequestDao implements RequestDao {
 
 
     @Override
-    public Collection<Request> getAll() {
+    public Collection<Request> getAdminRequests() {
         Collection<Request> requests = new ArrayList<>();
         String selectTableSQL = "SELECT * FROM requests JOIN clients c USING (client_id) " +
                 "WHERE status = 'pending' AND start_date > CURRENT_DATE ";
@@ -268,6 +269,79 @@ public class InMemoryRequestDao implements RequestDao {
             logger.log(Level.SEVERE, null, ex);
         }
         return requests;
+    }
+
+    @Override
+    public Collection<Request> getAll() {
+        Collection<Request> requests = new ArrayList<>();
+        String selectTableSQL = "SELECT * FROM requests WHERE status != 'pending'";
+        ResultSet rs;
+        try (Connection connection = ConnectorDB.getConnection()){
+
+            Statement statement = connection.createStatement();
+            rs = statement.executeQuery(selectTableSQL);
+            while (rs.next()) {
+                Long id = Long.parseLong(rs.getString("req_id"));
+                Long roomId = rs.getLong("room_id");
+                if(rs.wasNull()){
+                    roomId = null;
+                }
+                Long clientID = Long.parseLong(rs.getString("client_id"));
+                RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
+                Timestamp reqDate = rs.getTimestamp("req_date");
+                Date start = rs.getDate("start_date");
+                Date end = rs.getDate("end_date");
+                int persons = rs.getInt("persons_count");
+                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
+
+                Request request = new Request();
+                request.setRequestID(id);
+                request.setRoomID(roomId);
+                request.setClientID(clientID);
+                request.setRoomType(type);
+                request.setRequestDate(reqDate);
+                request.setStartDate(start);
+                request.setEndDate(end);
+                request.setPersonsCount(persons);
+                request.setStatusRequest(status);
+
+                requests.add(request);
+            }
+            statement.close();
+            rs.close();
+            connection.close();
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+        return requests;
+    }
+
+
+    public Map<Long, Integer> countClientRequest() {
+        Map<Long, Integer> reqCount = new HashMap<>();
+        String selectTableSQL = "SELECT client_id, count(client_id) AS req_count FROM requests WHERE status != 'cancel'" +
+                "GROUP BY (client_id) HAVING req_count >= 1";
+        ResultSet rs;
+        try (Connection connection = ConnectorDB.getConnection()) {
+
+            Statement statement = connection.createStatement();
+            rs = statement.executeQuery(selectTableSQL);
+            while (rs.next()) {
+                Long clientId = rs.getLong("client_id");
+                int count = rs.getInt("req_count");
+
+                reqCount.put(clientId, count);
+            }
+            statement.close();
+            rs.close();
+            connection.close();
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+
+        return reqCount;
     }
 
 

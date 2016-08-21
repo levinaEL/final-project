@@ -24,7 +24,7 @@ public class GetRequestCommand implements ActionCommand {
             if (!request.getParameter("clientId").equals("")) {
                 clientId = Long.parseLong(request.getParameter("clientId"));
             }
-
+            servletContext.setAttribute("requestId", "");
             servletContext.setAttribute("clientId", clientId);
         }
         if(request.getParameter("book").equals("approve_book")){

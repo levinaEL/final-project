@@ -6,6 +6,7 @@ import levina.web.service.commands.client.CreateClientCommand;
 import levina.web.service.commands.client.GetClientCommand;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.commands.request.*;
+
 import levina.web.service.commands.user.LoginCommand;
 import levina.web.service.commands.user.LogoutCommand;
 import levina.web.service.commands.user.RegisterCommand;
@@ -71,9 +72,9 @@ public enum CommandEnum {
             this.command = new CancelRequestCommand();
         }
     },
-    APPROVE_REQUEST{
+    HISTORY_REQUESTS {
         {
-            this.command = new ApproveRequestCommand();
+            this.command = new RequestHistoryCommand();
         }
     };
     ActionCommand command;

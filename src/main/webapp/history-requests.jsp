@@ -1,17 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: MY
-  Date: 09.08.2016
-  Time: 23:10
+  Date: 20.08.2016
+  Time: 16:47
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Users list</title>
+<head>
+    <title>History Of Booking</title>
     <link href="app/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="app/assets/css/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -26,7 +25,6 @@
     <form name="logout" method=post action=controller>
         <input type="hidden" name="command" value="logout"/>
     </form>
-
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -70,59 +68,39 @@
 </header>
 <main>
     <div class="container-fluid">
-        <h3>Users list</h3>
+        <h3>History Of Booking</h3>
+
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Last Name</th>
-                <th>First Name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Phone Number</th>
-                <th>Passport Series</th>
-                <th>PassportNumber</th>
-                <th>Count Requests</th>
-                <th>Ban</th>
-                <th>Action</th>
+                <th>Time Of Booking</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Quantity</th>
+                <th>Room Type</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${clients}" var="client">
-
+            <c:forEach items="${requests}" var="request" varStatus="loop">
                 <tr>
-                    <td><a href="controller?command=get_client&id=${client.id}">${client.id}</a></td>
-                    <td><c:out value="${client.lastName}"/></td>
-                    <td><c:out value="${client.firstName}"/></td>
-                    <td><c:out value="${client.email}"/></td>
-                    <td><c:out value="${client.address}"/></td>
-                    <td><c:out value="${client.phoneNumber}"/></td>
-                    <td><c:out value="${client.passportSeries}"/></td>
-                    <td><c:out value="${client.passportNumber}"/></td>
-                    <td><c:out value="${clientCountMap[client.id]}"/></td>
-                    <td>
-                        <c:if test="${client.ban == true}">
-                            <span class="glyphicon glyphicon-ban-circle"></span>
-                        </c:if>
-                    </td>
-                    <td>
-                        <form name="booking" action="controller">
-                            <input type="hidden" name="command" value="get_request">
-                            <input type="hidden" name="book" value="create_book">
-                            <input type="hidden" name="clientId" value="${client.id}">
-                            <button type="submit" class="btn-link" title="booking">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                        </form>
-
-
-                    </td>
+                    <td><c:out value="${loop.index}"/></td>
+                    <td>${clientsName[loop.index]}</td>
+                    <td><c:out value="${request.requestDate}"/></td>
+                    <td><c:out value="${request.startDate}"/></td>
+                    <td><c:out value="${request.endDate}"/></td>
+                    <td><c:out value="${request.personsCount}"/></td>
+                    <td><c:out value="${request.roomType}"/></td>
+                    <td><c:out value="${request.statusRequest}"/></td>
                 </tr>
             </c:forEach>
+
             </tbody>
         </table>
     </div>
 </main>
-</body>
 
+</body>
 </html>

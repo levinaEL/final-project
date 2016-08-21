@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by MY on 14.08.2016.
@@ -33,8 +34,8 @@ public class RequestService {
         return requestDao.getAllClientsRequests(id);
     }
 
-    public Collection<Request> getAll() {
-        return requestDao.getAll();
+    public Collection<Request> getAdminRequests() {
+        return requestDao.getAdminRequests();
     }
 
     public void createNew(Long clientID, Long roomID, RoomType type, Date startDate, Date endDate,
@@ -60,5 +61,13 @@ public class RequestService {
 
     public void approve(Long reqId, Long roomId){
         requestDao.approve(reqId, roomId);
+    }
+
+    public Collection<Request> getAll(){
+        return requestDao.getAll();
+    }
+
+    public Map<Long, Integer> countClientRequest(){
+        return requestDao.countClientRequest();
     }
 }
