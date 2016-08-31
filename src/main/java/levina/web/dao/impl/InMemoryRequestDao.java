@@ -1,5 +1,7 @@
 package levina.web.dao.impl;
 
+import org.apache.log4j.Logger;
+import levina.web.dao.DBConnectionPool;
 import levina.web.dao.RequestDao;
 import levina.web.model.Request;
 import levina.web.model.enums.RoomType;
@@ -10,104 +12,86 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by MY on 14.08.2016.
  */
 public class InMemoryRequestDao implements RequestDao {
-    private static Logger logger = Logger.getLogger(InMemoryClientDao.class.getName());
+    public static Logger logger = Logger.getLogger(InMemoryClientDao.class);
     public static volatile InMemoryRequestDao instance = new InMemoryRequestDao();
+    public DBConnectionPool dbConnectionPool;
+    private int noOfRecords;
 
     private InMemoryRequestDao() {
     }
 
     @Override
     public Request getById(Long id) {
-        String selectTableSQL = "SELECT * FROM requests "
-                + "WHERE req_id = ?";
+        String selectTableSQL = "SELECT * FROM requests WHERE req_id = ? ";
         ResultSet rs;
-        Request request = null;
-        try (Connection connection = ConnectorDB.getConnection()) {
-
+        Request request = new Request();
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long requestID = rs.getLong("req_id");
-                Long roomID = rs.getLong("room_id");
-                Long clientID = rs.getLong("client_id");
-                RoomType roomType = RoomType.valueOf(rs.getString("room_type").toUpperCase());
-                Timestamp reqDate = rs.getTimestamp("req_date");
-                Date startDate = rs.getDate("start_date");
-                Date endDate = rs.getDate("end_date");
-                int count = rs.getInt("persons_count");
-                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
-
-                request = new Request();
-
-                request.setClientID(clientID);
-                request.setRequestID(requestID);
-                request.setRoomID(roomID);
-                request.setRoomType(roomType);
-                request.setRequestDate(reqDate);
-                request.setStartDate(startDate);
-                request.setEndDate(endDate);
-                request.setPersonsCount(count);
-                request.setStatusRequest(status);
+                request.setClientID(rs.getLong("client_id"));
+                request.setRequestID(rs.getLong("req_id"));
+                request.setRoomID(rs.getLong("room_id"));
+                request.setRoomType(RoomType.valueOf(rs.getString("room_type").toUpperCase()));
+                request.setRequestDate(rs.getTimestamp("req_date"));
+                request.setStartDate(rs.getDate("start_date"));
+                request.setEndDate(rs.getDate("end_date"));
+                request.setPersonsCount(rs.getInt("persons_count"));
+                request.setStatusRequest(StatusRequest.valueOf(rs.getString("status").toUpperCase()));
             }
             preparedStatement.close();
             rs.close();
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in getting request by id: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting request by id: ", e);
         }
         return request;
     }
 
     @Override
     public Request getByClientId(Long id) {
-        String selectTableSQL = "SELECT * FROM requests  "
-                + "WHERE client_id = ?";
+        String selectTableSQL = "SELECT * FROM requests WHERE client_id = ? ";
         ResultSet rs;
-        Request request = null;
-        try (Connection connection = ConnectorDB.getConnection()) {
-
+        Request request = new Request();
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long requestID = rs.getLong("req_id");
-                Long roomID = rs.getLong("room_id");
-                Long clientID = rs.getLong("client_id");
-                RoomType roomType = RoomType.valueOf(rs.getString("room_type").toUpperCase());
-                Timestamp reqDate = rs.getTimestamp("req_date");
-                Date startDate = rs.getDate("start_date");
-                Date endDate = rs.getDate("end_date");
-                int count = rs.getInt("persons_count");
-                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
-
-                request = new Request();
-
-                request.setClientID(clientID);
-                request.setRequestID(requestID);
-                request.setRoomID(roomID);
-                request.setRoomType(roomType);
-                request.setRequestDate(reqDate);
-                request.setStartDate(startDate);
-                request.setEndDate(endDate);
-                request.setPersonsCount(count);
-                request.setStatusRequest(status);
+                request.setClientID(rs.getLong("client_id"));
+                request.setRequestID(rs.getLong("req_id"));
+                request.setRoomID(rs.getLong("room_id"));
+                request.setRoomType(RoomType.valueOf(rs.getString("room_type").toUpperCase()));
+                request.setRequestDate(rs.getTimestamp("req_date"));
+                request.setStartDate(rs.getDate("start_date"));
+                request.setEndDate(rs.getDate("end_date"));
+                request.setPersonsCount(rs.getInt("persons_count"));
+                request.setStatusRequest(StatusRequest.valueOf(rs.getString("status").toUpperCase()));
             }
             preparedStatement.close();
             rs.close();
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in getting request by clientId: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting request by clientId: ", e);
         }
         return request;
     }
 
-@Override
+    @Override
     public void save(Request request) {
         Long clientID = request.getClientID();
         Long roomID = request.getRoomID();
@@ -121,16 +105,17 @@ public class InMemoryRequestDao implements RequestDao {
         String insertTableSQL = "insert into requests (client_id, room_id, room_type, req_date, start_date, end_date, persons_count, status) " +
                 "values(?,?,?,?,?,?,?,?)";
         try {
-            Connection connection = ConnectorDB.getConnection();
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
-            if(clientID != null) {
+            if (clientID != null) {
                 preparedStatement.setLong(1, clientID);
-            }else{
+            } else {
                 preparedStatement.setNull(1, Types.INTEGER);
             }
-            if(roomID != null) {
+            if (roomID != null) {
                 preparedStatement.setLong(2, roomID);
-            }else{
+            } else {
                 preparedStatement.setNull(2, Types.INTEGER);
             }
             preparedStatement.setString(3, String.valueOf(roomType).toUpperCase());
@@ -142,34 +127,41 @@ public class InMemoryRequestDao implements RequestDao {
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in saving request: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in saving request: ", e);
         }
     }
 
     @Override
     public void cancel(Long id) {
         String deleteFromTableSQL = "UPDATE requests SET status = ? WHERE req_id = ?";
-        try (Connection connection = ConnectorDB.getConnection()){
-
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(deleteFromTableSQL);
             preparedStatement.setString(1, String.valueOf(StatusRequest.CANCEL));
             preparedStatement.setLong(2, id);
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
-
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in canceling request: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in canceling request: ", e);
         }
     }
+
     @Override
     public void approve(Long requestId, Long roomId) {
         String deleteFromTableSQL = "UPDATE requests SET status = ?, room_id = ? WHERE req_id = ? ";
-        try (Connection connection = ConnectorDB.getConnection()){
-
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(deleteFromTableSQL);
             preparedStatement.setString(1, String.valueOf(StatusRequest.APPROVED).toUpperCase());
             preparedStatement.setLong(2, roomId);
@@ -177,26 +169,36 @@ public class InMemoryRequestDao implements RequestDao {
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in approving request: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in approving request: ", e);
         }
     }
 
 
     @Override
-    public Collection<Request> getAdminRequests() {
+    public Collection<Request> getAdminRequests(int offset, int noOfRecords) {
         Collection<Request> requests = new ArrayList<>();
-        String selectTableSQL = "SELECT * FROM requests JOIN clients c USING (client_id) " +
-                "WHERE status = 'pending' AND start_date > CURRENT_DATE ";
+        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM requests " +
+                "WHERE status = ? AND start_date >= CURRENT_DATE LIMIT " +
+                  offset + ", " + noOfRecords;
         ResultSet rs;
-        try (Connection connection = ConnectorDB.getConnection()){
-
-            Statement statement = connection.createStatement();
-            rs = statement.executeQuery(selectTableSQL);
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
+            preparedStatement.setString(1,String.valueOf(StatusRequest.PENDING) );
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long id = Long.parseLong(rs.getString("req_id"));
-                Long clientID = Long.parseLong(rs.getString("client_id"));
+                Long id = rs.getLong("req_id");
+                Long clientID = rs.getLong("client_id");
+                Long roomId = rs.getLong("room_id");
+                if(rs.wasNull()){
+                    roomId = null;
+                }
                 RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
                 Timestamp reqDate = rs.getTimestamp("req_date");
                 Date start = rs.getDate("start_date");
@@ -206,6 +208,7 @@ public class InMemoryRequestDao implements RequestDao {
 
                 Request request = new Request();
                 request.setRequestID(id);
+                request.setRoomID(roomId);
                 request.setClientID(clientID);
                 request.setRoomType(type);
                 request.setRequestDate(reqDate);
@@ -216,31 +219,47 @@ public class InMemoryRequestDao implements RequestDao {
 
                 requests.add(request);
             }
-            statement.close();
-            rs.close();
-            connection.close();
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            rs = preparedStatement.executeQuery("SELECT FOUND_ROWS()");
+            if(rs.next()) {
+                this.noOfRecords = rs.getInt(1);
+            }
+
+            preparedStatement.close();
+            rs.close();
+            dbConnectionPool.freeConnection(connection);
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception in getting requests for admin: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting requests for admin: ", e);
         }
         return requests;
     }
 
 
     @Override
-    public Collection<Request> getAllClientsRequests(Long clientID) {
+    public Collection<Request> getAllClientsRequests(Long clientID, int offset, int noOfRecords) {
         Collection<Request> requests = new ArrayList<>();
-        String selectTableSQL = "SELECT * FROM requests WHERE " +
-                "client_id = ? AND status != ? AND start_date > CURRENT_DATE ";
+        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM requests " +
+                "WHERE client_id = ? AND start_date >= CURRENT_DATE ORDER BY req_date LIMIT " +
+                               offset + ", " + noOfRecords;
+
         ResultSet rs;
-        try (Connection connection = ConnectorDB.getConnection()){
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setLong(1, clientID);
-            preparedStatement.setString(2, String.valueOf(StatusRequest.APPROVED));
+
             rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
                 Long reqID = rs.getLong("req_id");
+                Long roomId = rs.getLong("room_id");
+                if(rs.wasNull()){
+                    roomId = null;
+                }
                 RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
                 Timestamp reqDate = rs.getTimestamp("req_date");
                 Date start = rs.getDate("start_date");
@@ -250,6 +269,7 @@ public class InMemoryRequestDao implements RequestDao {
 
                 Request request = new Request();
                 request.setRequestID(reqID);
+                request.setRoomID(roomId);
                 request.setClientID(clientID);
                 request.setRoomType(type);
                 request.setRequestDate(reqDate);
@@ -260,30 +280,40 @@ public class InMemoryRequestDao implements RequestDao {
 
                 requests.add(request);
             }
-
+            rs = preparedStatement.executeQuery("SELECT FOUND_ROWS()");
+            if(rs.next()) {
+                this.noOfRecords = rs.getInt(1);
+            }
             preparedStatement.close();
             rs.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in getting requests for client: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting requests for client: ", e);
         }
         return requests;
     }
 
     @Override
-    public Collection<Request> getAll() {
+    public Collection<Request> getAll(int offset, int noOfRecords) {
         Collection<Request> requests = new ArrayList<>();
-        String selectTableSQL = "SELECT * FROM requests WHERE status != 'pending'";
-        ResultSet rs;
-        try (Connection connection = ConnectorDB.getConnection()){
 
-            Statement statement = connection.createStatement();
-            rs = statement.executeQuery(selectTableSQL);
+        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM requests WHERE status != ? ORDER BY req_date DESC" +
+                " LIMIT " + offset + ", " + noOfRecords;
+        ResultSet rs;
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
+            preparedStatement.setString(1, String.valueOf(StatusRequest.PENDING));
+
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Long id = Long.parseLong(rs.getString("req_id"));
                 Long roomId = rs.getLong("room_id");
-                if(rs.wasNull()){
+                if (rs.wasNull()) {
                     roomId = null;
                 }
                 Long clientID = Long.parseLong(rs.getString("client_id"));
@@ -307,24 +337,38 @@ public class InMemoryRequestDao implements RequestDao {
 
                 requests.add(request);
             }
-            statement.close();
-            rs.close();
-            connection.close();
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            rs = preparedStatement.executeQuery("SELECT FOUND_ROWS()");
+            if(rs.next()) {
+                this.noOfRecords = rs.getInt(1);
+            }
+
+            preparedStatement.close();
+            rs.close();
+            dbConnectionPool.freeConnection(connection);
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception in getting all requests: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting all requests: ", e);
         }
         return requests;
     }
 
+    @Override
+    public int getNoOfRecords(){
+        return noOfRecords;
+    }
 
-    public Map<Long, Integer> countClientRequest() {
+
+    public Map<Long, Integer> countClientRequest(int offset, int noOfPages) {
         Map<Long, Integer> reqCount = new HashMap<>();
-        String selectTableSQL = "SELECT client_id, count(client_id) AS req_count FROM requests WHERE status != 'cancel'" +
-                "GROUP BY (client_id) HAVING req_count >= 1";
+        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS client_id, count(client_id) AS req_count FROM requests WHERE status != 'cancel'" +
+                "GROUP BY (client_id) HAVING req_count >= 1 LIMIT " + offset + ", " + noOfPages;
         ResultSet rs;
-        try (Connection connection = ConnectorDB.getConnection()) {
-
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
@@ -333,16 +377,21 @@ public class InMemoryRequestDao implements RequestDao {
 
                 reqCount.put(clientId, count);
             }
+
+            rs = statement.executeQuery("SELECT FOUND_ROWS()");
+            if(rs.next()) {
+                this.noOfRecords = rs.getInt(1);
+            }
             statement.close();
             rs.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL Exception in counting clients requests: ", e);
+        } catch (Exception e) {
+            logger.error("Exception in counting clients requests: ", e);
         }
 
         return reqCount;
     }
-
-
 }

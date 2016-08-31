@@ -5,35 +5,34 @@ package levina.web.dao.impl;
  */
 
 
+import levina.web.dao.DBConnectionPool;
 import levina.web.dao.UserDao;
 import levina.web.model.User;
 
+import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 public class InMemoryUserDao implements UserDao {
-
-    private static Logger logger = Logger.getLogger(InMemoryUserDao.class.getName());
+    public static Logger logger = Logger.getLogger(InMemoryUserDao.class);
     public static volatile InMemoryUserDao instance = new InMemoryUserDao();
-    public final static boolean ADMIN = true;
-    public final static boolean USER = false;
 
+    public DBConnectionPool dbConnectionPool;
 
     private InMemoryUserDao() {
     }
 
     @Override
     public User getById(Long id) {
-        String selectTableSQL = "SELECT * FROM users "
-                + "WHERE user_id = ?";
+        String selectTableSQL = "SELECT * FROM users WHERE user_id = ? ";
         ResultSet rs;
         User user = null;
-        try (Connection connection = ConnectorDB.getConnection()){
-
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
@@ -50,8 +49,11 @@ public class InMemoryUserDao implements UserDao {
             }
             preparedStatement.close();
             rs.close();
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting user by id", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting user by id", e);
         }
         return user;
     }
@@ -60,15 +62,22 @@ public class InMemoryUserDao implements UserDao {
     public boolean checkPassword(String userLogin, String password) {
         boolean isMatched = false;
         try {
-            Connection connection = ConnectorDB.getConnection();
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             String sql = "SELECT * FROM users WHERE user_login=? and user_password=md5(?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, userLogin);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             isMatched = rs.next();
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+
+            rs.close();
+            stmt.close();
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e ) {
+            logger.error("SQL exception in checking password", e);
+        } catch (Exception e) {
+            logger.error("Exception in checking password", e);
         }
         return isMatched;
     }
@@ -77,31 +86,39 @@ public class InMemoryUserDao implements UserDao {
     public void save(User user) {
         String login = user.getLogin();
         String password = user.getPassword();
-        boolean role = USER;
+        boolean role = false;
 
         String insertTableSQL = "insert into users (user_login, user_password, is_admin) " +
                 "values(?, md5(?), ?)";
-        try (Connection connection = ConnectorDB.getConnection()){
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             preparedStatement.setBoolean(3, role);
 
             preparedStatement.executeUpdate();
-            preparedStatement.close();
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            preparedStatement.close();
+            dbConnectionPool.freeConnection(connection);
+
+        } catch (SQLException e) {
+            logger.error("SQL exception in checking password", e);
+        } catch (Exception e) {
+            logger.error("Exception in checking password", e);
         }
     }
 
 
     @Override
     public User getEntityBy(String userLogin) {
-        String selectTableSQL = "SELECT * FROM users WHERE user_login = ?";
+        String selectTableSQL = "SELECT * FROM users WHERE user_login = ? ";
         ResultSet rs;
         User user = null;
-        try ( Connection connection = ConnectorDB.getConnection()){
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setString(1, userLogin);
             rs = preparedStatement.executeQuery();
@@ -119,10 +136,12 @@ public class InMemoryUserDao implements UserDao {
             }
             preparedStatement.close();
             rs.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting user by login", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting user by login", e);
         }
         return user;
     }
@@ -136,7 +155,8 @@ public class InMemoryUserDao implements UserDao {
                 + "from users";
         ResultSet rs;
         try {
-            Connection connection = ConnectorDB.getConnection();
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
@@ -151,10 +171,12 @@ public class InMemoryUserDao implements UserDao {
             }
             statement.close();
             rs.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting users", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting users", e);
         }
         return users;
     }

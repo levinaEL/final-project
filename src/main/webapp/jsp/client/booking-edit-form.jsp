@@ -12,20 +12,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Booking edit</title>
-    <link href="app/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="app/assets/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
-    <link href="app/assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="../../app/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../../app/assets/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="../../app/assets/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+
+<header>
+    <jsp:include page="client-header.jsp"/>
+</header>
+
 <h2 class="text-center">Room Reservation</h2>
 
-<form name="availableRooms" action="controller" method="post">
-    <%--<input type="hidden" name="requestId" value="${request.requestID}">--%>
-    <input type="hidden" name="command" value="available_room"/>
-</form>
-
-<form class="border-forms" action="controller" method="post">
+<form class="border-forms" action="../../controller" method="post">
     <input type="hidden" name="command" value="booking"/>
+    <c:if test="${empty clientId}">
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> You should first fill personal info
+        </div>
+        <c:set var="error" value="true"/>
+    </c:if>
+    <c:if test="${ban == true}">
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> You have been banned
+        </div>
+        <c:set var="error" value="true"/>
+    </c:if>
 
     <div class="form-group">
         <h4>Dates</h4>
@@ -76,23 +88,20 @@
                 <option>Family</option>
             </select>
         </div>
+
     </div>
 
     <div class="button-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <c:if test="${role==true}">
-            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
+        <c:if test="${error != true}">
+            <button type="submit" class="btn btn-primary">Submit</button>
         </c:if>
-        <c:if test="${role==false}">
-            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
-        </c:if>
+        <a class="btn btn-default" href="javascript:document.booking_list.submit()">Cancel</a>
     </div>
 </form>
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="app/assets/js/bootstrap.min.js"></script>
-<script src="app/assets/js/bootstrap-datepicker.min.js"></script>
+<script src="../../app/assets/js/bootstrap.min.js"></script>
+<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
 </body>
 </html>

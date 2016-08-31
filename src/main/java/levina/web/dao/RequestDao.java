@@ -19,12 +19,14 @@ public interface RequestDao {
 
     void approve(Long id, Long roomId);
 
-    Collection<Request> getAdminRequests();
+    Collection<Request> getAdminRequests(int offset, int noOfRecords);
 
-    Collection<Request> getAllClientsRequests(Long id);
+    Collection<Request> getAllClientsRequests(Long id, int offset, int noOfRecords);
 
-    Collection<Request> getAll();
+    Collection<Request> getAll(int offset, int noOfRecords);
 
-    Map<Long, Integer> countClientRequest();
+    int getNoOfRecords();
+
+    Map<Long, Integer> countClientRequest(int offset, int noOfPages);
 
 }

@@ -22,4 +22,8 @@ public class RoomService {
         return roomDao.getRoomsByParameters(start,end,personsCount,roomType);
     }
 
+    public Room getById(Long roomId){
+        return roomDao.getById(roomId);
+    }
+
 }

@@ -12,7 +12,7 @@ public class EmptyCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        String page = "login.jsp";
+        String page = "jsp/common/login.jsp";
         return page;
     }
 }

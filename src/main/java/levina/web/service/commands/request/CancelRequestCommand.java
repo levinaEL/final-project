@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 public class CancelRequestCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page;
+
         RequestService requestService = new RequestService();
         Long id = Long.parseLong(request.getParameter("id"));
         requestService.delete(id);
-        page = "controller?command=booking_list";
-        return page;
+
+        return "controller?command=booking_list";
     }
 }

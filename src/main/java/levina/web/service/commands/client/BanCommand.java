@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by MY on 15.08.2016.
  */
-public class BanCommand implements ActionCommand {
+public class  BanCommand implements ActionCommand {
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         ClientService clientService = new ClientService();
-        Long id = Long.parseLong(request.getParameter("id"));
-
-        Client client = clientService.getById(id);
-
+        Long clientId = Long.parseLong(request.getParameter("id"));
+        Client client = clientService.getById(clientId);
         clientService.banClient(client);
+
         page = "controller?command=clients_list";
 
         return page;

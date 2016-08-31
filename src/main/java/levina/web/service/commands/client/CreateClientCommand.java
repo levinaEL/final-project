@@ -14,15 +14,15 @@ import javax.servlet.http.HttpSession;
 public class CreateClientCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page ;
+        String page = null;
+        HttpSession session = request.getSession();
         ClientService clientService = new ClientService();
 
-        HttpSession session = request.getSession();
         Long userID = (Long) session.getAttribute("userID");
+        boolean role = (boolean) session.getAttribute("role");
 
         Client client = null;
         Long id = null;
-        boolean role = (boolean) session.getAttribute("role");
 
         if (!request.getParameter("id").equals("")) {
             id = Long.parseLong(request.getParameter("id"));
@@ -64,14 +64,16 @@ public class CreateClientCommand implements ActionCommand {
             if (role) {
                 clientService.createNew(null, email, firstName, patronName, lastName, address, phone, pSeries, Integer.parseInt(pNumber), personalNumb,
                         birthday);
+
             } else {
                 clientService.createNew(userID, email, firstName, patronName, lastName, address, phone, pSeries, Integer.parseInt(pNumber), personalNumb,
                         birthday);
+
             }
         }
-        if (role) {
+        if(role){
             page = "controller?command=clients_list";
-        } else {
+        }else{
             page = "controller?command=booking_list";
         }
 

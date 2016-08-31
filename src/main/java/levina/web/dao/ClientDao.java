@@ -21,5 +21,7 @@ public interface ClientDao {
 
     void banClient(Client client);
 
-    Collection<Client> getAll();
+    Collection<Client> getAll(int offset, int noOfRecords);
+
+    int getNoOfRecords();
 }

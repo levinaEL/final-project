@@ -20,9 +20,9 @@ public class RegisterCommand implements ActionCommand{
 
         if(!userService.createNew(login, password)) {
             request.setAttribute("userAlreadyExist", true);
-            page = "registration.jsp";
+            page = "jsp/common/registration.jsp";
         }else{
-            page = "login.jsp";
+            page = "jsp/common/login.jsp";
         }
 
         return page;

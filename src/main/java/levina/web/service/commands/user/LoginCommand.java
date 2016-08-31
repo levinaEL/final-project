@@ -23,7 +23,7 @@ public class LoginCommand implements ActionCommand {
         Long id;
         if (user == null) {
             request.setAttribute("userNotFound", true);
-            page = "login.jsp";
+            page = "jsp/common/login.jsp";
         } else {
             role = user.isAdmin();
             id = user.getId();
@@ -35,7 +35,7 @@ public class LoginCommand implements ActionCommand {
 
             } else {
                 request.setAttribute("passwordIsNotCorrect", true);
-                page = "login.jsp";
+                page = "jsp/common/login.jsp";
             }
         }
 

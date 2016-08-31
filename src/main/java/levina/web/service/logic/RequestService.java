@@ -30,18 +30,20 @@ public class RequestService {
         return requestDao.getByClientId(id);
     }
 
-    public Collection<Request> getAllClientsRequests(Long id){
-        return requestDao.getAllClientsRequests(id);
+    public Collection<Request> getAllClientsRequests(Long id, int offset, int noOfRecords){
+        return requestDao.getAllClientsRequests(id, offset, noOfRecords);
     }
 
-    public Collection<Request> getAdminRequests() {
-        return requestDao.getAdminRequests();
+    public Collection<Request> getAdminRequests(int offset, int noOfRecords) {
+        return requestDao.getAdminRequests(offset, noOfRecords);
     }
 
     public void createNew(Long clientID, Long roomID, RoomType type, Date startDate, Date endDate,
                           int personsCount, StatusRequest status) {
         Request request = new Request();
-        Timestamp reqDate = new Timestamp(Calendar.getInstance().getTime().getTime());
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MILLISECOND, 0);
+        Timestamp reqDate = new Timestamp(calendar.getTime().getTime());
         request.setClientID(clientID);
         request.setRoomID(roomID);
         request.setRoomType(type);
@@ -63,11 +65,15 @@ public class RequestService {
         requestDao.approve(reqId, roomId);
     }
 
-    public Collection<Request> getAll(){
-        return requestDao.getAll();
+    public Collection<Request> getAll(int offset, int noOfRecords){
+        return requestDao.getAll(offset, noOfRecords);
     }
 
-    public Map<Long, Integer> countClientRequest(){
-        return requestDao.countClientRequest();
+    public Map<Long, Integer> countClientRequest(int offset, int noOfPages){
+        return requestDao.countClientRequest(offset, noOfPages);
+    }
+
+    public int getNoOfRecords(){
+        return requestDao.getNoOfRecords();
     }
 }

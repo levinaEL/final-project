@@ -14,16 +14,15 @@ import javax.servlet.http.HttpSession;
 public class GetClientCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page;
         Client client;
-        Long id;
         ClientService clientService = new ClientService();
         HttpSession session = request.getSession();
+
         boolean role = (boolean) session.getAttribute("role");
         Long userID = (Long) session.getAttribute("userID");
 
         if (role && !request.getParameter("id").equals("")) {
-            id = Long.parseLong(request.getParameter("id"));
+            Long id = Long.parseLong(request.getParameter("id"));
             client = clientService.getById(id);
         } else {
             client = clientService.getByUserId(userID);
@@ -35,7 +34,6 @@ public class GetClientCommand implements ActionCommand {
 
         request.setAttribute("client", client);
 
-        page = "personal-info.jsp";
-        return page;
+        return "jsp/common/personal-info.jsp";
     }
 }

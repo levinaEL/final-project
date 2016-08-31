@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by MY on 10.08.2016.
  */
 @WebServlet("/controller")
-public class Controller extends HttpServlet {
+public class ControllerServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -29,7 +29,7 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response) throws ServletException, IOException {
-        String page = null;
+        String page;
         // определение команды, пришедшей из JSP
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(request);
@@ -44,7 +44,7 @@ public class Controller extends HttpServlet {
 
         } else {
 
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("jsp/common/login.jsp");
         }
     }
 }

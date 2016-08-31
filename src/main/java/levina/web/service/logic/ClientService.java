@@ -16,8 +16,12 @@ public class ClientService {
         clientDao = InMemoryClientDao.instance;
     }
 
-    public Collection<Client> getAll() {
-        return clientDao.getAll();
+    public int getNoOfRecords(){
+        return clientDao.getNoOfRecords();
+    }
+
+    public Collection<Client> getAll(int offset, int noOfRecords) {
+        return clientDao.getAll(offset, noOfRecords);
     }
 
     public void createNew(Long userID, String email, String firstName, String patronymicName, String lastName, String address,
@@ -59,7 +63,4 @@ public class ClientService {
        clientDao.banClient(client);
     }
 
-    public Client getClientByEmail(String email) {
-        return clientDao.getClientByEmail(email);
-    }
 }

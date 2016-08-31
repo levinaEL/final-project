@@ -20,6 +20,7 @@ public class Request {
     private int personsCount;
     private StatusRequest statusRequest;
 
+
     public void setClientID(Long clientID) {
         this.clientID = clientID;
     }
@@ -92,4 +93,5 @@ public class Request {
     public void setStatusRequest(StatusRequest statusRequest) {
         this.statusRequest = statusRequest;
     }
+
 }

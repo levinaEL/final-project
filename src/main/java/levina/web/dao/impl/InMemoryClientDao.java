@@ -1,32 +1,37 @@
 package levina.web.dao.impl;
 
 import levina.web.dao.ClientDao;
+import levina.web.dao.DBConnectionPool;
 import levina.web.model.Client;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * Created by MY on 07.08.2016.
  */
 public class InMemoryClientDao implements ClientDao {
-    private static Logger logger = Logger.getLogger(InMemoryClientDao.class.getName());
+    public static Logger logger = Logger.getLogger(InMemoryClientDao.class);
     public static volatile InMemoryClientDao instance = new InMemoryClientDao();
+    public DBConnectionPool dbConnectionPool;
+
+    private int noOfRecords;
+
 
     private InMemoryClientDao() {
     }
 
     @Override
     public Client getById(Long id) {
-        String selectTableSQL = "SELECT * FROM clients "
-                + "WHERE client_id = ?";
+        String selectTableSQL = "SELECT * FROM clients WHERE client_id = ?";
         ResultSet rs;
         Client client = null;
-        try (Connection connection = ConnectorDB.getConnection()) {
-
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
@@ -66,8 +71,11 @@ public class InMemoryClientDao implements ClientDao {
             }
             preparedStatement.close();
             rs.close();
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting client by id", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting client by id", e);e.printStackTrace();
         }
         return client;
     }
@@ -77,8 +85,9 @@ public class InMemoryClientDao implements ClientDao {
         String selectTableSQL = "SELECT * FROM clients WHERE user_id = ?";
         ResultSet rs;
         Client client = null;
-        try (Connection connection = ConnectorDB.getConnection()) {
-
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
@@ -115,8 +124,11 @@ public class InMemoryClientDao implements ClientDao {
             }
             preparedStatement.close();
             rs.close();
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting client by user id", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting client by user id", e);
         }
         return client;
     }
@@ -126,7 +138,9 @@ public class InMemoryClientDao implements ClientDao {
         String selectTableSQL = "SELECT * FROM clients WHERE email = ?";
         ResultSet rs;
         Client client = null;
-        try (Connection connection = ConnectorDB.getConnection()) {
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
             preparedStatement.setString(1, email);
             rs = preparedStatement.executeQuery();
@@ -164,10 +178,12 @@ public class InMemoryClientDao implements ClientDao {
             }
             preparedStatement.close();
             rs.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting client by email", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting client by email", e);
         }
         return client;
     }
@@ -191,7 +207,9 @@ public class InMemoryClientDao implements ClientDao {
         String insertTableSQL = "insert into clients (user_id, last_name, first_name, patronymic_name, email, " +
                 "pasp_series, pasp_number, pasp_prsl_number, birthday, address, telephone, is_banned) " +
                 "values(?, ?,?,?,?,?,?,?,?,?,?, false)";
-        try (Connection connection = ConnectorDB.getConnection()) {
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             if(userID != null) {
                 preparedStatement.setLong(1, userID);
@@ -211,9 +229,12 @@ public class InMemoryClientDao implements ClientDao {
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL exception in saving client", e);
+        } catch (Exception e) {
+            logger.error("Exception in saving client", e);
         }
     }
 
@@ -236,7 +257,8 @@ public class InMemoryClientDao implements ClientDao {
         String updateTableSQL =  "update clients set user_id = ?, last_name = ?, first_name = ?, patronymic_name = ?, email = ?, pasp_series = ?, pasp_number = ?, pasp_prsl_number= ?, birthday = ?, address = ?, telephone = ?, is_banned = ? where client_id = ?";
 
         try {
-            Connection connection = ConnectorDB.getConnection();
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL);
             if(userID != null) {
                 preparedStatement.setLong(1, userID);
@@ -259,31 +281,26 @@ public class InMemoryClientDao implements ClientDao {
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL exception in updating client", e);
+        } catch (Exception e) {
+            logger.error("Exception in updating client", e);
         }
     }
 
 
     @Override
-    public Collection<Client> getAll() {
+    public Collection<Client> getAll(int offset, int noOfRecords) {
         Collection<Client> clients = new ArrayList<>();
-        String selectTableSQL = "SELECT " +
-                "client_id, " +
-                "last_name, " +
-                "first_name, " +
-                "email, " +
-                "pasp_series, pasp_number, pasp_prsl_number, " +
-                "address, " +
-                "telephone, " +
-                "is_banned " +
-                "FROM clients";
+        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM clients LIMIT " +
+                 offset + ", " + noOfRecords;
 
         ResultSet rs;
         try {
-            Connection connection = ConnectorDB.getConnection();
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
@@ -310,16 +327,30 @@ public class InMemoryClientDao implements ClientDao {
                 client.setAddress(address);
                 client.setPhoneNumber(phone);
                 client.setBan(ban);
+
                 clients.add(client);
             }
+
+            rs = statement.executeQuery("SELECT FOUND_ROWS()");
+            if(rs.next()) {
+                this.noOfRecords = rs.getInt(1);
+            }
+
             statement.close();
             rs.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting all clients", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting all clients", e);
         }
         return clients;
+    }
+
+    @Override
+    public int getNoOfRecords(){
+        return noOfRecords;
     }
 
     public void banClient(Client client){
@@ -328,17 +359,20 @@ public class InMemoryClientDao implements ClientDao {
         Long id = client.getId();
 
         try {
-            Connection connection = ConnectorDB.getConnection();
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(updateTableSQL);
 
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-            connection.close();
+            dbConnectionPool.freeConnection(connection);
 
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            logger.error("SQL exception in banning client", e);
+        } catch (Exception e) {
+            logger.error("Exception in banning client", e);
         }
     }
 }

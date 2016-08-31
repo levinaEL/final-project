@@ -12,6 +12,6 @@
     <title>Hotel</title>
 </head>
 <body>
-<c:redirect url="/login.jsp"/>
+<c:redirect url="/jsp/common/login.jsp"/>
 </body>
 </html>
