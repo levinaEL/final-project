@@ -119,11 +119,9 @@
         </table>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Sale-->
     <div class="modal fade" id="saleModal" role="dialog">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header modal-background-color">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -133,7 +131,21 @@
                     <p>Client get the sale!</p>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <!-- Modal Ban-->
+    <div class="modal fade" id="banModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-background-color">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Information</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="alert-danger">The client received a ban!</p>
+                </div>
+            </div>
         </div>
     </div>
 

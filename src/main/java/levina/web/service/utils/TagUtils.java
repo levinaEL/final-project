@@ -1,7 +1,6 @@
 package levina.web.service.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -9,9 +8,9 @@ import java.util.Set;
  */
 public class TagUtils {
 
-    public static boolean isContains(List<?> coll, Object o) {
+    public static boolean isContains(Set<?> coll, Object o) {
         if(coll == null){
-            coll = new ArrayList<>();
+            coll = new HashSet<>();
         }
         return coll.contains(o);
     }
