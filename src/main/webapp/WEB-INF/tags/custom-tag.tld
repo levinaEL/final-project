@@ -12,13 +12,13 @@
     <short-name>func</short-name>
     <function>
         <name>contains</name>
-        <function-class>levina.web.service.utils.TagUtils</function-class>
+        <function-class>levina.web.utils.TagUtils</function-class>
         <function-signature>boolean isContains(java.util.Set,java.lang.Object)
         </function-signature>
     </function>
     <function>
         <name>add</name>
-        <function-class>levina.web.service.utils.TagUtils</function-class>
+        <function-class>levina.web.utils.TagUtils</function-class>
         <function-signature>void add(java.util.Set,java.lang.Long);
         </function-signature>
     </function>

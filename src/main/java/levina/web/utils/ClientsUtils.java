@@ -1,4 +1,4 @@
-package levina.web.service.utils;
+package levina.web.utils;
 
 import levina.web.model.Client;
 import levina.web.model.Request;
@@ -45,7 +45,7 @@ public class ClientsUtils {
             Long roomId = request.getRoomID();
             if(roomId != null) {
                 Room room = roomService.getById(roomId);
-                long diff = request.getEndDate().getTime() - request.getStartDate().getTime();
+                long diff = Math.abs(request.getEndDate().getTime() - request.getStartDate().getTime());
                 cost = room.getCost() * diff / (24 * 60 * 60 * 1000);
             }else{
                 cost = null;

@@ -1,7 +1,7 @@
 package levina.web.service;
 
-import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.commands.EmptyCommand;
+import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.commands.enums.CommandEnum;
 
 import javax.servlet.http.HttpServletRequest;

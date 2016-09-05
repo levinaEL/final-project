@@ -26,7 +26,6 @@
             <c:import url="../client/client-header.jsp"/>
         </c:otherwise>
     </c:choose>
-
 </header>
 <main>
     <h2 class="text-center">Personal Information</h2>
@@ -113,7 +112,7 @@
 
         <div class="button-group">
             <button type="submit" class="btn btn-primary">Save</button>
-            <a class="btn btn-default pull-right" href="controller?command=booking_list">Cancel</a>
+            <a class="btn btn-default pull-right" href="javascript:document.booking_list.submit()">Cancel</a>
         </div>
 
     </form>

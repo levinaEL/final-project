@@ -80,13 +80,11 @@
                     <td>
                         <form name="booking" action="../../controller">
                             <input type="hidden" name="command" value="get_request">
-                            <input type="hidden" name="book" value="approve_book">
                             <input type="hidden" name="requestId" value="${request.requestID}">
                             <button type="submit" class="btn-link" title="booking">
                                 <span class="glyphicon glyphicon-check"></span>
                             </button>
                         </form>
-
                     </td>
                 </tr>
             </c:forEach>

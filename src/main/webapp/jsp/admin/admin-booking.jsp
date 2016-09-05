@@ -26,6 +26,7 @@
     <form id="book" class="pull-left booking-form" action="../../controller" method="post" target="available_frame">
         <input type="hidden" name="command" value="booking"/>
         <input type="hidden" name="requestId" value="${request.requestID}"/>
+        <input type="hidden" name="clientId" value="${param.clientId}"/>
 
         <div class="form-group">
             <h4>Dates</h4>
@@ -112,7 +113,7 @@
                 <h4 class="modal-title">Available Rooms</h4>
             </div>
             <div class="modal-body">
-                <iframe id="available_frame" name="available_frame" src="jsp/admin/available-rooms.jsp" width="550px"
+                <iframe id="available_frame" name="available_frame" src="available-rooms.jsp" width="550px"
                         height="250px"
                         frameborder="0px"></iframe>
             </div>

@@ -5,7 +5,8 @@ import levina.web.model.Request;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;
 import levina.web.service.logic.RequestService;
-import levina.web.service.utils.ClientsUtils;
+import levina.web.utils.ClientsUtils;
+import levina.web.utils.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,7 @@ public class BookingListCommand implements ActionCommand {
         int noPage = 1;
         int noOfRecords;
         int noOfPages;
-        Long clientId = null;
+
         boolean role = (boolean) request.getSession().getAttribute("role");
         RequestService requestService = new RequestService();
         ClientService clientService = new ClientService();
@@ -40,13 +41,13 @@ public class BookingListCommand implements ActionCommand {
             noOfRecords = requestService.getNoOfRecords();
             noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
 
-            page = "jsp/admin/admin-home-prot.jsp";
+            page = ConfigurationManager.getProperty("path.page.admin-home");
         } else {
             Long userID = (Long) request.getSession().getAttribute("userID");
 
             Client client = clientService.getByUserId(userID);
             if (client != null) {
-                clientId = client.getId();
+                Long clientId = client.getId();
                 requests = requestService.getAllClientsRequests(clientId, (noPage - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE);
                 request.setAttribute("clientId", clientId);
                 request.setAttribute("cost", ClientsUtils.getClientsCost(requests));
@@ -54,12 +55,14 @@ public class BookingListCommand implements ActionCommand {
 
             noOfRecords = requestService.getNoOfRecords();
             noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
+            //page = request.getServletPath();
 
-            page = "jsp/client/client-home-prot.jsp";
+            page = ConfigurationManager.getProperty("path.page.client-home");
         }
 
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", noPage);
+        request.setAttribute("recordsPerPage", RECORDS_PER_PAGE);
         request.setAttribute("requests", requests);
         return page;
     }

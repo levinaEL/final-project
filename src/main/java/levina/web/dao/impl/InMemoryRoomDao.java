@@ -1,6 +1,6 @@
 package levina.web.dao.impl;
 
-import levina.web.dao.DBConnectionPool;
+import levina.web.dao.database.DBConnectionPool;
 import levina.web.dao.RoomDao;
 import levina.web.model.Room;
 import levina.web.model.enums.RoomType;
@@ -65,11 +65,11 @@ public class InMemoryRoomDao implements RoomDao {
             Connection connection = dbConnectionPool.getConnection();
             String createView =
                     "CREATE  OR REPLACE VIEW AVAILABLE_ROOMS " +
-            "AS (SELECT r.room_id, r.numb_seats, r.room_type, t.cost, req.room_id AS req_room, req.end_date" +
+            "AS (SELECT r.room_id, r.numb_seats, r.room_type, t.cost, req.room_id AS req_room, req.end_date, req.persons_count"  +
                             " FROM room r JOIN type_room t USING (room_type) " +
                     "LEFT JOIN requests req ON (req.room_id = r.room_id) " +
-                    "GROUP BY r.room_id HAVING (req.room_id IS NULL)" +
-                    " OR (MAX(req.end_date) < ?)) ";
+                    "GROUP BY r.room_id HAVING ((req.room_id IS NULL)" +
+                    " OR (MAX(req.end_date) < ?)) OR  (r.numb_seats - req.persons_count > 0))";
 
             PreparedStatement preparedStatement = connection.prepareStatement(createView);
             preparedStatement.setDate(1, start);

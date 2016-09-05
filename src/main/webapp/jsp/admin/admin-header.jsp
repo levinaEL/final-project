@@ -26,7 +26,11 @@
 <form name="booking_list" method=post action="../../controller">
     <input type="hidden" name="command" value="booking_list"/>
 </form>
-
+<form name="get_request" method=post action="../../controller">
+    <input type="hidden" name="book" value="create_book" />
+    <input type="hidden" name="clientId" value="${client.id}">
+    <input type="hidden" name="command" value="get_request"/>
+</form>
 
 
 <nav class="navbar navbar-default">

@@ -8,6 +8,7 @@ import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;
 import levina.web.service.logic.RequestService;
 import levina.web.service.logic.RoomService;
+import levina.web.utils.ConfigurationManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class BookingCommand implements ActionCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         Long roomID = null;
-        Long clientID;
+        Long clientID = null;
         Date start = null;
         Date end = null;
         StatusRequest status;
@@ -66,12 +67,14 @@ public class BookingCommand implements ActionCommand {
                 request.getSession().setAttribute("roomNotFound", true);
             }
             request.setAttribute("rooms", rooms);
-            page = "jsp/admin/available-rooms.jsp";
+            page = ConfigurationManager.getProperty("path.page.free-rooms");
         } else {
             if (role) {
                 // if admin create request for room
-                if (request.getSession().getAttribute("requestId").equals("")) {
-                    clientID = (Long) request.getSession().getAttribute("clientId");
+                if (request.getParameter("requestId").equals("")) {
+                    if (!request.getParameter("clientId").equals("")) {
+                        clientID = Long.parseLong(request.getParameter("clientId"));
+                    }
                     if (request.getSession().getAttribute("roomNotFound") == null) {
                         roomID = Long.parseLong(request.getParameter("roomId"));
                         status = StatusRequest.APPROVED;
@@ -80,7 +83,7 @@ public class BookingCommand implements ActionCommand {
                     }
                     requestService.createNew(clientID, roomID, type, start, end, numberSeats, status);
                 } else { // if admin approve the clients request
-                    Long requestId = (Long) request.getSession().getAttribute("requestId");
+                    Long requestId = Long.parseLong(request.getParameter("requestId"));
 
                     if (request.getSession().getAttribute("roomNotFound") == null) {
                         roomID = Long.parseLong(request.getParameter("roomId"));

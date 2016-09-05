@@ -2,6 +2,8 @@ package levina.web.controllers;
 
 import levina.web.service.ActionFactory;
 import levina.web.service.commands.interfaces.ActionCommand;
+import levina.web.utils.ConfigurationManager;
+import levina.web.utils.MessageManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -37,14 +39,14 @@ public class ControllerServlet extends HttpServlet {
         page = command.execute(request, response);
 
         if (page != null) {
-
             RequestDispatcher dispatch = request.getRequestDispatcher(page);
             dispatch.forward(request, response);
-
-
         } else {
 
-            response.sendRedirect("jsp/common/login.jsp");
+            page = ConfigurationManager.getProperty("path.page.index");
+            request.getSession().setAttribute("nullPage",
+                    MessageManager.getProperty("message.nullpage"));
+            response.sendRedirect(request.getContextPath() + page);
         }
     }
 }

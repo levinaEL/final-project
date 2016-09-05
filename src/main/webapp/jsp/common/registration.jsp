@@ -44,7 +44,7 @@
             <button type="submit" class="btn btn-primary pull-left modal-background-color">
                 Register
             </button>
-            <a class="btn btn-default pull-right" href="jsp/common/login.jsp">Cancel</a>
+            <a class="btn btn-default pull-right" href="login.jsp">Cancel</a>
         </div>
     </div>
 </form>

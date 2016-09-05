@@ -1,7 +1,7 @@
 package levina.web.dao.impl;
 
 import org.apache.log4j.Logger;
-import levina.web.dao.DBConnectionPool;
+import levina.web.dao.database.DBConnectionPool;
 import levina.web.dao.RequestDao;
 import levina.web.model.Request;
 import levina.web.model.enums.RoomType;
@@ -242,8 +242,8 @@ public class InMemoryRequestDao implements RequestDao {
     public Collection<Request> getAllClientsRequests(Long clientID, int offset, int noOfRecords) {
         Collection<Request> requests = new ArrayList<>();
         String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM requests " +
-                "WHERE client_id = ? AND start_date >= CURRENT_DATE ORDER BY req_date LIMIT " +
-                               offset + ", " + noOfRecords;
+                "WHERE client_id = ? AND start_date >= CURRENT_DATE ORDER BY req_date DESC " +
+                "LIMIT " + offset + ", " + noOfRecords;
 
         ResultSet rs;
         try {

@@ -92,6 +92,9 @@
                     <td><c:out value="${clientCountMap[client.id]}"/>
                     </td>
                     <td>
+                        <a href="/jsp/admin/admin-booking.jsp?clientId=${client.id}" class="btn-link" title="Booking">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
                         <form class="pull-left" name="ban" method=post action="../../controller">
                             <input type="hidden" name="command" value="ban"/>
                             <input type="hidden" name="id" value="${client.id}"/>
@@ -99,57 +102,58 @@
                                 <span class="glyphicon glyphicon-ban-circle"></span>
                             </button>
                         </form>
-
-                        <form class="pull-right" name="booking" action="../../controller">
-                            <input type="hidden" name="command" value="get_request">
-                            <input type="hidden" name="book" value="create_book">
-                            <input type="hidden" name="clientId" value="${client.id}">
-                            <button type="submit" class="btn-link" title="Booking">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                        </form>
                         <a class="btn-link pull-right" title="Make Sale" href="javascript:document.clients.submit()"
                            onclick="${fn:add(clientsForSale, client.id)}" data-toggle="modal" data-target="#saleModal">
                             <span class="glyphicon glyphicon-piggy-bank"></span>
                         </a>
+
+                        <%--<form name="booking" method="post" action="../../controller">--%>
+                            <%--<input type="hidden" name="command" value="booking">--%>
+                            <%--<input type="hidden" name="book" value="create_book">--%>
+                            <%--<input type="hidden" name="clientId" value="${client.id}">--%>
+                            <%--<button type="submit" class="btn-link" title="Booking">--%>
+                                <%--<span class="glyphicon glyphicon-pencil"></span>--%>
+                            <%--</button>--%>
+                        <%--</form>--%>
+
                     </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
     </div>
-
-    <!-- Modal Sale-->
-    <div class="modal fade" id="saleModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header modal-background-color">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Information</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Client get the sale!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Ban-->
-    <div class="modal fade" id="banModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header modal-background-color">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Information</h4>
-                </div>
-                <div class="modal-body">
-                    <p class="alert-danger">The client received a ban!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </main>
+
+<!-- Modal Sale-->
+<div class="modal fade" id="saleModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-background-color">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body">
+                <p>Client get the sale!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ban-->
+<div class="modal fade" id="banModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-background-color">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body">
+                <p>The client received a ban!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

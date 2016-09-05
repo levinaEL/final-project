@@ -1,9 +1,8 @@
 package levina.web.service.commands.enums;
 
+import levina.web.service.commands.client.*;
 import levina.web.service.commands.client.BanCommand;
 import levina.web.service.commands.client.ClientsListCommand;
-import levina.web.service.commands.client.CreateClientCommand;
-import levina.web.service.commands.client.GetClientCommand;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.commands.request.*;
 

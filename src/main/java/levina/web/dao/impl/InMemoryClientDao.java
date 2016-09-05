@@ -1,7 +1,7 @@
 package levina.web.dao.impl;
 
 import levina.web.dao.ClientDao;
-import levina.web.dao.DBConnectionPool;
+import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Client;
 import org.apache.log4j.Logger;
 

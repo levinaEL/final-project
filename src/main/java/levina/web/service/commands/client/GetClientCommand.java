@@ -3,6 +3,7 @@ package levina.web.service.commands.client;
 import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;
+import levina.web.utils.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 public class GetClientCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        String page = ConfigurationManager.getProperty("path.page.personal-info");
         Client client;
         ClientService clientService = new ClientService();
         HttpSession session = request.getSession();
@@ -34,6 +36,6 @@ public class GetClientCommand implements ActionCommand {
 
         request.setAttribute("client", client);
 
-        return "jsp/common/personal-info.jsp";
+        return page;
     }
 }

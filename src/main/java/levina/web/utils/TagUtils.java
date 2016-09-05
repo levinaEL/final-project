@@ -1,4 +1,4 @@
-package levina.web.service.utils;
+package levina.web.utils;
 
 import java.util.HashSet;
 import java.util.Set;

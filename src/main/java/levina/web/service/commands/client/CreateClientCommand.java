@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class CreateClientCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page = null;
+        String page ;
         HttpSession session = request.getSession();
         ClientService clientService = new ClientService();
 
@@ -74,6 +74,7 @@ public class CreateClientCommand implements ActionCommand {
         if(role){
             page = "controller?command=clients_list";
         }else{
+
             page = "controller?command=booking_list";
         }
 

@@ -1,6 +1,7 @@
 package levina.web.service.commands;
 
 import levina.web.service.commands.interfaces.ActionCommand;
+import levina.web.utils.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +13,7 @@ public class EmptyCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        String page = "jsp/common/login.jsp";
-        return page;
+        return ConfigurationManager.getProperty("path.page.login");
+
     }
 }

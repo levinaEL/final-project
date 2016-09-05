@@ -46,7 +46,7 @@
             <label for="start">From</label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="start" id="start" class="form-control">
+                <input type="text" name="start" id="start" class="form-control" pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
@@ -57,7 +57,8 @@
             <label for="end">To</label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="end" id="end" class="form-control">
+                <input type="text" name="end" id="end" class="form-control"
+                       pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
@@ -98,6 +99,7 @@
         <a class="btn btn-default" href="javascript:document.booking_list.submit()">Cancel</a>
     </div>
 </form>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

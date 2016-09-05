@@ -1,4 +1,4 @@
-package levina.web.dao;
+package levina.web.dao.database;
 
 import levina.web.exceptions.ConnectionWaitTimeoutException;
 import org.apache.log4j.Logger;
