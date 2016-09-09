@@ -1,5 +1,8 @@
 package levina.web.service.commands.request;
 
+import levina.web.contants.IClientConstants;
+import levina.web.contants.IRequestConstants;
+import levina.web.contants.IUserConstants;
 import levina.web.model.Client;
 import levina.web.model.Room;
 import levina.web.model.enums.RoomType;
@@ -37,15 +40,15 @@ public class BookingCommand implements ActionCommand {
         RequestService requestService = new RequestService();
         RoomService roomService = new RoomService();
 
-        boolean role = (boolean) request.getSession().getAttribute("role");
-        Long userID = (Long) request.getSession().getAttribute("userID");
+        boolean role = (boolean) request.getSession().getAttribute(IUserConstants.ROLE);
+        Long userID = (Long) request.getSession().getAttribute(IUserConstants.USER_ID);
 
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
-        String startDateStr = request.getParameter("start");
-        String endDateStr = request.getParameter("end");
-        int numberSeats = Integer.parseInt(request.getParameter("number"));
-        RoomType type = RoomType.valueOf(request.getParameter("type").toUpperCase());
+        String startDateStr = request.getParameter(IRequestConstants.START_DATE);
+        String endDateStr = request.getParameter(IRequestConstants.END_DATE);
+        int numberSeats = Integer.parseInt(request.getParameter(IRequestConstants.NUMBER_SEATS));
+        RoomType type = RoomType.valueOf(request.getParameter(IRequestConstants.TYPE).toUpperCase());
 
         try {
             start = new Date(sdf.parse(startDateStr).getTime());
@@ -64,31 +67,33 @@ public class BookingCommand implements ActionCommand {
         if (request.getParameter("availableRoom") != null) {
             Collection<Room> rooms = roomService.getAllClientsRequests(start, end, numberSeats, type);
             if (rooms.isEmpty()) {
-                request.getSession().setAttribute("roomNotFound", true);
+                request.setAttribute("roomNotFound", true);
             }
             request.setAttribute("rooms", rooms);
             page = ConfigurationManager.getProperty("path.page.free-rooms");
         } else {
             if (role) {
                 // if admin create request for room
-                if (request.getParameter("requestId").equals("")) {
-                    if (!request.getParameter("clientId").equals("")) {
-                        clientID = Long.parseLong(request.getParameter("clientId"));
+                if (request.getParameter(IRequestConstants.REQUEST_ID).equals("")) {
+                    if (!request.getParameter(IClientConstants.CLIENT_ID).equals("")) {
+                        clientID = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
                     }
-                    if (request.getSession().getAttribute("roomNotFound") == null) {
-                        roomID = Long.parseLong(request.getParameter("roomId"));
+                    if (!"".equals(request.getParameter(IRequestConstants.ROOM))) {
+                        roomID = Long.parseLong(request.getParameter(IRequestConstants.ROOM));
                         status = StatusRequest.APPROVED;
                     } else {
+                        request.getServletContext().setAttribute("sorry", true);
                         status = StatusRequest.CANCEL;
                     }
                     requestService.createNew(clientID, roomID, type, start, end, numberSeats, status);
                 } else { // if admin approve the clients request
-                    Long requestId = Long.parseLong(request.getParameter("requestId"));
+                    Long requestId = Long.parseLong(request.getParameter(IRequestConstants.REQUEST_ID));
 
-                    if (request.getSession().getAttribute("roomNotFound") == null) {
-                        roomID = Long.parseLong(request.getParameter("roomId"));
+                    if (!"".equals(request.getParameter(IRequestConstants.ROOM))) {
+                        roomID = Long.parseLong(request.getParameter(IRequestConstants.ROOM));
                         requestService.approve(requestId, roomID);
                     } else {
+                        request.getServletContext().setAttribute("sorry", true);
                         requestService.delete(requestId);
                     }
                 }
@@ -100,7 +105,7 @@ public class BookingCommand implements ActionCommand {
                 requestService.createNew(clientID, roomID, type, start, end, numberSeats, status);
 
             }
-            page = "controller?command=booking_list";
+            page = ConfigurationManager.getProperty("path.action.booking-list");
         }
         return page;
     }

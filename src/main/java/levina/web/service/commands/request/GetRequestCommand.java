@@ -1,5 +1,7 @@
 package levina.web.service.commands.request;
 
+import levina.web.contants.IRequestConstants;
+import levina.web.contants.IUserConstants;
 import levina.web.model.Client;
 import levina.web.model.Request;
 import levina.web.service.commands.interfaces.ActionCommand;
@@ -22,18 +24,18 @@ public class GetRequestCommand implements ActionCommand {
 
         RequestService requestService = new RequestService();
         ClientService clientService = new ClientService();
-        boolean role = (boolean) request.getSession().getAttribute("role");
+        boolean role = (boolean) request.getSession().getAttribute(IUserConstants.ROLE);
 
         if (role) {
-            if (!request.getParameter("requestId").equals("")) {
-                requestId = Long.parseLong(request.getParameter("requestId"));
+            if (!request.getParameter(IRequestConstants.REQUEST_ID).equals("")) {
+                requestId = Long.parseLong(request.getParameter(IRequestConstants.REQUEST_ID));
             }
             book = requestService.getById(requestId);
             request.setAttribute("request", book);
             request.setAttribute("requestId", requestId);
             page = ConfigurationManager.getProperty("path.page.admin-booking-form");
         } else {
-            Long userId = (Long) request.getSession().getAttribute("userID");
+            Long userId = (Long) request.getSession().getAttribute(IUserConstants.USER_ID);
             Client client = clientService.getByUserId(userId);
             if (client != null) {
                 request.setAttribute("clientId", client.getId());

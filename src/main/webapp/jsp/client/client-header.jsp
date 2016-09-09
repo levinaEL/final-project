@@ -22,7 +22,7 @@
 
 <form name="get_client" method="get" action="../../controller">
     <input type="hidden" name="command" value="get_client"/>
-    <input type="hidden" name="id" value=${client.id}>
+    <input type="hidden" name="clientId" value=${client.id}>
 </form>
 
 <nav class="navbar navbar-default">

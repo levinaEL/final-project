@@ -38,7 +38,7 @@ public class LoginCommand implements ActionCommand {
 //                    requestURL.append("?").append(request.getQueryString());
 //                }
 //                String urr = requestURL.toString();
-               page = "controller?command=booking_list";
+               page =  ConfigurationManager.getProperty("path.action.booking-list");
 
             } else {
                 request.setAttribute("passwordIsNotCorrect", true);

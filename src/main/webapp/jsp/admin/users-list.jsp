@@ -97,7 +97,7 @@
                         </a>
                         <form class="pull-left" name="ban" method=post action="../../controller">
                             <input type="hidden" name="command" value="ban"/>
-                            <input type="hidden" name="id" value="${client.id}"/>
+                            <input type="hidden" name="clientId" value="${client.id}"/>
                             <button type="submit" class="btn-link" title="BAN">
                                 <span class="glyphicon glyphicon-ban-circle"></span>
                             </button>
@@ -106,16 +106,6 @@
                            onclick="${fn:add(clientsForSale, client.id)}" data-toggle="modal" data-target="#saleModal">
                             <span class="glyphicon glyphicon-piggy-bank"></span>
                         </a>
-
-                        <%--<form name="booking" method="post" action="../../controller">--%>
-                            <%--<input type="hidden" name="command" value="booking">--%>
-                            <%--<input type="hidden" name="book" value="create_book">--%>
-                            <%--<input type="hidden" name="clientId" value="${client.id}">--%>
-                            <%--<button type="submit" class="btn-link" title="Booking">--%>
-                                <%--<span class="glyphicon glyphicon-pencil"></span>--%>
-                            <%--</button>--%>
-                        <%--</form>--%>
-
                     </td>
                 </tr>
             </c:forEach>

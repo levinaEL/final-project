@@ -26,6 +26,9 @@
                    type="text" id="login" name="login" placeholder="Login" required
                    pattern="\w+"
                    title="Username must contain only letters, numbers and underscores">
+            <c:if test="${not empty errLogin}">
+                <strong class="text-danger text-center"><c:out value="${errLogin}"/></strong>
+            </c:if>
         </div>
     </div>
     <div class="form-group">
@@ -36,11 +39,15 @@
                    type="password" id="password" name="password" placeholder="Password" required
                    pattern="(?=.*\d)(?=.*[a-z]).{6,}"
                    title="Password must contain at least 6 characters, including UPPER/lower case and numbers">
+            <c:if test="${not empty errPass}">
+                <strong class="text-danger text-center"><c:out value="${errPass}"/></strong>
+            </c:if>
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-sm-9 col-sm-offset-3">
+
             <button type="submit" class="btn btn-primary pull-left modal-background-color">
                 Register
             </button>

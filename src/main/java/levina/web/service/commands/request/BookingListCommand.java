@@ -1,5 +1,6 @@
 package levina.web.service.commands.request;
 
+import levina.web.contants.IUserConstants;
 import levina.web.model.Client;
 import levina.web.model.Request;
 import levina.web.service.commands.interfaces.ActionCommand;
@@ -43,12 +44,13 @@ public class BookingListCommand implements ActionCommand {
 
             page = ConfigurationManager.getProperty("path.page.admin-home");
         } else {
-            Long userID = (Long) request.getSession().getAttribute("userID");
+            Long userID = (Long) request.getSession().getAttribute(IUserConstants.USER_ID);
 
             Client client = clientService.getByUserId(userID);
             if (client != null) {
                 Long clientId = client.getId();
-                requests = requestService.getAllClientsRequests(clientId, (noPage - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE);
+                requests = requestService.getAllClientsRequests(clientId, (noPage - 1) * RECORDS_PER_PAGE,
+                        RECORDS_PER_PAGE);
                 request.setAttribute("clientId", clientId);
                 request.setAttribute("cost", ClientsUtils.getClientsCost(requests));
             }

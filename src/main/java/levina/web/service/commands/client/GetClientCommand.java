@@ -1,5 +1,7 @@
 package levina.web.service.commands.client;
 
+import levina.web.contants.IClientConstants;
+import levina.web.contants.IUserConstants;
 import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;
@@ -20,11 +22,11 @@ public class GetClientCommand implements ActionCommand {
         ClientService clientService = new ClientService();
         HttpSession session = request.getSession();
 
-        boolean role = (boolean) session.getAttribute("role");
-        Long userID = (Long) session.getAttribute("userID");
+        boolean role = (boolean) session.getAttribute(IUserConstants.ROLE);
+        Long userID = (Long) session.getAttribute(IUserConstants.USER_ID);
 
-        if (role && !request.getParameter("id").equals("")) {
-            Long id = Long.parseLong(request.getParameter("id"));
+        if (role && !request.getParameter(IClientConstants.CLIENT_ID).equals("")) {
+            Long id = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
             client = clientService.getById(id);
         } else {
             client = clientService.getByUserId(userID);

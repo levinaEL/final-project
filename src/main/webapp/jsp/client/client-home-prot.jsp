@@ -55,7 +55,7 @@
         </nav>
     </div>
     <h3>Booking list</h3>
-
+    <c:set var="koef" value="0.3"/>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -77,19 +77,26 @@
                 <td><c:out value="${request.endDate}"/></td>
                 <td><c:out value="${request.personsCount}"/></td>
                 <td><c:out value="${request.roomType}"/></td>
-                <td><c:out value="${request.statusRequest}"/></td>
+                <td>
+                    <c:if test="${sorry == true}">
+                        <div class="alert alert-info alert-dismissible" role="alert">
+                            Sorry! There no available rooms.
+                        </div>
+                    </c:if>
+                    <c:out value="${request.statusRequest}"/>
+                </td>
                 <td>
                     <c:out value="${cost[loop.index]}"/>
                     <c:if test="${fn:contains(clientsForSale, clientId) and  not empty cost[loop.index]}">
                         <div class="alert alert-success alert-dismissible" role="alert">
-                            You get the sale <c:out value="${0.3*cost[loop.index]}"/>
+                            You get the sale <c:out value="${koef*cost[loop.index]}"/>
                         </div>
                     </c:if>
                 </td>
                 <td>
                     <form name="booking" action="../../controller">
                         <input type="hidden" name="command" value="cancel_request">
-                        <input type="hidden" name="id" value="${request.requestID}">
+                        <input type="hidden" name="requestId" value="${request.requestID}">
                         <button type="submit" class="btn-link" title="cancel">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>

@@ -1,6 +1,7 @@
 package levina.web.controllers.filters;
 
 
+import levina.web.contants.IUserConstants;
 import levina.web.utils.ConfigurationManager;
 
 import javax.servlet.*;
@@ -28,7 +29,7 @@ public class PageRedirectSecurityFilter implements Filter {
         HttpSession session = request.getSession(false);
         String loginURI = ConfigurationManager.getProperty("path.page.login");
 
-        boolean loggedIn = session != null && session.getAttribute("userID") != null;
+        boolean loggedIn = session != null && session.getAttribute(IUserConstants.USER_ID) != null;
         boolean loginRequest = request.getRequestURI().equals(loginURI);
 
         if (loggedIn || loginRequest) {

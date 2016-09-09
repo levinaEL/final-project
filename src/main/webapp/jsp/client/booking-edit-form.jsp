@@ -38,6 +38,11 @@
         </div>
         <c:set var="error" value="true"/>
     </c:if>
+    <c:if test="${not empty errMsg}">
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> <c:out value="${errMsg}"/>
+        </div>
+    </c:if>
 
     <div class="form-group">
         <h4>Dates</h4>

@@ -28,19 +28,20 @@
     </c:choose>
 </header>
 <main>
-    <h2 class="text-center">Personal Information</h2>
+    <h3 class="text-center text-capitalize">Personal Information</h3>
 
     <form class="form-horizontal border-forms" method="post" action="../../controller">
 
         <input type="hidden" name="command" value="create_client"/>
-        <input type="hidden" name="id" value="${client.id}"/>
+        <input type="hidden" name="clientId" value="${client.id}"/>
 
         <div class="form-group">
             <label for="fname" class="col-sm-2 control-label">First Name</label>
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="fname" name="fname" value="${client.firstName}"
-                       pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="First name" required/>
+                       placeholder="First name" required pattern="^[a-zA-Z'\s]+"/>
+                <strong class="text-danger text-center"><c:out value="${errName}"/></strong>
             </div>
         </div>
         <div class="form-group">
@@ -48,7 +49,7 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="patronymic" name="pname" value="${client.patronymicName}"
-                       pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="Patronymic" required>
+                       placeholder="Patronymic">
             </div>
         </div>
         <div class="form-group">
@@ -56,7 +57,8 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="lname" name="lname" value="${client.lastName}"
-                       pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" placeholder="Last name" required>
+                       placeholder="Last name" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,16}$">
+                <strong class="text-danger text-center"><c:out value="${errName}"/></strong>
             </div>
         </div>
 
@@ -65,7 +67,8 @@
 
             <div class="col-sm-10">
                 <input type="date" class="form-control" id="birthday" value="${client.birthday}" name="birthday"
-                       pattern="(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d" required>
+                       required pattern="(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])" >
+                <strong class="text-danger text-center"><c:out value="${errBirth}"/></strong>
             </div>
         </div>
 
@@ -74,12 +77,14 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control passport-series" id="pSeries" name="pSeries"
-                       value="${client.passportSeries}" placeholder="Series" required>
+                       value="${client.passportSeries}" placeholder="Series" required pattern="[A-Z]{1,4}">
                 <input type="text" class="form-control passport-number" id="pNumber" name="pNumber"
-                       value="${client.passportNumber}" placeholder="Number" required>
+                       value="${client.passportNumber}" placeholder="Number" required pattern="[\d]{6,14}">
 
                 <input type="text" class="form-control passport-personal-number" id="prslNumber"
-                       value="${client.personalNumber}" name="prslNumber" placeholder="Personal number" required>
+                       value="${client.personalNumber}" name="prslNumber" placeholder="Personal number"
+                       required pattern="[A-Z0-9]{11,16}">
+                <strong class="text-danger text-center"><c:out value="${errPaasport}"/></strong>
             </div>
         </div>
 
@@ -97,7 +102,8 @@
 
             <div class="col-sm-10">
                 <input type="email" class="form-control" id="email" name="email" value="${client.email}"
-                       placeholder="Email">
+                       placeholder="Email" required>
+                <strong class="text-danger text-center"><c:out value="${errEmail}"/></strong>
             </div>
         </div>
 
@@ -106,7 +112,9 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="phone" name="phone" value="${client.phoneNumber}"
-                       pattern="^(801[567]|802[1234]\d{7})|\d{7})$" placeholder="Phone number">
+                       placeholder="Phone number"
+                       pattern="\+(375)(\d){2}(\d){3}(-)?(\d){2}(-)?(\d){2}" title="+375(xx)...">
+                <strong class="text-danger text-center"><c:out value="${errPhone}"/></strong>
             </div>
         </div>
 

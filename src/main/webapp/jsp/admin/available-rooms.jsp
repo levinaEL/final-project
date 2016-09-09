@@ -28,6 +28,12 @@
         </tr>
         </thead>
         <tbody>
+        <c:if test="${roomNotFound==true}">
+            <div class="alert alert-danger">
+                <strong>Danger!</strong> No available rooms
+            </div>
+            <c:set var="error" value="true"/>
+        </c:if>
         <c:forEach items="${rooms}" var="room">
             <tr>
                 <td><a>${room.roomID}</a></td>

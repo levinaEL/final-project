@@ -1,5 +1,6 @@
 package levina.web.service.commands.user;
 
+import levina.web.contants.IUserConstants;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.UserService;
 import levina.web.utils.ConfigurationManager;
@@ -16,8 +17,8 @@ public class RegisterCommand implements ActionCommand {
         String page;
         UserService userService = new UserService();
 
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+        String login = request.getParameter(IUserConstants.LOGIN);
+        String password = request.getParameter(IUserConstants.PASSWORD);
 
         if(!userService.createNew(login, password)) {
             request.setAttribute("userAlreadyExist", true);
