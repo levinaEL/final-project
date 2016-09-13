@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 <html lang="en">
 <head>
@@ -40,7 +41,8 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="fname" name="fname" value="${client.firstName}"
-                       placeholder="First name" required pattern="^[a-zA-Z'\s]+"/>
+                       placeholder="First name" title="Name should contain only letters"
+                       required pattern="^[a-zA-Z'\s]+"/>
                 <strong class="text-danger text-center"><c:out value="${errName}"/></strong>
             </div>
         </div>
@@ -57,7 +59,8 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="lname" name="lname" value="${client.lastName}"
-                       placeholder="Last name" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,16}$">
+                       placeholder="Last name" title="Name should contain only letters"
+                       required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,16}$">
                 <strong class="text-danger text-center"><c:out value="${errName}"/></strong>
             </div>
         </div>
@@ -67,7 +70,8 @@
 
             <div class="col-sm-10">
                 <input type="date" class="form-control" id="birthday" value="${client.birthday}" name="birthday"
-                       required pattern="(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])" >
+                       title="yyyy-MM-dd OR dd/MM/yyyy"
+                       required pattern="(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])">
                 <strong class="text-danger text-center"><c:out value="${errBirth}"/></strong>
             </div>
         </div>
@@ -79,7 +83,8 @@
                 <input type="text" class="form-control passport-series" id="pSeries" name="pSeries"
                        value="${client.passportSeries}" placeholder="Series" required pattern="[A-Z]{1,4}">
                 <input type="text" class="form-control passport-number" id="pNumber" name="pNumber"
-                       value="${client.passportNumber}" placeholder="Number" required pattern="[\d]{6,14}">
+                       value="${client.passportNumber}" placeholder="Number" title="only numbers" required
+                       pattern="[\d]{6,14}">
 
                 <input type="text" class="form-control passport-personal-number" id="prslNumber"
                        value="${client.personalNumber}" name="prslNumber" placeholder="Personal number"

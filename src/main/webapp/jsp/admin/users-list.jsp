@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/tags/custom-tag.tld" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 <html>
 <head lang="en">
@@ -77,7 +78,7 @@
 
                 <tr>
                     <td><span>
-                        <a href="controller?command=get_client&id=${client.id}">${client.id}</a>
+                        <a href="controller?command=get_client&clientId=${client.id}">${client.id}</a>
                          <c:if test="${client.ban == true}">
                              <span class="text-danger">BAN!</span>
                          </c:if>

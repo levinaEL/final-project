@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 <html lang="en">
 <head>
@@ -51,7 +52,8 @@
             <label for="start">From</label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="start" id="start" class="form-control" pattern="\d{1,2}/\d{1,2}/\d{4}" required>
+                <input type="text" name="start" id="start" class="form-control" title="yyyy-MM-dd OR dd/MM/yyyy"
+                       pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
@@ -63,7 +65,7 @@
 
             <div class="input-group date" data-provide="datepicker">
                 <input type="text" name="end" id="end" class="form-control"
-                       pattern="\d{1,2}/\d{1,2}/\d{4}" required>
+                       title="yyyy-MM-dd OR dd/MM/yyyy" pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>

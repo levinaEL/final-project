@@ -112,7 +112,7 @@ public class InMemoryUserDao implements UserDao {
 
 
     @Override
-    public User getEntityBy(String userLogin) {
+    public User getUserByLogin(String userLogin) {
         String selectTableSQL = "SELECT * FROM users WHERE user_login = ? ";
         ResultSet rs;
         User user = null;

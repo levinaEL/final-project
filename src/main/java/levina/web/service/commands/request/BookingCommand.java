@@ -65,7 +65,7 @@ public class BookingCommand implements ActionCommand {
 
         //if click show rooms
         if (request.getParameter("availableRoom") != null) {
-            Collection<Room> rooms = roomService.getAllClientsRequests(start, end, numberSeats, type);
+            Collection<Room> rooms = roomService.getAvailableRooms(start, end, numberSeats, type);
             if (rooms.isEmpty()) {
                 request.setAttribute("roomNotFound", true);
             }

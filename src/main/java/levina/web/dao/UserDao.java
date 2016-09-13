@@ -14,7 +14,7 @@ public interface UserDao {
 
     boolean checkPassword(String userLogin, String userPassword);
 
-    User getEntityBy(String login);
+    User getUserByLogin(String login);
 
     Collection<User> getAll();
 }

@@ -25,7 +25,7 @@ public class UserService {
         User user = new User();
         user.setPassword(password);
         user.setLogin(login);
-        if (userDao.getEntityBy(login) == null) {
+        if (userDao.getUserByLogin(login) == null) {
             userDao.save(user);
             return true;
         }
@@ -36,7 +36,7 @@ public class UserService {
         User user = new User();
         user.setPassword(password);
         user.setAdmin(role);
-        if (userDao.getEntityBy(login) == null) {
+        if (userDao.getUserByLogin(login) == null) {
             userDao.save(user);
         }
     }
@@ -50,6 +50,6 @@ public class UserService {
     }
 
     public User getUserByLogin(String email) {
-        return userDao.getEntityBy(email);
+        return userDao.getUserByLogin(email);
     }
 }

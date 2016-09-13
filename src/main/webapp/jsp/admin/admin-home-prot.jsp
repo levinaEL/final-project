@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 <html lang="en">
 <head>
@@ -92,5 +93,9 @@
         </table>
     </div>
 </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../app/assets/js/bootstrap.min.js"></script>
+<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
 </body>
 </html>

@@ -57,6 +57,8 @@ INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('double', 150);
 INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('twin', 150);
 INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('lux', 200);
 INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('family', 240);
+INSERT INTO TYPE_ROOM (room_type, cost) VALUES ('special', 240);
+
 
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 1);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('double', 2);
@@ -72,6 +74,7 @@ INSERT INTO ROOM (room_type, numb_seats) VALUES ('double', 2);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('single', 1);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('family', 4);
 INSERT INTO ROOM (room_type, numb_seats) VALUES ('family', 4);
+INSERT INTO ROOM (room_type, numb_seats) VALUES ('special', 4);
 
 
 INSERT INTO REQUESTS (client_id, room_id, room_type, req_date, start_date, end_date,  persons_count, status) VALUES

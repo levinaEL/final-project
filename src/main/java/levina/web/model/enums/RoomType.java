@@ -8,5 +8,6 @@ public enum RoomType {
     DOUBLE,
     LUX,
     TWIN,
-    FAMILY;
+    FAMILY,
+    SPECIAL
 }

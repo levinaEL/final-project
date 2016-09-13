@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="/WEB-INF/tags/custom-tag.tld" prefix="fn" %>
 <%@ page isELIgnored="false" %>
 <html lang="en">
@@ -113,7 +114,7 @@
                 <h4 class="modal-title">Available Rooms</h4>
             </div>
             <div class="modal-body">
-                <iframe id="available_frame" name="available_frame" src="available-rooms.jsp" width="550px"
+                <iframe id="available_frame" name="available_frame" src="/jsp/admin/available-rooms.jsp" width="550px"
                         height="250px"
                         frameborder="0px"></iframe>
             </div>

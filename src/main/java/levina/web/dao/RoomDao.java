@@ -12,7 +12,9 @@ import java.util.Collection;
 public interface RoomDao {
     Room getById(Long roomId);
 
-    Collection getRoomsByParameters(Date start, Date end, int personsCount, RoomType roomType);
+    Room getByType(RoomType roomType);
 
+    Collection<Room> getRoomsByParameters(Date start, Date end, int personsCount, RoomType roomType);
 
+    Collection<Room> getAllAvailableRooms();
 }

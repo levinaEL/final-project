@@ -7,6 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en_US"/>
+<fmt:setBundle basename="text"/>
 <html>
 <head>
     <title>client header</title>
@@ -42,22 +45,52 @@
             <ul class="nav navbar-nav">
                 <li>
                     <a href="controller?command=get_request">
-                        <%--/jsp/client/booking-edit-form.jsp--%>
-                        Booking
+                        <fmt:message key="header.action.booking"/>
                     </a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="javascript:document.get_client.submit()">Personal information</a></li>
+                <li>
+                    <a href="javascript:document.get_client.submit()">
+                        <fmt:message key="header.action.personal.info"/>
+                    </a>
+                </li>
                 <li>
                     <a href="javascript:document.logout.submit()">
-                        Logout
+                        <fmt:message key="header.action.logout"/>
                     </a>
+                </li>
+
+                <li class="dropdown language-selector">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                        <img src="../../app/assets/images/united_states_of_america.png"/>
+                        <span>English</span>
+                    </a>
+
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="#">
+                                <img src="../../app/assets/images/icon_flag_russian.gif"/>
+                                <span>Russian</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../../app/assets/images/united_states_of_america.png"/>
+                                <span>English</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../app/assets/js/bootstrap.min.js"></script>
+<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
 
 </body>
 </html>

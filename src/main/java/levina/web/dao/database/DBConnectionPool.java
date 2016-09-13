@@ -15,6 +15,9 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public final class DBConnectionPool {
     public final static Logger logger = Logger.getLogger(DBConnectionPool.class);
+    public static final int TRY_COUNT = 20;
+    public static final int TIME_SLEEP = 10;
+
 
     public static DBConnectionPool getInstance() throws Exception{
         if(Singleton.INSTANCE.initException != null) {
@@ -75,7 +78,7 @@ public final class DBConnectionPool {
     }
 
     public Connection getConnection() {
-        return getConnection(20);
+        return getConnection(TRY_COUNT);
     }
 
     public Connection getConnection(int tryCount) {
@@ -87,7 +90,7 @@ public final class DBConnectionPool {
         }
         if(connection == null) {
             try {
-                Thread.sleep(10);
+                Thread.sleep(TIME_SLEEP);
             } catch (InterruptedException e) {
                 logger.error("Interrupted exception: ", e);
             }

@@ -1,7 +1,7 @@
 package levina.web.dao.impl;
 
-import levina.web.dao.database.DBConnectionPool;
 import levina.web.dao.RoomDao;
+import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Room;
 import levina.web.model.enums.RoomType;
 import org.apache.log4j.Logger;
@@ -58,6 +58,39 @@ public class InMemoryRoomDao implements RoomDao {
         return room;
     }
 
+    @Override
+    public Room getByType(RoomType roomType){
+        String selectTableSQL = "SELECT r.*, t.cost FROM room r JOIN type_room t USING (room_type)"
+                + "WHERE r.room_type = ?";
+        ResultSet rs;
+        Room room = null;
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
+            preparedStatement.setString(1, String.valueOf(roomType).toUpperCase());
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Long id = rs.getLong("room_id");
+                int numberSeats = rs.getInt("numb_seats");
+
+                room = new Room();
+
+                room.setRoomID(id);
+                room.setNumberSeats(numberSeats);
+                room.setRoomType(roomType);
+            }
+            preparedStatement.close();
+            rs.close();
+            dbConnectionPool.freeConnection(connection);
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting room by type", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting room by type", e);
+        }
+        return room;
+    }
+
     public void getAvailableRoomsTable(Date start, Date end) {
 
         try {
@@ -83,7 +116,8 @@ public class InMemoryRoomDao implements RoomDao {
         }
     }
 
-    public Collection getRoomsByParameters(Date start, Date end, int personsCount, RoomType roomType) {
+    @Override
+    public Collection<Room> getRoomsByParameters(Date start, Date end, int personsCount, RoomType roomType) {
         getAvailableRoomsTable(start, end);
         Collection<Room> rooms = new ArrayList<>();
 
@@ -126,4 +160,41 @@ public class InMemoryRoomDao implements RoomDao {
         }
         return rooms;
     }
+
+    @Override
+    public Collection<Room> getAllAvailableRooms(){
+        Collection<Room> rooms = new ArrayList<>();
+        String selectTableSQL = "SELECT  * FROM AVAILABLE_ROOMS ";
+
+        ResultSet rs;
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
+            Statement statement = connection.createStatement();
+            rs = statement.executeQuery(selectTableSQL);
+            while (rs.next()) {
+                Long id = rs.getLong("room_id");
+                RoomType roomType = RoomType.valueOf(rs.getString("room_type").toUpperCase());
+                int numberSeats = rs.getInt("numb_seats");
+
+                Room room = new Room();
+                room.setRoomID(id);
+                room.setNumberSeats(numberSeats);
+                room.setRoomType(roomType);
+
+                rooms.add(room);
+            }
+
+            statement.close();
+            rs.close();
+            dbConnectionPool.freeConnection(connection);
+
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting all available rooms", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting all available rooms", e);
+        }
+        return rooms;
+    }
+
 }

@@ -18,12 +18,20 @@ public class RoomService {
         roomDao = InMemoryRoomDao.instance;
     }
 
-    public Collection<Room> getAllClientsRequests(Date start, Date end, int personsCount, RoomType roomType){
+    public Collection<Room> getAvailableRooms(Date start, Date end, int personsCount, RoomType roomType){
         return roomDao.getRoomsByParameters(start,end,personsCount,roomType);
     }
 
     public Room getById(Long roomId){
         return roomDao.getById(roomId);
+    }
+
+    public Room getByType(RoomType roomType){
+        return roomDao.getByType(roomType);
+    }
+
+    public Collection<Room> getAllAvailableRooms(){
+        return roomDao.getAllAvailableRooms();
     }
 
 }
