@@ -3,6 +3,7 @@ package levina.web.service.commands.enums;
 import levina.web.service.commands.client.*;
 import levina.web.service.commands.client.BanCommand;
 import levina.web.service.commands.client.ClientsListCommand;
+import levina.web.service.commands.common.ChangeLanguageCommand;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.commands.request.*;
 
@@ -74,6 +75,11 @@ public enum CommandEnum {
     HISTORY_REQUESTS {
         {
             this.command = new RequestHistoryCommand();
+        }
+    },
+    CHANGE_LANGUAGE {
+        {
+            this.command = new ChangeLanguageCommand();
         }
     };
     ActionCommand command;

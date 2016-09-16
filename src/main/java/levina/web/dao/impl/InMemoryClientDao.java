@@ -1,5 +1,6 @@
 package levina.web.dao.impl;
 
+import levina.web.contants.IClientConstants;
 import levina.web.dao.ClientDao;
 import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Client;
@@ -9,10 +10,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
-/**
- * Created by MY on 07.08.2016.
- */
 public class InMemoryClientDao implements ClientDao {
     public static Logger logger = Logger.getLogger(InMemoryClientDao.class);
     public static volatile InMemoryClientDao instance = new InMemoryClientDao();
@@ -36,22 +33,22 @@ public class InMemoryClientDao implements ClientDao {
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long clientId = rs.getLong("client_id");
-                Long userID = rs.getLong("user_id");
+                Long clientId = rs.getLong(IClientConstants.CLIENT_ID);
+                Long userID = rs.getLong(IClientConstants.USER_ID);
                 if(rs.wasNull()){
                     userID = null;
                 }
-                String firstName = rs.getString("first_name").trim();
-                String patronName = rs.getString("patronymic_name").trim();
-                String lastName = rs.getString("last_name").trim();
-                String email = rs.getString("email").trim();
-                String pSeries = rs.getString("pasp_series").trim();
-                int pNumber = rs.getInt("pasp_number");
-                String personalNumb = rs.getString("pasp_prsl_number").trim();
-                String address = rs.getString("address").trim();
-                String birthday = rs.getString("birthday").trim();
-                String phone = rs.getString("telephone").trim();
-                boolean ban = rs.getBoolean("is_banned");
+                String firstName = rs.getString(IClientConstants.FIRST_NAME).trim();
+                String patronName = rs.getString(IClientConstants.PATRONYMIC).trim();
+                String lastName = rs.getString(IClientConstants.LAST_NAME).trim();
+                String email = rs.getString(IClientConstants.EMAIL).trim();
+                String pSeries = rs.getString(IClientConstants.PASSPORT_SERIES).trim();
+                int pNumber = rs.getInt(IClientConstants.PASSPORT_NUMBER);
+                String personalNumb = rs.getString(IClientConstants.PERSONAL_NUMBER).trim();
+                String address = rs.getString(IClientConstants.ADDRESS).trim();
+                String birthday = rs.getString(IClientConstants.BIRTHDAY).trim();
+                String phone = rs.getString(IClientConstants.PHONE).trim();
+                boolean ban = rs.getBoolean(IClientConstants.BAN);
 
                 client = new Client();
 
@@ -92,19 +89,19 @@ public class InMemoryClientDao implements ClientDao {
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long clientID= rs.getLong("client_id");
-                Long userID = rs.getLong("user_id");
-                String firstName = rs.getString("first_name").trim();
-                String patronName = rs.getString("patronymic_name").trim();
-                String lastName = rs.getString("last_name").trim();
-                String email = rs.getString("email").trim();
-                String pSeries = rs.getString("pasp_series").trim();
-                int pNumber = rs.getInt("pasp_number");
-                String personalNumb = rs.getString("pasp_prsl_number").trim();
-                String address = rs.getString("address").trim();
-                String birthday = rs.getString("birthday").trim();
-                String phone = rs.getString("telephone").trim();
-                boolean ban = rs.getBoolean("is_banned");
+                Long clientID= rs.getLong(IClientConstants.CLIENT_ID);
+                Long userID = rs.getLong(IClientConstants.USER_ID);
+                String firstName = rs.getString(IClientConstants.FIRST_NAME).trim();
+                String patronName = rs.getString(IClientConstants.PATRONYMIC).trim();
+                String lastName = rs.getString(IClientConstants.LAST_NAME).trim();
+                String email = rs.getString(IClientConstants.EMAIL).trim();
+                String pSeries = rs.getString(IClientConstants.PASSPORT_SERIES).trim();
+                int pNumber = rs.getInt(IClientConstants.PASSPORT_NUMBER);
+                String personalNumb = rs.getString(IClientConstants.PERSONAL_NUMBER).trim();
+                String address = rs.getString(IClientConstants.ADDRESS).trim();
+                String birthday = rs.getString(IClientConstants.BIRTHDAY).trim();
+                String phone = rs.getString(IClientConstants.PHONE).trim();
+                boolean ban = rs.getBoolean(IClientConstants.BAN);
 
                 client = new Client();
 
@@ -145,21 +142,21 @@ public class InMemoryClientDao implements ClientDao {
             preparedStatement.setString(1, email);
             rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                Long id = rs.getLong("client_id");
-                Long userID = rs.getLong("user_id");
+                Long id = rs.getLong(IClientConstants.CLIENT_ID);
+                Long userID = rs.getLong(IClientConstants.USER_ID);
                 if(rs.wasNull()){
                     userID = null;
                 }
-                String firstName = rs.getString("first_name").trim();
-                String patronName = rs.getString("patronymic_name").trim();
-                String lastName = rs.getString("last_name").trim();
-                String pSeries = rs.getString("pasp_series").trim();
-                int pNumber = rs.getInt("pasp_number");
-                String personalNumb = rs.getString("pasp_prsl_number").trim();
-                String address = rs.getString("address").trim();
-                String birthday = rs.getString("birthday").trim();
-                String phone = rs.getString("telephone").trim();
-                boolean ban = rs.getBoolean("is_banned");
+                String firstName = rs.getString(IClientConstants.FIRST_NAME).trim();
+                String patronName = rs.getString(IClientConstants.PATRONYMIC).trim();
+                String lastName = rs.getString(IClientConstants.LAST_NAME).trim();
+                String pSeries = rs.getString(IClientConstants.PASSPORT_SERIES).trim();
+                int pNumber = rs.getInt(IClientConstants.PASSPORT_NUMBER);
+                String personalNumb = rs.getString(IClientConstants.PERSONAL_NUMBER).trim();
+                String address = rs.getString(IClientConstants.ADDRESS).trim();
+                String birthday = rs.getString(IClientConstants.BIRTHDAY).trim();
+                String phone = rs.getString(IClientConstants.PHONE).trim();
+                boolean ban = rs.getBoolean(IClientConstants.BAN);
 
                 client = new Client();
 
@@ -304,16 +301,16 @@ public class InMemoryClientDao implements ClientDao {
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
-                Long id = rs.getLong("client_id");
-                String firstName = rs.getString("first_name").trim();
-                String lastName = rs.getString("last_name").trim();
-                String email = rs.getString("email").trim();
-                String pSeries = rs.getString("pasp_series").trim();
-                int pNumber = rs.getInt("pasp_number");
-                String prslNumber = rs.getString("pasp_prsl_number").trim();
-                String address = rs.getString("address").trim();
-                String phone = rs.getString("telephone").trim();
-                boolean ban = rs.getBoolean("is_banned");
+                Long id = rs.getLong(IClientConstants.CLIENT_ID);
+                String firstName = rs.getString(IClientConstants.FIRST_NAME).trim();
+                String lastName = rs.getString(IClientConstants.LAST_NAME).trim();
+                String email = rs.getString(IClientConstants.EMAIL).trim();
+                String pSeries = rs.getString(IClientConstants.PASSPORT_SERIES).trim();
+                int pNumber = rs.getInt(IClientConstants.PASSPORT_NUMBER);
+                String prslNumber = rs.getString(IClientConstants.PERSONAL_NUMBER).trim();
+                String address = rs.getString(IClientConstants.ADDRESS).trim();
+                String phone = rs.getString(IClientConstants.PHONE).trim();
+                boolean ban = rs.getBoolean(IClientConstants.BAN);
 
 
                 Client client = new Client();

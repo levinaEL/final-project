@@ -1,14 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 10.08.2016
-  Time: 18:26
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,39 +16,39 @@
 <body>
 
 <header>
-    <jsp:include page="client-header.jsp"/>
+   <c:import url="client-header.jsp"/>
 </header>
 
-<h2 class="text-center">Room Reservation</h2>
+<h2 class="text-center"><fmt:message key="form.client.booking.title"/></h2>
 
 <form class="border-forms" action="../../controller" method="post">
     <input type="hidden" name="command" value="booking"/>
     <c:if test="${empty clientId}">
         <div class="alert alert-danger">
-            <strong>Danger!</strong> You should first fill personal info
+            <fmt:message key="message.noinfo"/>
         </div>
         <c:set var="error" value="true"/>
     </c:if>
     <c:if test="${ban == true}">
         <div class="alert alert-danger">
-            <strong>Danger!</strong> You have been banned
+            <fmt:message key="message.ban"/>
         </div>
         <c:set var="error" value="true"/>
     </c:if>
-    <c:if test="${not empty errMsg}">
+    <c:if test="${errMsg==true}">
         <div class="alert alert-danger">
-            <strong>Danger!</strong> <c:out value="${errMsg}"/>
+            <fmt:message key="message.wrong.dates"/>
         </div>
     </c:if>
 
     <div class="form-group">
-        <h4>Dates</h4>
+        <h4><fmt:message key="form.booking.dates"/></h4>
 
         <div>
-            <label for="start">From</label>
+            <label for="start"><fmt:message key="form.booking.label.start"/></label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="start" id="start" class="form-control" title="yyyy-MM-dd OR dd/MM/yyyy"
+                <input type="text" name="start_date" id="start" class="form-control" title="yyyy-MM-dd OR dd/MM/yyyy"
                        pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
@@ -61,10 +57,10 @@
             </div>
         </div>
         <div>
-            <label for="end">To</label>
+            <label for="end"><fmt:message key="form.booking.label.end"/></label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="end" id="end" class="form-control"
+                <input type="text" name="end_date" id="end" class="form-control"
                        title="yyyy-MM-dd OR dd/MM/yyyy" pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
@@ -74,11 +70,11 @@
         </div>
     </div>
     <div class="form-group">
-        <h4>Room info</h4>
+        <h4><fmt:message key="form.booking.roomInfo"/></h4>
 
         <div>
-            <label for="quantity">Quantity</label>
-            <select class="form-control" name="number" id="quantity">
+            <label for="quantity"><fmt:message key="request.info.quantity"/></label>
+            <select class="form-control" name="persons_count" id="quantity">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -87,13 +83,13 @@
             </select>
         </div>
         <div>
-            <label for="room-type">Room type</label>
-            <select class="form-control" name="type" id="room-type">
-                <option>Single</option>
-                <option>Double</option>
-                <option>Twin</option>
-                <option>Lux</option>
-                <option>Family</option>
+            <label for="room-type"><fmt:message key="request.info.type"/></label>
+            <select class="form-control" name="room_type" id="room-type">
+                <option>SINGLE</option>
+                <option>DOUBLE</option>
+                <option>TWIN</option>
+                <option>LUX</option>
+                <option>FAMILY</option>
             </select>
         </div>
 
@@ -101,16 +97,14 @@
 
     <div class="button-group">
         <c:if test="${error != true}">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary"><fmt:message key="button.book"/></button>
         </c:if>
-        <a class="btn btn-default" href="javascript:document.booking_list.submit()">Cancel</a>
+        <a class="btn btn-default" href="javascript:document.booking_list.submit()">
+            <fmt:message key="button.cancel"/>
+        </a>
     </div>
 </form>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="../../app/assets/js/bootstrap.min.js"></script>
-<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
+<c:import url="../scripts-import.jsp"/>
 </body>
 </html>

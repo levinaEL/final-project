@@ -1,23 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 06.08.2016
-  Time: 13:13
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/WEB-INF/tags/custom-tag.tld" prefix="fn" %>
 <%@ page isELIgnored="false" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Client page prototype</title>
     <link href="../../app/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../../app/assets/css/style.css" rel="stylesheet" type="text/css">
-
 </head>
 <body>
 <header>
@@ -55,19 +49,19 @@
             </ul>
         </nav>
     </div>
-    <h3>Booking list</h3>
+    <h3><fmt:message key="home.client.title"/></h3>
     <c:set var="koef" value="0.3"/>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>#</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Quantity</th>
-            <th>Room Type</th>
-            <th>Status</th>
-            <th>Cost $</th>
-            <th>Action</th>
+            <th><fmt:message key="request.info.startDate"/></th>
+            <th><fmt:message key="request.info.endDate"/></th>
+            <th><fmt:message key="request.info.quantity"/></th>
+            <th><fmt:message key="request.info.type"/></th>
+            <th><fmt:message key="request.info.status"/></th>
+            <th><fmt:message key="request.info.cost"/></th>
+            <th><fmt:message key="action"/></th>
         </tr>
         </thead>
         <tbody>
@@ -81,7 +75,7 @@
                 <td>
                     <c:if test="${sorry == true}">
                         <div class="alert alert-info alert-dismissible" role="alert">
-                            Sorry! There no available rooms.
+                            <fmt:message key="message.noroom"/>
                         </div>
                     </c:if>
                     <c:out value="${request.statusRequest}"/>
@@ -90,15 +84,16 @@
                     <c:out value="${cost[loop.index]}"/>
                     <c:if test="${fn:contains(clientsForSale, clientId) and  not empty cost[loop.index]}">
                         <div class="alert alert-success alert-dismissible" role="alert">
-                            You get the sale <c:out value="${koef*cost[loop.index]}"/>
+                            <fmt:message key="message.sale"/>
+                            <c:out value="${koef*cost[loop.index]}"/>
                         </div>
                     </c:if>
                 </td>
                 <td>
                     <form name="booking" action="../../controller">
                         <input type="hidden" name="command" value="cancel_request">
-                        <input type="hidden" name="requestId" value="${request.requestID}">
-                        <button type="submit" class="btn-link" title="cancel">
+                        <input type="hidden" name="req_id" value="${request.requestID}">
+                        <button type="submit" class="btn-link" title="<fmt:message key="button.cancel"/>">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </form>
@@ -108,5 +103,6 @@
         </tbody>
     </table>
 </main>
+<c:import url="../scripts-import.jsp" />
 </body>
 </html>

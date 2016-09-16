@@ -1,18 +1,12 @@
+<%@ page contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 29.08.2016
-  Time: 16:32
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html>
-<head>
-    <title>admin header</title>
-</head>
-<body>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
+
 <form name="clients" action="../../controller">
     <input type="hidden" name="command" value="clients_list"/>
 </form>
@@ -30,7 +24,7 @@
 </form>
 <form name="get_request" method=post action="../../controller">
     <input type="hidden" name="book" value="create_book"/>
-    <input type="hidden" name="clientId" value="${client.id}"/>
+    <input type="hidden" name="client_id" value="${client.id}"/>
     <input type="hidden" name="command" value="get_request"/>
 </form>
 
@@ -54,36 +48,62 @@
             <ul class="nav navbar-nav">
                 <li>
                     <a href="javascript:document.clients.submit()">
-                        Clients List
+                        <fmt:message key="header.action.clientsList"/>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:document.requests.submit()">
-                        History Of Booking
+                        <fmt:message key="header.action.archive"/>
                     </a>
                 </li>
             </ul>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="new-user" href="jsp/common/personal-info.jsp">New Client</a></li>
+            <form method="post" name="langForm" action="../../controller?command=CHANGE_LANGUAGE">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="new-user" href="jsp/common/personal-info.jsp">
+                            <fmt:message key="header.action.newClient"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:document.logout.submit()">
+                            <fmt:message key="header.action.logout"/>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="javascript:document.logout.submit()">
-                        Logout
-                    </a>
-                </li>
-                <li class="dropdown language-selector">
+                    <li class="dropdown language-selector">
+                        <input type="hidden" name="language" value="${language}" data-lang-target/>
+                        <a href="javascript:"
+                           class="dropdown-toggle"
+                           data-toggle="dropdown"
+                           data-close-others="true">
+                            <c:if test="${language == \"ru\"}">
+                                <img src="../../app/assets/images/russian.png" alt=" "/>
+                            </c:if>
+                            <c:if test="${language == \"en\"}">
+                                <img src="../../app/assets/images/english.png" alt=" "/>
+                            </c:if>
+                            <span><fmt:message key="language.key"/></span>
+                        </a>
 
-                    <c:import url="../common/language-picker.jsp"/>
-                </li>
-            </ul>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="javascript:" data-lang="ru">
+                                    <img src="../../app/assets/images/russian.png" alt=" "/>
+                                    <span>Русский</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:" data-lang="en">
+                                    <img src="../../app/assets/images/english.png" alt=" "/>
+                                    <span>English</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
         </div>
     </div>
 </nav>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="../../app/assets/js/bootstrap.min.js"></script>
-<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
 
-</body>
-</html>

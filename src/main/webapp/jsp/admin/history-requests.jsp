@@ -1,15 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 20.08.2016
-  Time: 16:47
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/tags/custom-tag.tld" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html>
 <head>
     <title>History Of Booking</title>
@@ -52,19 +48,19 @@
         </nav>
     </div>
     <div class="container-fluid">
-        <h3>History Of Booking</h3>
+        <h3><fmt:message key="header.action.archive"/></h3>
 
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Last Name</th>
-                <th>Time Of Booking</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Quantity</th>
-                <th>Room Type</th>
-                <th>Status</th>
+                <th><fmt:message key="client.info.lastName"/></th>
+                <th><fmt:message key="request.info.time"/></th>
+                <th><fmt:message key="request.info.startDate"/></th>
+                <th><fmt:message key="request.info.endDate"/></th>
+                <th><fmt:message key="request.info.quantity"/></th>
+                <th><fmt:message key="request.info.type"/></th>
+                <th><fmt:message key="request.info.status"/></th>
             </tr>
             </thead>
             <tbody>
@@ -85,7 +81,6 @@
         </table>
     </div>
 </main>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<c:import url="../scripts-import.jsp" />
 </body>
 </html>

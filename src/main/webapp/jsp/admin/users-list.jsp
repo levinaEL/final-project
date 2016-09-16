@@ -1,15 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 09.08.2016
-  Time: 23:10
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/tags/custom-tag.tld" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -56,21 +52,21 @@
     </div>
 
     <div class="container-fluid">
-        <h3>Clients List</h3>
+        <h3><fmt:message key="header.action.clientsList"/></h3>
 
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Last Name</th>
-                <th>First Name</th>
+                <th><fmt:message key="client.info.lastName"/></th>
+                <th><fmt:message key="client.info.firstName"/></th>
                 <th>Email</th>
-                <th>Address</th>
-                <th>Phone Number</th>
-                <th>Passport Series</th>
-                <th>PassportNumber</th>
-                <th>Count Requests</th>
-                <th align="center">Action</th>
+                <th><fmt:message key="client.info.address"/></th>
+                <th><fmt:message key="client.info.phone"/></th>
+                <th><fmt:message key="client.info.passport.series"/></th>
+                <th><fmt:message key="client.info.passport.number"/></th>
+                <th><fmt:message key="client.info.count"/></th>
+                <th align="center"><fmt:message key="action"/></th>
             </tr>
             </thead>
             <tbody>
@@ -78,7 +74,7 @@
 
                 <tr>
                     <td><span>
-                        <a href="controller?command=get_client&clientId=${client.id}">${client.id}</a>
+                        <a href="controller?command=get_client&client_id=${client.id}">${client.id}</a>
                          <c:if test="${client.ban == true}">
                              <span class="text-danger">BAN!</span>
                          </c:if>
@@ -93,17 +89,18 @@
                     <td><c:out value="${clientCountMap[client.id]}"/>
                     </td>
                     <td>
-                        <a href="/jsp/admin/admin-booking.jsp?clientId=${client.id}" class="btn-link" title="Booking">
+                        <a href="/jsp/admin/admin-booking.jsp?client_id=${client.id}" class="btn-link"
+                           title="<fmt:message key="button.book"/>">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                         <form class="pull-left" name="ban" method=post action="../../controller">
                             <input type="hidden" name="command" value="ban"/>
-                            <input type="hidden" name="clientId" value="${client.id}"/>
-                            <button type="submit" class="btn-link" title="BAN">
+                            <input type="hidden" name="client_id" value="${client.id}"/>
+                            <button type="submit" class="btn-link" title="<fmt:message key="action.ban"/>">
                                 <span class="glyphicon glyphicon-ban-circle"></span>
                             </button>
                         </form>
-                        <a class="btn-link pull-right" title="Make Sale" href="javascript:document.clients.submit()"
+                        <a class="btn-link pull-right" title="<fmt:message key="action.sale"/>" href="javascript:document.clients.submit()"
                            onclick="${fn:add(clientsForSale, client.id)}" data-toggle="modal" data-target="#saleModal">
                             <span class="glyphicon glyphicon-piggy-bank"></span>
                         </a>
@@ -121,10 +118,10 @@
         <div class="modal-content">
             <div class="modal-header modal-background-color">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Information</h4>
+                <h4 class="modal-title"><fmt:message key="message.title"/></h4>
             </div>
             <div class="modal-body">
-                <p>Client get the sale!</p>
+                <p><fmt:message key="message.info.sale"/></p>
             </div>
         </div>
     </div>
@@ -136,16 +133,15 @@
         <div class="modal-content">
             <div class="modal-header modal-background-color">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Information</h4>
+                <h4 class="modal-title"><fmt:message key="message.title"/></h4>
             </div>
             <div class="modal-body">
-                <p>The client received a ban!</p>
+                <p><fmt:message key="message.info.ban"/></p>
             </div>
         </div>
     </div>
 </div>
 
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<c:import url="../scripts-import.jsp" />
 </html>

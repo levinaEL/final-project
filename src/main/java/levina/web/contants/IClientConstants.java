@@ -4,16 +4,17 @@ package levina.web.contants;
  * Created by MY on 08.09.2016.
  */
 public interface IClientConstants {
-    String CLIENT_ID = "clientId";
-    String FIRST_NAME = "fname";
-    String PATRONYMIC = "pname";
-    String LAST_NAME = "lname";
+    String CLIENT_ID = "client_id";
+    String USER_ID = "user_id";
+    String FIRST_NAME = "first_name";
+    String PATRONYMIC = "patronymic_name";
+    String LAST_NAME = "last_name";
     String BIRTHDAY = "birthday";
-    String PASSPORT_SERIES = "pSeries";
-    String PASSPORT_NUMBER = "pNumber";
-    String PERSONAL_NUMBER = "prslNumber";
+    String PASSPORT_SERIES = "pasp_series";
+    String PASSPORT_NUMBER = "pasp_number";
+    String PERSONAL_NUMBER = "pasp_prsl_number";
     String EMAIL = "email";
     String ADDRESS = "address";
-    String PHONE = "phone";
-    String BAN = "ban";
+    String PHONE = "telephone";
+    String BAN = "is_banned";
 }

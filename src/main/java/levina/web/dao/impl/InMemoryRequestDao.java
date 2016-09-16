@@ -1,11 +1,13 @@
 package levina.web.dao.impl;
 
-import org.apache.log4j.Logger;
-import levina.web.dao.database.DBConnectionPool;
+import levina.web.contants.IClientConstants;
+import levina.web.contants.IRequestConstants;
 import levina.web.dao.RequestDao;
+import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Request;
 import levina.web.model.enums.RoomType;
 import levina.web.model.enums.StatusRequest;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,15 +39,15 @@ public class InMemoryRequestDao implements RequestDao {
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                request.setClientID(rs.getLong("client_id"));
-                request.setRequestID(rs.getLong("req_id"));
-                request.setRoomID(rs.getLong("room_id"));
-                request.setRoomType(RoomType.valueOf(rs.getString("room_type").toUpperCase()));
-                request.setRequestDate(rs.getTimestamp("req_date"));
-                request.setStartDate(rs.getDate("start_date"));
-                request.setEndDate(rs.getDate("end_date"));
-                request.setPersonsCount(rs.getInt("persons_count"));
-                request.setStatusRequest(StatusRequest.valueOf(rs.getString("status").toUpperCase()));
+                request.setClientID(rs.getLong(IClientConstants.CLIENT_ID));
+                request.setRequestID(rs.getLong(IRequestConstants.REQUEST_ID));
+                request.setRoomID(rs.getLong(IRequestConstants.ROOM));
+                request.setRoomType(RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase()));
+                request.setRequestDate(rs.getTimestamp(IRequestConstants.REQUEST_DATE));
+                request.setStartDate(rs.getDate(IRequestConstants.START_DATE));
+                request.setEndDate(rs.getDate(IRequestConstants.END_DATE));
+                request.setPersonsCount(rs.getInt(IRequestConstants.PERSONS_COUNT));
+                request.setStatusRequest(StatusRequest.valueOf(rs.getString(IRequestConstants.STATUS).toUpperCase()));
             }
             preparedStatement.close();
             rs.close();
@@ -70,15 +72,15 @@ public class InMemoryRequestDao implements RequestDao {
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                request.setClientID(rs.getLong("client_id"));
-                request.setRequestID(rs.getLong("req_id"));
-                request.setRoomID(rs.getLong("room_id"));
-                request.setRoomType(RoomType.valueOf(rs.getString("room_type").toUpperCase()));
-                request.setRequestDate(rs.getTimestamp("req_date"));
-                request.setStartDate(rs.getDate("start_date"));
-                request.setEndDate(rs.getDate("end_date"));
-                request.setPersonsCount(rs.getInt("persons_count"));
-                request.setStatusRequest(StatusRequest.valueOf(rs.getString("status").toUpperCase()));
+                request.setClientID(rs.getLong(IClientConstants.CLIENT_ID));
+                request.setRequestID(rs.getLong(IRequestConstants.REQUEST_ID));
+                request.setRoomID(rs.getLong(IRequestConstants.ROOM));
+                request.setRoomType(RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase()));
+                request.setRequestDate(rs.getTimestamp(IRequestConstants.REQUEST_DATE));
+                request.setStartDate(rs.getDate(IRequestConstants.START_DATE));
+                request.setEndDate(rs.getDate(IRequestConstants.END_DATE));
+                request.setPersonsCount(rs.getInt(IRequestConstants.PERSONS_COUNT));
+                request.setStatusRequest(StatusRequest.valueOf(rs.getString(IRequestConstants.STATUS).toUpperCase()));
             }
             preparedStatement.close();
             rs.close();
@@ -193,18 +195,18 @@ public class InMemoryRequestDao implements RequestDao {
             preparedStatement.setString(1,String.valueOf(StatusRequest.PENDING) );
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long id = rs.getLong("req_id");
-                Long clientID = rs.getLong("client_id");
-                Long roomId = rs.getLong("room_id");
+                Long id = rs.getLong(IRequestConstants.REQUEST_ID);
+                Long clientID = rs.getLong(IClientConstants.CLIENT_ID);
+                Long roomId = rs.getLong(IRequestConstants.ROOM);
                 if(rs.wasNull()){
                     roomId = null;
                 }
-                RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
-                Timestamp reqDate = rs.getTimestamp("req_date");
-                Date start = rs.getDate("start_date");
-                Date end = rs.getDate("end_date");
-                int persons = rs.getInt("persons_count");
-                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
+                RoomType type = RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase());
+                Timestamp reqDate = rs.getTimestamp(IRequestConstants.REQUEST_DATE);
+                Date start = rs.getDate(IRequestConstants.START_DATE);
+                Date end = rs.getDate(IRequestConstants.END_DATE);
+                int persons = rs.getInt(IRequestConstants.PERSONS_COUNT);
+                StatusRequest status = StatusRequest.valueOf(rs.getString(IRequestConstants.STATUS).toUpperCase());
 
                 Request request = new Request();
                 request.setRequestID(id);
@@ -255,20 +257,19 @@ public class InMemoryRequestDao implements RequestDao {
             rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
-                Long reqID = rs.getLong("req_id");
-                Long roomId = rs.getLong("room_id");
+                Long reqId = rs.getLong(IRequestConstants.REQUEST_ID);
+                Long roomId = rs.getLong(IRequestConstants.ROOM);
                 if(rs.wasNull()){
                     roomId = null;
                 }
-                RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
-                Timestamp reqDate = rs.getTimestamp("req_date");
-                Date start = rs.getDate("start_date");
-                Date end = rs.getDate("end_date");
-                int persons = rs.getInt("persons_count");
-                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
-
+                RoomType type = RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase());
+                Timestamp reqDate = rs.getTimestamp(IRequestConstants.REQUEST_DATE);
+                Date start = rs.getDate(IRequestConstants.START_DATE);
+                Date end = rs.getDate(IRequestConstants.END_DATE);
+                int persons = rs.getInt(IRequestConstants.PERSONS_COUNT);
+                StatusRequest status = StatusRequest.valueOf(rs.getString(IRequestConstants.STATUS).toUpperCase());
                 Request request = new Request();
-                request.setRequestID(reqID);
+                request.setRequestID(reqId);
                 request.setRoomID(roomId);
                 request.setClientID(clientID);
                 request.setRoomType(type);
@@ -311,18 +312,18 @@ public class InMemoryRequestDao implements RequestDao {
 
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long id = Long.parseLong(rs.getString("req_id"));
-                Long roomId = rs.getLong("room_id");
-                if (rs.wasNull()) {
+                Long id = rs.getLong(IRequestConstants.REQUEST_ID);
+                Long clientID = rs.getLong(IClientConstants.CLIENT_ID);
+                Long roomId = rs.getLong(IRequestConstants.ROOM);
+                if(rs.wasNull()){
                     roomId = null;
                 }
-                Long clientID = Long.parseLong(rs.getString("client_id"));
-                RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
-                Timestamp reqDate = rs.getTimestamp("req_date");
-                Date start = rs.getDate("start_date");
-                Date end = rs.getDate("end_date");
-                int persons = rs.getInt("persons_count");
-                StatusRequest status = StatusRequest.valueOf(rs.getString("status").toUpperCase());
+                RoomType type = RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase());
+                Timestamp reqDate = rs.getTimestamp(IRequestConstants.REQUEST_DATE);
+                Date start = rs.getDate(IRequestConstants.START_DATE);
+                Date end = rs.getDate(IRequestConstants.END_DATE);
+                int persons = rs.getInt(IRequestConstants.PERSONS_COUNT);
+                StatusRequest status = StatusRequest.valueOf(rs.getString(IRequestConstants.STATUS).toUpperCase());
 
                 Request request = new Request();
                 request.setRequestID(id);
@@ -372,7 +373,7 @@ public class InMemoryRequestDao implements RequestDao {
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
-                Long clientId = rs.getLong("client_id");
+                Long clientId = rs.getLong(IClientConstants.CLIENT_ID);
                 int count = rs.getInt("req_count");
 
                 reqCount.put(clientId, count);

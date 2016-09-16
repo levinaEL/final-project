@@ -47,7 +47,7 @@ public class BookingCommand implements ActionCommand {
 
         String startDateStr = request.getParameter(IRequestConstants.START_DATE);
         String endDateStr = request.getParameter(IRequestConstants.END_DATE);
-        int numberSeats = Integer.parseInt(request.getParameter(IRequestConstants.NUMBER_SEATS));
+        int numberSeats = Integer.parseInt(request.getParameter(IRequestConstants.PERSONS_COUNT));
         RoomType type = RoomType.valueOf(request.getParameter(IRequestConstants.TYPE).toUpperCase());
 
         try {
@@ -74,7 +74,7 @@ public class BookingCommand implements ActionCommand {
         } else {
             if (role) {
                 // if admin create request for room
-                if (request.getParameter(IRequestConstants.REQUEST_ID).equals("")) {
+                if ("".equals(request.getParameter(IRequestConstants.REQUEST_ID))) {
                     if (!request.getParameter(IClientConstants.CLIENT_ID).equals("")) {
                         clientID = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
                     }

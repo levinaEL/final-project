@@ -1,5 +1,6 @@
 package levina.web.dao.impl;
 
+import levina.web.contants.IRequestConstants;
 import levina.web.dao.RoomDao;
 import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Room;
@@ -35,10 +36,10 @@ public class InMemoryRoomDao implements RoomDao {
             preparedStatement.setLong(1, roomId);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long id = rs.getLong("room_id");
-                int numberSeats = rs.getInt("numb_seats");
-                double cost = rs.getDouble("cost");
-                RoomType roomType = RoomType.valueOf(rs.getString("room_type").toUpperCase());
+                Long id = rs.getLong(IRequestConstants.ROOM);
+                int numberSeats = rs.getInt(IRequestConstants.NUMBER_SEATS);
+                double cost = rs.getDouble(IRequestConstants.COST);
+                RoomType roomType = RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase());
 
                 room = new Room();
 
@@ -71,8 +72,8 @@ public class InMemoryRoomDao implements RoomDao {
             preparedStatement.setString(1, String.valueOf(roomType).toUpperCase());
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Long id = rs.getLong("room_id");
-                int numberSeats = rs.getInt("numb_seats");
+                Long id = rs.getLong(IRequestConstants.ROOM);
+                int numberSeats = rs.getInt(IRequestConstants.NUMBER_SEATS);
 
                 room = new Room();
 
@@ -135,13 +136,13 @@ public class InMemoryRoomDao implements RoomDao {
             rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
-                Long roomID = rs.getLong("room_id");
-                double cost = rs.getDouble("cost");
-                int numberSeats = rs.getInt("numb_seats");
-                RoomType type = RoomType.valueOf(rs.getString("room_type").toUpperCase());
+                Long id = rs.getLong(IRequestConstants.ROOM);
+                int numberSeats = rs.getInt(IRequestConstants.NUMBER_SEATS);
+                double cost = rs.getDouble(IRequestConstants.COST);
+                RoomType type = RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase());
 
                 Room room = new Room();
-                room.setRoomID(roomID);
+                room.setRoomID(id);
                 room.setCost(cost);
                 room.setRoomType(type);
                 room.setNumberSeats(numberSeats);
@@ -173,9 +174,9 @@ public class InMemoryRoomDao implements RoomDao {
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
-                Long id = rs.getLong("room_id");
-                RoomType roomType = RoomType.valueOf(rs.getString("room_type").toUpperCase());
-                int numberSeats = rs.getInt("numb_seats");
+                Long id = rs.getLong(IRequestConstants.ROOM);
+                int numberSeats = rs.getInt(IRequestConstants.NUMBER_SEATS);
+                RoomType roomType = RoomType.valueOf(rs.getString(IRequestConstants.TYPE).toUpperCase());
 
                 Room room = new Room();
                 room.setRoomID(id);

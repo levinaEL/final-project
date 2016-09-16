@@ -4,7 +4,6 @@ import levina.web.contants.IClientConstants;
 import levina.web.contants.IRequestConstants;
 import levina.web.contants.IUserConstants;
 import levina.web.utils.ConfigurationManager;
-import levina.web.utils.MessageManager;
 import levina.web.utils.Validator;
 
 import javax.servlet.*;
@@ -48,23 +47,23 @@ public class ValidationFilter implements Filter {
             String path = ConfigurationManager.getProperty("path.action.get-client");
 
             if (!isValidNames) {
-                request.setAttribute("errName", MessageManager.getProperty("message.wrong.name"));
+                request.setAttribute("errName", true);
                 RequestDispatcher dispatch = request.getRequestDispatcher(path);
                 dispatch.forward(request, response);
             } else if (!isValidPassportInfo) {
-                request.setAttribute("errPassport", MessageManager.getProperty("message.wrong.passport-info"));
+                request.setAttribute("errPassport", true);
                 RequestDispatcher dispatch = request.getRequestDispatcher(path);
                 dispatch.forward(request, response);
             } else if (!isValidBirthday) {
-                request.setAttribute("errBirth", MessageManager.getProperty("message.wrong.birthday"));
+                request.setAttribute("errBirth", true);
                 RequestDispatcher dispatch = request.getRequestDispatcher(path);
                 dispatch.forward(request, response);
             } else if (!isValidPhone) {
-                request.setAttribute("errPhone", MessageManager.getProperty("message.wrong.phone"));
+                request.setAttribute("errPhone", true);
                 RequestDispatcher dispatch = request.getRequestDispatcher(path);
                 dispatch.forward(request, response);
             } else if (!isValidEmail) {
-                request.setAttribute("errEmail", MessageManager.getProperty("message.wrong.email"));
+                request.setAttribute("errEmail", true);
                 RequestDispatcher dispatch = request.getRequestDispatcher(path);
                 dispatch.forward(request, response);
             } else {
@@ -81,11 +80,11 @@ public class ValidationFilter implements Filter {
             String path = ConfigurationManager.getProperty("path.page.registration");
 
             if (!isValidLogin) {
-                request.setAttribute("errLogin", MessageManager.getProperty("message.wrong.login"));
+                request.setAttribute("errLogin", true);
                 RequestDispatcher dispatch = request.getRequestDispatcher(path);
                 dispatch.forward(request, response);
             } else if (!isValidPassword) {
-                request.setAttribute("errPass", MessageManager.getProperty("message.wrong.password"));
+                request.setAttribute("errPass", true);
                 RequestDispatcher dispatch = request.getRequestDispatcher(path);
                 dispatch.forward(request, response);
             } else {
@@ -99,7 +98,7 @@ public class ValidationFilter implements Filter {
                     && Validator.validateDatesFormat(endDate)
                     && Validator.checkDates(startDate, endDate);
             if (!isValidStartDate) {
-                request.setAttribute("errMsg", MessageManager.getProperty("message.wrong.dates"));
+                request.setAttribute("errMsg", true);
                 RequestDispatcher dispatch =
                         request.getRequestDispatcher(ConfigurationManager.getProperty("path.action.get-request"));
                 dispatch.forward(request, response);

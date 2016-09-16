@@ -1,5 +1,6 @@
 package levina.web.service.commands.user;
 
+import levina.web.contants.IUserConstants;
 import levina.web.model.User;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.UserService;
@@ -19,8 +20,8 @@ public class LoginCommand implements ActionCommand {
         String page;
         HttpSession session = request.getSession(true);
         UserService userService = new UserService();
-        String login = request.getParameter("u_login");
-        String password = request.getParameter("u_password");
+        String login = request.getParameter(IUserConstants.LOGIN);
+        String password = request.getParameter(IUserConstants.PASSWORD);
         User user = userService.getUserByLogin(login);
         boolean role;
         Long id;
@@ -31,7 +32,7 @@ public class LoginCommand implements ActionCommand {
             role = user.isAdmin();
             id = user.getId();
             if (userService.checkPassword(login, password)) {
-                session.setAttribute("userID", id);
+                session.setAttribute("user_id", id);
                 session.setAttribute("role", role);
 //                StringBuffer requestURL = request.getRequestURL();
 //                if (request.getQueryString() != null) {

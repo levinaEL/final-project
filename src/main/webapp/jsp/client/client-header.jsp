@@ -1,20 +1,12 @@
+<%@ page contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 29.08.2016
-  Time: 16:51
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="en_US"/>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="text"/>
-<html>
-<head>
-    <title>client header</title>
-</head>
-<body>
+
 <form name="logout" method=post action="../../controller">
     <input type="hidden" name="command" value="logout"/>
 </form>
@@ -25,7 +17,7 @@
 
 <form name="get_client" method="get" action="../../controller">
     <input type="hidden" name="command" value="get_client"/>
-    <input type="hidden" name="clientId" value=${client.id}>
+    <input type="hidden" name="client_id" value=${client.id}>
 </form>
 
 <nav class="navbar navbar-default">
@@ -49,48 +41,51 @@
                     </a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="javascript:document.get_client.submit()">
-                        <fmt:message key="header.action.personal.info"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:document.logout.submit()">
-                        <fmt:message key="header.action.logout"/>
-                    </a>
-                </li>
+            <form method="post" name="langForm" action="../../controller?command=CHANGE_LANGUAGE">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="javascript:document.get_client.submit()">
+                            <fmt:message key="header.action.personalInfo"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:document.logout.submit()">
+                            <fmt:message key="header.action.logout"/>
+                        </a>
+                    </li>
 
-                <li class="dropdown language-selector">
+                    <li class="dropdown language-selector">
+                        <input type="hidden" name="language" value="${language}" data-lang-target/>
+                        <a href="javascript:"
+                           class="dropdown-toggle"
+                           data-toggle="dropdown"
+                           data-close-others="true">
+                            <c:if test="${language == \"ru\"}">
+                                <img src="../../app/assets/images/russian.png" alt=" "/>
+                            </c:if>
+                            <c:if test="${language == \"en\"}">
+                                <img src="../../app/assets/images/english.png" alt=" "/>
+                            </c:if>
+                            <span><fmt:message key="language.key"/></span>
+                        </a>
 
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
-                        <img src="../../app/assets/images/united_states_of_america.png"/>
-                        <span>English</span>
-                    </a>
-
-                    <ul class="dropdown-menu pull-right">
-                        <li>
-                            <a href="#">
-                                <img src="../../app/assets/images/icon_flag_russian.gif"/>
-                                <span>Russian</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="../../app/assets/images/united_states_of_america.png"/>
-                                <span>English</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="javascript:" data-lang="ru">
+                                    <img src="../../app/assets/images/russian.png" alt=" "/>
+                                    <span>Русский</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:" data-lang="en">
+                                    <img src="../../app/assets/images/english.png" alt=" "/>
+                                    <span>English</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
         </div>
     </div>
 </nav>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="../../app/assets/js/bootstrap.min.js"></script>
-<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
-
-</body>
-</html>

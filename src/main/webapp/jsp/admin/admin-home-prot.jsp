@@ -1,14 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 07.08.2016
-  Time: 17:33
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="/WEB-INF/tags/custom-tag.tld" prefix="fn" %>
 <%@ page isELIgnored="false" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -53,19 +50,19 @@
         </nav>
     </div>
     <div class="container-fluid">
-        <h3>Booking list</h3>
+        <h3><fmt:message key="home.client.title"/></h3>
 
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Last Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Quantity</th>
-                <th>Room Type</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th><fmt:message key="client.info.lastName"/></th>
+                <th><fmt:message key="request.info.startDate"/></th>
+                <th><fmt:message key="request.info.endDate"/></th>
+                <th><fmt:message key="request.info.quantity"/></th>
+                <th><fmt:message key="request.info.type"/></th>
+                <th><fmt:message key="request.info.status"/></th>
+                <th><fmt:message key="action"/></th>
             </tr>
             </thead>
             <tbody>
@@ -81,8 +78,8 @@
                     <td>
                         <form name="booking" action="../../controller">
                             <input type="hidden" name="command" value="get_request">
-                            <input type="hidden" name="requestId" value="${request.requestID}">
-                            <button type="submit" class="btn-link" title="booking">
+                            <input type="hidden" name="req_id" value="${request.requestID}">
+                            <button type="submit" class="btn-link" title="<fmt:message key="button.book"/>">
                                 <span class="glyphicon glyphicon-check"></span>
                             </button>
                         </form>
@@ -93,9 +90,6 @@
         </table>
     </div>
 </main>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="../../app/assets/js/bootstrap.min.js"></script>
-<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
+<c:import url="../scripts-import.jsp" />
 </body>
 </html>

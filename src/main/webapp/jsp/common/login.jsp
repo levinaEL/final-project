@@ -1,13 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html>
 <head>
     <title>Login</title>
     <link href="../../app/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../../app/assets/css/style.css" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body class="login-background">
 <main class="container">
@@ -30,8 +31,8 @@
 
                     <input type="hidden" name="command" value="login"/>
 
-                    <input name="u_login" type="text" class="form-control" placeholder="Login" required autofocus/>
-                    <input name="u_password" type="password" class="form-control" placeholder="Password" required/>
+                    <input name="user_login" type="text" class="form-control" placeholder="Login" required autofocus/>
+                    <input name="user_password" type="password" class="form-control" placeholder="Password" required/>
 
                     <button class="btn btn-lg btn-primary btn-block" type="submit">
                         Sign in
@@ -53,10 +54,12 @@
             <h4 class="modal-title text-center">REGISTRATION</h4>
         </div>
         <div class="modal-body">
-           <jsp:include page="registration.jsp"/>
+          <c:import url="registration.jsp"/>
         </div>
     </div>
 </div>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<c:import url="../scripts-import.jsp"/>
 </body>
 </html>
 

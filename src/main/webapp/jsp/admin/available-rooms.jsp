@@ -1,14 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 20.08.2016
-  Time: 13:34
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,15 +19,15 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Type Room</th>
-            <th>Number Seats</th>
-            <th>Cost</th>
+            <th><fmt:message key="request.info.type"/></th>
+            <th><fmt:message key="request.info.quantity"/></th>
+            <th><fmt:message key="request.info.cost"/></th>
         </tr>
         </thead>
         <tbody>
         <c:if test="${roomNotFound==true}">
             <div class="alert alert-danger">
-                <strong>Danger!</strong> No available rooms
+                <fmt:message key="message.noroom"/>
             </div>
             <c:set var="error" value="true"/>
         </c:if>
@@ -46,7 +42,7 @@
         </tbody>
     </table>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<c:import url="../scripts-import.jsp"/>
 </body>
 </html>
+

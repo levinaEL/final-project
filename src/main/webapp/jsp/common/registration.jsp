@@ -1,13 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: MY
-  Date: 07.08.2016
-  Time: 18:45
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="text"/>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -20,28 +15,28 @@
     <input type="hidden" name="command" value="register"/>
 
     <div class="form-group">
-        <label for="login" class="col-sm-3 control-label">Login</label>
+        <label for="login" class="col-sm-3 control-label"><fmt:message key="login.label"/></label>
 
         <div class="col-sm-9">
             <input class="form-control"
-                   type="text" id="login" name="login" placeholder="Login" required
+                   type="text" id="login" name="user_login" placeholder="Login" required
                    pattern="\w+"
                    title="Username must contain only letters, numbers and underscores">
-            <c:if test="${not empty errLogin}">
-                <strong class="text-danger text-center"><c:out value="${errLogin}"/></strong>
+            <c:if test="${errLogin==true}">
+                <strong class="text-danger text-center"><fmt:message key="message.wrong.login"/></strong>
             </c:if>
         </div>
     </div>
     <div class="form-group">
-        <label for="password" class="col-sm-3 control-label">Password</label>
+        <label for="password" class="col-sm-3 control-label"><fmt:message key="password.label"/></label>
 
         <div class="col-sm-9">
             <input class="form-control"
-                   type="password" id="password" name="password" placeholder="Password" required
+                   type="password" id="password" name="user_password" placeholder="Password" required
                    pattern="(?=.*\d)(?=.*[a-z]).{6,}"
                    title="Password must contain at least 6 characters, including UPPER/lower case and numbers">
-            <c:if test="${not empty errPass}">
-                <strong class="text-danger text-center"><c:out value="${errPass}"/></strong>
+            <c:if test="${errPass==true}">
+                <strong class="text-danger text-center"> <fmt:message key="message.wrong.password"/></strong>
             </c:if>
         </div>
     </div>
@@ -50,12 +45,12 @@
         <div class="col-sm-9 col-sm-offset-3">
 
             <button type="submit" class="btn btn-primary pull-left modal-background-color">
-                Register
+                <fmt:message key="button.registration"/>
             </button>
-            <a class="btn btn-default pull-right" href="login.jsp">Cancel</a>
+            <a class="btn btn-default pull-right" href="login.jsp"> <fmt:message key="button.cancel"/></a>
         </div>
     </div>
 </form>
-
+<c:import url="../scripts-import.jsp"/>
 </body>
 </html>

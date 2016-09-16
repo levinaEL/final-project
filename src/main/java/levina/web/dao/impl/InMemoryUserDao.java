@@ -5,6 +5,7 @@ package levina.web.dao.impl;
  */
 
 
+import levina.web.contants.IUserConstants;
 import levina.web.dao.database.DBConnectionPool;
 import levina.web.dao.UserDao;
 import levina.web.model.User;
@@ -13,8 +14,6 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-
-
 
 public class InMemoryUserDao implements UserDao {
     public static Logger logger = Logger.getLogger(InMemoryUserDao.class);
@@ -37,8 +36,8 @@ public class InMemoryUserDao implements UserDao {
             preparedStatement.setLong(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                String login = rs.getString("user_login").trim();
-                String password = rs.getString("user_password").trim();
+                String login = rs.getString(IUserConstants.LOGIN).trim();
+                String password = rs.getString(IUserConstants.PASSWORD).trim();
                 boolean role = rs.getBoolean("is_admin");
 
                 user = new User();
@@ -123,15 +122,15 @@ public class InMemoryUserDao implements UserDao {
             preparedStatement.setString(1, userLogin);
             rs = preparedStatement.executeQuery();
             if (rs.next()) {
+                Long id = rs.getLong(IUserConstants.USER_ID);
+                String password = rs.getString(IUserConstants.PASSWORD).trim();
+                boolean role = rs.getBoolean("is_admin");
 
                 user = new User();
-                long id = rs.getLong("user_id");
-                String pass = rs.getString("user_password").trim();
-                boolean role = rs.getBoolean("is_admin");
 
                 user.setId(id);
                 user.setLogin(userLogin);
-                user.setPassword(pass);
+                user.setPassword(password);
                 user.setAdmin(role);
             }
             preparedStatement.close();
@@ -148,7 +147,7 @@ public class InMemoryUserDao implements UserDao {
 
     @Override
     public Collection<User> getAll() {
-        Collection<User> users = new ArrayList<User>();
+        Collection<User> users = new ArrayList<>();
         String selectTableSQL = "SELECT "
                 + "user_id, "
                 + "user_login, "
@@ -160,8 +159,8 @@ public class InMemoryUserDao implements UserDao {
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(selectTableSQL);
             while (rs.next()) {
-                Long id = Long.parseLong(rs.getString("user_id").trim());
-                String login = rs.getString("user_login").trim();
+                Long id = rs.getLong(IUserConstants.USER_ID);
+                String login = rs.getString(IUserConstants.LOGIN).trim();
 
                 User user = new User();
                 user.setId(id);
