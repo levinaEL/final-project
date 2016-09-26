@@ -44,7 +44,7 @@
     <div class="form-group">
         <div class="col-sm-9 col-sm-offset-3">
 
-            <button type="submit" class="btn btn-primary pull-left modal-background-color">
+            <button type="submit" class="btn btnp-primary pull-left modal-background-color">
                 <fmt:message key="button.registration"/>
             </button>
             <a class="btn btn-default pull-right" href="login.jsp"> <fmt:message key="button.cancel"/></a>

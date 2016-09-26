@@ -17,7 +17,7 @@ public class CancelRequestCommand implements ActionCommand {
         String page = ConfigurationManager.getProperty("path.action.booking-list");
         RequestService requestService = new RequestService();
         Long id = Long.parseLong(request.getParameter(IRequestConstants.REQUEST_ID));
-        requestService.delete(id);
+        requestService.cancel(id);
 
         return page;
     }

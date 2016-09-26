@@ -94,6 +94,9 @@ public class ValidationFilter implements Filter {
             String startDate = request.getParameter(IRequestConstants.START_DATE);
             String endDate = request.getParameter(IRequestConstants.END_DATE);
 
+            boolean b1 = Validator.validateDatesFormat(startDate);
+            boolean b2 = Validator.validateDatesFormat(endDate);
+            boolean b3 = Validator.checkDates(startDate, endDate);
             boolean isValidStartDate = Validator.validateDatesFormat(startDate)
                     && Validator.validateDatesFormat(endDate)
                     && Validator.checkDates(startDate, endDate);

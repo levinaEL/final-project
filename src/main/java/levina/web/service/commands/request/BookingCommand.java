@@ -20,6 +20,8 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by MY on 14.08.2016.
@@ -82,7 +84,7 @@ public class BookingCommand implements ActionCommand {
                         roomID = Long.parseLong(request.getParameter(IRequestConstants.ROOM));
                         status = StatusRequest.APPROVED;
                     } else {
-                        request.getServletContext().setAttribute("sorry", true);
+//                        request.getServletContext().setAttribute("sorry", true);
                         status = StatusRequest.CANCEL;
                     }
                     requestService.createNew(clientID, roomID, type, start, end, numberSeats, status);
@@ -93,8 +95,11 @@ public class BookingCommand implements ActionCommand {
                         roomID = Long.parseLong(request.getParameter(IRequestConstants.ROOM));
                         requestService.approve(requestId, roomID);
                     } else {
-                        request.getServletContext().setAttribute("sorry", true);
-                        requestService.delete(requestId);
+                        Map<Long, Boolean> reqCancel = new HashMap<>();
+                        reqCancel.put(requestId, true);
+                        request.getServletContext().setAttribute("reqCancel", reqCancel);
+                        //request.getServletContext().setAttribute("sorry", true);
+                        requestService.cancel(requestId);
                     }
                 }
 

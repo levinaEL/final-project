@@ -75,7 +75,7 @@ public class Validator {
 
     public static boolean checkDates(String start, String end) {
         SimpleDateFormat formatStandard = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
         java.util.Date dateStart = null;
         java.util.Date dateEnd = null;

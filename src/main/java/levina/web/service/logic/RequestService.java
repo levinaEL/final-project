@@ -57,7 +57,7 @@ public class RequestService {
 
     }
 
-    public void delete(Long id){
+    public void cancel(Long id){
          requestDao.cancel(id);
     }
 

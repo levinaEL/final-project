@@ -73,7 +73,7 @@
                 <td><c:out value="${request.personsCount}"/></td>
                 <td><c:out value="${request.roomType}"/></td>
                 <td>
-                    <c:if test="${sorry == true}">
+                    <c:if test="${reqCancel[request.requestID] == true}">
                         <div class="alert alert-info alert-dismissible" role="alert">
                             <fmt:message key="message.noroom"/>
                         </div>
@@ -82,6 +82,7 @@
                 </td>
                 <td>
                     <c:out value="${cost[loop.index]}"/>
+                    <%--TODO и дата больше текущей--%>
                     <c:if test="${fn:contains(clientsForSale, clientId) and  not empty cost[loop.index]}">
                         <div class="alert alert-success alert-dismissible" role="alert">
                             <fmt:message key="message.sale"/>
