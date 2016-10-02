@@ -54,7 +54,7 @@ CREATE TABLE REQUESTS(
   client_id int(11) NOT NUll,
   room_id int(11)  NULL,
   room_type VARCHAR(30) NOT NULL,
-  req_date TIMESTAMP(4) NOT NULL ,
+  req_date TIMESTAMP(6) NOT NULL ,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   persons_count int NOT NULL,

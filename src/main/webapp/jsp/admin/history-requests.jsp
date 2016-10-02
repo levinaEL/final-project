@@ -60,6 +60,7 @@
                 <th><fmt:message key="request.info.endDate"/></th>
                 <th><fmt:message key="request.info.quantity"/></th>
                 <th><fmt:message key="request.info.type"/></th>
+                <th><fmt:message key="room.label"/></th>
                 <th><fmt:message key="request.info.status"/></th>
             </tr>
             </thead>
@@ -74,6 +75,7 @@
                     <td><c:out value="${request.endDate}"/></td>
                     <td><c:out value="${request.personsCount}"/></td>
                     <td><c:out value="${request.roomType}"/></td>
+                    <td><c:out value="${request.roomID}"/></td>
                     <td><c:out value="${request.statusRequest}"/></td>
                 </tr>
             </c:forEach>

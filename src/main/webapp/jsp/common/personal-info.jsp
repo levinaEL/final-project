@@ -36,7 +36,7 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="fname" name="first_name" value="${client.firstName}"
-                       placeholder="First name" title="Name should contain only letters"
+                       placeholder="First name" title="<fmt:message key="validation.title.name"/>"
                        required pattern="^[a-zA-Z'\s]+"/>
                 <c:if test="${errName==true}">
                     <strong class="text-danger text-center"><fmt:message key="message.wrong.name"/></strong>
@@ -57,8 +57,8 @@
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="lname" name="last_name" value="${client.lastName}"
-                       placeholder="Last name" title="Name should contain only letters"
-                       required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,16}$">
+                       placeholder="Last name" title="<fmt:message key="validation.title.name"/>"
+                       required pattern="^[a-zA-Z'\s]+">
                 <c:if test="${errName==true}">
                     <strong class="text-danger text-center"><fmt:message key="message.wrong.name"/></strong>
                 </c:if>
@@ -70,7 +70,7 @@
 
             <div class="col-sm-10">
                 <input type="date" class="form-control" id="birthday" value="${client.birthday}" name="birthday"
-                       title="yyyy-MM-dd OR dd/MM/yyyy"
+                       title="<fmt:message key="validation.title.dates"/>"
                        required pattern="(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])">
                 <c:if test="${errBirth==true}">
                     <strong class="text-danger text-center"><fmt:message key="message.wrong.birthday"/></strong>
@@ -85,7 +85,7 @@
                 <input type="text" class="form-control passport-series" id="pSeries" name="pasp_series"
                        value="${client.passportSeries}" placeholder="Series" required pattern="[A-Z]{1,4}">
                 <input type="text" class="form-control passport-number" id="pNumber" name="pasp_number"
-                       value="${client.passportNumber}" placeholder="Number" title="only numbers" required
+                       value="${client.passportNumber}" placeholder="Number" required
                        pattern="[\d]{6,14}">
 
                 <input type="text" class="form-control passport-personal-number" id="pasp_prsl_number"

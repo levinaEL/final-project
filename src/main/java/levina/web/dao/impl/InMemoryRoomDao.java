@@ -1,6 +1,6 @@
 package levina.web.dao.impl;
 
-import levina.web.contants.IRequestConstants;
+import levina.web.constants.IRequestConstants;
 import levina.web.dao.RoomDao;
 import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Room;

@@ -1,6 +1,6 @@
 package levina.web.dao.impl;
 
-import levina.web.contants.IClientConstants;
+import levina.web.constants.IClientConstants;
 import levina.web.dao.ClientDao;
 import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Client;
@@ -291,8 +291,65 @@ public class InMemoryClientDao implements ClientDao {
     @Override
     public Collection<Client> getAll(int offset, int noOfRecords) {
         Collection<Client> clients = new ArrayList<>();
-        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM clients LIMIT " +
-                 offset + ", " + noOfRecords;
+        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM clients " +
+                "LIMIT  " + offset + ", " + noOfRecords;
+
+        ResultSet rs;
+        try {
+            dbConnectionPool = DBConnectionPool.getInstance();
+            Connection connection = dbConnectionPool.getConnection();
+            Statement statement = connection.createStatement();
+            rs = statement.executeQuery(selectTableSQL);
+            while (rs.next()) {
+                Long id = rs.getLong(IClientConstants.CLIENT_ID);
+                String firstName = rs.getString(IClientConstants.FIRST_NAME).trim();
+                String lastName = rs.getString(IClientConstants.LAST_NAME).trim();
+                String email = rs.getString(IClientConstants.EMAIL).trim();
+                String pSeries = rs.getString(IClientConstants.PASSPORT_SERIES).trim();
+                int pNumber = rs.getInt(IClientConstants.PASSPORT_NUMBER);
+                String prslNumber = rs.getString(IClientConstants.PERSONAL_NUMBER).trim();
+                String address = rs.getString(IClientConstants.ADDRESS).trim();
+                String phone = rs.getString(IClientConstants.PHONE).trim();
+                boolean ban = rs.getBoolean(IClientConstants.BAN);
+
+
+                Client client = new Client();
+                client.setId(id);
+                client.setEmail(email);
+                client.setFirstName(firstName);
+                client.setLastName(lastName);
+                client.setPassportSeries(pSeries);
+                client.setPassportNumber(pNumber);
+                client.setPersonalNumber(prslNumber);
+                client.setAddress(address);
+                client.setPhoneNumber(phone);
+                client.setBan(ban);
+
+                clients.add(client);
+            }
+
+            rs = statement.executeQuery("SELECT FOUND_ROWS()");
+            if(rs.next()) {
+                this.noOfRecords = rs.getInt(1);
+            }
+
+            statement.close();
+            rs.close();
+            dbConnectionPool.freeConnection(connection);
+
+        } catch (SQLException e) {
+            logger.error("SQL exception in getting all clients", e);
+        } catch (Exception e) {
+            logger.error("Exception in getting all clients", e);
+        }
+        return clients;
+    }
+
+    @Override
+    public Collection<Client> getSortedAll(int offset, int noOfRecords) {
+        Collection<Client> clients = new ArrayList<>();
+        String selectTableSQL = "SELECT SQL_CALC_FOUND_ROWS * FROM clients ORDER BY last_name, first_name " +
+                "LIMIT  " + offset + ", " + noOfRecords;
 
         ResultSet rs;
         try {

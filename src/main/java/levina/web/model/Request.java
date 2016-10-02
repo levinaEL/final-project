@@ -36,6 +36,7 @@ public class Request {
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
+
     public Long getRequestID() {
         return requestID;
     }

@@ -1,5 +1,6 @@
 package levina.web.service.commands.client;
 
+import levina.web.constants.IServiceConstants;
 import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;
@@ -18,24 +19,39 @@ import java.util.Set;
  */
 
 public class ClientsListCommand implements ActionCommand {
-    public static final int RECORDS_PER_PAGE = 5;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page = ConfigurationManager.getProperty("path.page.clients-list");
         int noPage = 1;
+        Collection<Client> clients = null;
         ClientService clientService = new ClientService();
         RequestService requestService = new RequestService();
+        if(request.getSession().getAttribute("sort")==null) {
+            request.getSession().setAttribute("sort", false);
+        }
 
         if (request.getParameter("page") != null) {
             noPage = Integer.parseInt(request.getParameter("page"));
         }
 
-        Collection<Client> clients = clientService.getAll((noPage - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE);
-        int noOfRecords = clientService.getNoOfRecords();
-        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
+        if("Sort By Name".equals(request.getParameter("sort")) || (boolean)request.getSession().getAttribute("sort")){
+            clients = clientService.getSortedAll((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
+                    IServiceConstants.RECORDS_PER_PAGE);
+            request.getSession().setAttribute("sort", true);
 
-        Map<Long, Integer> clientCountMap = requestService.countClientRequest((noPage - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE);
+        }
+        if("Revert".equals(request.getParameter("sort")) || !(boolean)request.getSession().getAttribute("sort")){
+            clients = clientService.getAll((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
+                    IServiceConstants.RECORDS_PER_PAGE);
+            request.getSession().setAttribute("sort", false);
+
+        }
+        int noOfRecords = clientService.getNoOfRecords();
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / IServiceConstants.RECORDS_PER_PAGE);
+
+        Map<Long, Integer> clientCountMap = requestService.countClientRequest((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
+                IServiceConstants.RECORDS_PER_PAGE);
         Set<Long> clientsForSale = ClientsUtils.clientsNeededSale(clientCountMap);
 
         request.setAttribute("clients", clients);

@@ -1,6 +1,6 @@
 package levina.web.service.commands.client;
 
-import levina.web.contants.IClientConstants;
+import levina.web.constants.IClientConstants;
 import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;

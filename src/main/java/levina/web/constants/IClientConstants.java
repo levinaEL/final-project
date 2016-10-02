@@ -1,4 +1,4 @@
-package levina.web.contants;
+package levina.web.constants;
 
 /**
  * Created by MY on 08.09.2016.

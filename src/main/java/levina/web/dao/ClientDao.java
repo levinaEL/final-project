@@ -23,5 +23,7 @@ public interface ClientDao {
 
     Collection<Client> getAll(int offset, int noOfRecords);
 
+    Collection<Client> getSortedAll(int offset, int noOfRecords);
+
     int getNoOfRecords();
 }

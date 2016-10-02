@@ -1,6 +1,7 @@
 package levina.web.service.commands.request;
 
-import levina.web.contants.IUserConstants;
+import levina.web.constants.IServiceConstants;
+import levina.web.constants.IUserConstants;
 import levina.web.model.Client;
 import levina.web.model.Request;
 import levina.web.service.commands.interfaces.ActionCommand;
@@ -13,11 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
-/**
- * Created by MY on 16.08.2016.
- */
 public class BookingListCommand implements ActionCommand {
-    public static final int RECORDS_PER_PAGE = 5;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -36,11 +33,12 @@ public class BookingListCommand implements ActionCommand {
         }
 
         if (role) {
-            requests = requestService.getAdminRequests((noPage - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE);
+            requests = requestService.getAdminRequests((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
+                    IServiceConstants.RECORDS_PER_PAGE);
             request.setAttribute("clientsName", ClientsUtils.getClientsName(requests));
 
             noOfRecords = requestService.getNoOfRecords();
-            noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
+            noOfPages = (int) Math.ceil(noOfRecords * 1.0 / IServiceConstants.RECORDS_PER_PAGE);
 
             page = ConfigurationManager.getProperty("path.page.admin-home");
         } else {
@@ -49,22 +47,21 @@ public class BookingListCommand implements ActionCommand {
             Client client = clientService.getByUserId(userID);
             if (client != null) {
                 Long clientId = client.getId();
-                requests = requestService.getAllClientsRequests(clientId, (noPage - 1) * RECORDS_PER_PAGE,
-                        RECORDS_PER_PAGE);
+                requests = requestService.getAllClientsRequests(clientId,
+                        (noPage - 1) * IServiceConstants.RECORDS_PER_PAGE, IServiceConstants.RECORDS_PER_PAGE);
                 request.setAttribute("clientId", clientId);
                 request.setAttribute("cost", ClientsUtils.getClientsCost(requests));
             }
 
             noOfRecords = requestService.getNoOfRecords();
-            noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
-            //page = request.getServletPath();
+            noOfPages = (int) Math.ceil(noOfRecords * 1.0 / IServiceConstants.RECORDS_PER_PAGE);
 
             page = ConfigurationManager.getProperty("path.page.client-home");
         }
 
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", noPage);
-        request.setAttribute("recordsPerPage", RECORDS_PER_PAGE);
+        request.setAttribute("recordsPerPage", IServiceConstants.RECORDS_PER_PAGE);
         request.setAttribute("requests", requests);
         return page;
     }

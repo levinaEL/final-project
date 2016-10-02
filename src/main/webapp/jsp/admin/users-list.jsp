@@ -93,6 +93,7 @@
                            title="<fmt:message key="button.book"/>">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
+
                         <form class="pull-left" name="ban" method=post action="../../controller">
                             <input type="hidden" name="command" value="ban"/>
                             <input type="hidden" name="client_id" value="${client.id}"/>
@@ -100,7 +101,8 @@
                                 <span class="glyphicon glyphicon-ban-circle"></span>
                             </button>
                         </form>
-                        <a class="btn-link pull-right" title="<fmt:message key="action.sale"/>" href="javascript:document.clients.submit()"
+                        <a class="btn-link pull-right" title="<fmt:message key="action.sale"/>"
+                           href="javascript:document.clients.submit()"
                            onclick="${fn:add(clientsForSale, client.id)}" data-toggle="modal" data-target="#saleModal">
                             <span class="glyphicon glyphicon-piggy-bank"></span>
                         </a>
@@ -109,6 +111,16 @@
             </c:forEach>
             </tbody>
         </table>
+        <form class="pull-left" name="clients_list" method=post action="../../controller">
+
+            <input type="hidden" name="command" value="clients_list"/>
+            <%--<input type="hidden" name="isSort" value="sort">--%>
+
+                <input type="submit" class="btn btn-primary btn-xs" name="sort" value="Sort By Name">
+
+                <input type="submit" class="btn btn-primary btn-xs" name="sort" value="Revert">
+
+        </form>
     </div>
 </main>
 
@@ -143,5 +155,6 @@
 </div>
 
 </body>
-<c:import url="../scripts-import.jsp" />
+
+<c:import url="../scripts-import.jsp"/>
 </html>

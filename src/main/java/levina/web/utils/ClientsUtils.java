@@ -1,5 +1,6 @@
 package levina.web.utils;
 
+import levina.web.constants.IServiceConstants;
 import levina.web.model.Client;
 import levina.web.model.Request;
 import levina.web.model.Room;
@@ -12,13 +13,12 @@ import java.util.*;
  * Created by MY on 30.08.2016.
  */
 public class ClientsUtils {
-    public static final int COUNT_REQUEST_FOR_SALE = 3;
 
     public static Set<Long> clientsNeededSale(Map<Long, Integer> clientCountMap) {
         Set<Long> clientsForSale = new HashSet<>();
         for (Map.Entry entry : clientCountMap.entrySet()) {
             int count = (int) entry.getValue();
-            if (count > COUNT_REQUEST_FOR_SALE) {
+            if (count > IServiceConstants.COUNT_REQUEST_FOR_SALE) {
                 clientsForSale.add((Long) entry.getKey());
             }
         }

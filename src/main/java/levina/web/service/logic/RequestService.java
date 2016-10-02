@@ -5,10 +5,11 @@ import levina.web.dao.impl.InMemoryRequestDao;
 import levina.web.model.Request;
 import levina.web.model.enums.RoomType;
 import levina.web.model.enums.StatusRequest;
+import org.apache.log4j.Logger;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Calendar;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import java.util.Map;
  * Created by MY on 14.08.2016.
  */
 public class RequestService {
+    public static Logger logger = Logger.getLogger(RequestService.class);
     private RequestDao requestDao;
 
     public RequestService() {
@@ -41,9 +43,18 @@ public class RequestService {
     public void createNew(Long clientID, Long roomID, RoomType type, Date startDate, Date endDate,
                           int personsCount, StatusRequest status) {
         Request request = new Request();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MILLISECOND, 0);
-        Timestamp reqDate = new Timestamp(calendar.getTime().getTime());
+        Timestamp reqDate = null;
+        java.util.Date dt = new java.util.Date();
+
+        java.text.SimpleDateFormat sdf =
+                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String currentTime = sdf.format(dt);
+        try {
+            reqDate = new Timestamp(sdf.parse(currentTime).getTime());
+        } catch (ParseException e) {
+            logger.error("SQL exception in creating request", e);
+        }
         request.setClientID(clientID);
         request.setRoomID(roomID);
         request.setRoomType(type);

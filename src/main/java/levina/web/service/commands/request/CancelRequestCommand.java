@@ -1,6 +1,6 @@
 package levina.web.service.commands.request;
 
-import levina.web.contants.IRequestConstants;
+import levina.web.constants.IRequestConstants;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.RequestService;
 import levina.web.utils.ConfigurationManager;

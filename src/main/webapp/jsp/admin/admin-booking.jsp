@@ -25,7 +25,7 @@
           target="available_frame">
         <input type="hidden" name="command" value="booking"/>
         <input type="hidden" name="req_id" value="${request.requestID}"/>
-        <input type="hidden" name="client_id" value="${param.clientId}"/>
+        <input type="hidden" name="client_id" value="${param.client_id}"/>
 
         <div class="form-group">
             <h4><fmt:message key="form.booking.dates"/></h4>
@@ -79,7 +79,10 @@
                 </select>
             </div>
         </div>
-
+        <%--<div class="form-group">--%>
+            <%--<label for="sale"><fmt:message key="action.sale"/></label>--%>
+            <%--<input type="checkbox" class="" id="sale" name="sale" value="">--%>
+        <%--</div>--%>
         <div class="form-group">
             <label for="roomId"><fmt:message key="room.label"/></label>
 
@@ -92,7 +95,7 @@
 
             <input name="availableRoom" value="<fmt:message key="action.showRoom"/>" type="submit" class="btn btn-info" data-toggle="modal"
                    data-target="#myModal">
-            <a class="btn btn-default pull-right" href="controller?command=booking_list">
+            <a class="btn btn-default pull-right" href="../../controller?command=booking_list">
                 <fmt:message key="button.cancel"/>
             </a>
         </div>
@@ -120,6 +123,8 @@
     </div>
 </div>
 <c:import url="../scripts-import.jsp"/>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../../app/assets/js/bootstrap.min.js"></script>
+<script src="../../app/assets/js/bootstrap-datepicker.min.js"></script>
 </body>
 </html>

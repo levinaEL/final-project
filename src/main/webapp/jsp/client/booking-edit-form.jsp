@@ -48,7 +48,8 @@
             <label for="start"><fmt:message key="form.booking.label.start"/></label>
 
             <div class="input-group date" data-provide="datepicker">
-                <input type="text" name="start_date" id="start" class="form-control" title="yyyy-MM-dd OR dd/MM/yyyy"
+                <input type="text" name="start_date" id="start" class="form-control"
+                       title="<fmt:message key="validation.title.dates"/>"
                        pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
@@ -61,7 +62,8 @@
 
             <div class="input-group date" data-provide="datepicker">
                 <input type="text" name="end_date" id="end" class="form-control"
-                       title="yyyy-MM-dd OR dd/MM/yyyy" pattern="\d{1,2}/\d{1,2}/\d{4}" required>
+                       title="<fmt:message key="validation.title.dates"/>"
+                       pattern="\d{1,2}/\d{1,2}/\d{4}" required>
 
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>

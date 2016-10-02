@@ -1,6 +1,6 @@
 package levina.web.service.commands.user;
 
-import levina.web.contants.IUserConstants;
+import levina.web.constants.IUserConstants;
 import levina.web.model.User;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.UserService;

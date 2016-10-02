@@ -24,6 +24,11 @@ public class ClientService {
         return clientDao.getAll(offset, noOfRecords);
     }
 
+    public Collection<Client> getSortedAll(int offset, int noOfRecords) {
+        return clientDao.getSortedAll(offset, noOfRecords);
+    }
+
+
     public void createNew(Long userID, String email, String firstName, String patronymicName, String lastName, String address,
                              String phoneNumber, String passportSeries, int passportNumber, String personalNumber,
                              String birthday) {

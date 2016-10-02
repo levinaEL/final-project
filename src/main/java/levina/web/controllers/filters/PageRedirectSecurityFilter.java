@@ -1,7 +1,7 @@
 package levina.web.controllers.filters;
 
 
-import levina.web.contants.IUserConstants;
+import levina.web.constants.IUserConstants;
 import levina.web.utils.ConfigurationManager;
 
 import javax.servlet.*;

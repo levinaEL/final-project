@@ -1,7 +1,7 @@
 package levina.web.dao.impl;
 
-import levina.web.contants.IClientConstants;
-import levina.web.contants.IRequestConstants;
+import levina.web.constants.IClientConstants;
+import levina.web.constants.IRequestConstants;
 import levina.web.dao.RequestDao;
 import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.Request;
@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by MY on 14.08.2016.
  */
 public class InMemoryRequestDao implements RequestDao {
-    public static Logger logger = Logger.getLogger(InMemoryClientDao.class);
+    public static Logger logger = Logger.getLogger(InMemoryRequestDao.class);
     public static volatile InMemoryRequestDao instance = new InMemoryRequestDao();
     public DBConnectionPool dbConnectionPool;
     private int noOfRecords;

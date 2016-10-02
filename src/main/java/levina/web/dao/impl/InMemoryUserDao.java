@@ -5,7 +5,7 @@ package levina.web.dao.impl;
  */
 
 
-import levina.web.contants.IUserConstants;
+import levina.web.constants.IUserConstants;
 import levina.web.dao.database.DBConnectionPool;
 import levina.web.dao.UserDao;
 import levina.web.model.User;

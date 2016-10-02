@@ -1,7 +1,7 @@
 package levina.web.service.commands.request;
 
-import levina.web.contants.IRequestConstants;
-import levina.web.contants.IUserConstants;
+import levina.web.constants.IRequestConstants;
+import levina.web.constants.IUserConstants;
 import levina.web.model.Client;
 import levina.web.model.Request;
 import levina.web.service.commands.interfaces.ActionCommand;
