@@ -3,7 +3,7 @@ package levina.web.model;
 import levina.web.model.enums.RoomType;
 
 /**
- * Created by MY on 08.08.2016.
+ *Entity Room based on table room from the DB
  */
 public class Room {
     private Long roomID;

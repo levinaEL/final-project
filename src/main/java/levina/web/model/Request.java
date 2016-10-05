@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * Created by MY on 05.08.2016.
+ *Entity Request based on table requests from the DB
  */
 public class Request {
     private Long requestID;

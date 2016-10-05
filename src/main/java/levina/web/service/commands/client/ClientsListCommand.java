@@ -14,7 +14,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * ClientsListCommand execute command, which create clients list
+ */
 public class ClientsListCommand implements ActionCommand {
 
     private static final String SORT_BY_NAME = "Sort By Name";
@@ -45,7 +47,7 @@ public class ClientsListCommand implements ActionCommand {
 
         if(SORT_BY_NAME.equals(request.getParameter(SORT_PARAM)) || (boolean)request.getSession().getAttribute("sort")){
             clients = clientService.getSortedAll((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
-                    IServiceConstants.RECORDS_PER_PAGE);
+                    IServiceConstants.RECORDS_PER_PAGE); //params fpr pagination
             request.getSession().setAttribute(SORT_PARAM, true);
 
         }

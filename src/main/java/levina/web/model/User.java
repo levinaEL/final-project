@@ -1,7 +1,7 @@
 package levina.web.model;
 
 /**
- * Created by MY on 05.08.2016.
+ *Entity user based on table users field
  */
 public class User {
     private Long id;

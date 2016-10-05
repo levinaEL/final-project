@@ -31,6 +31,7 @@ public class GetClientCommand implements ActionCommand {
         boolean role = (boolean) session.getAttribute(IUserConstants.ROLE);
         Long userID = (Long) session.getAttribute(IUserConstants.USER_ID);
 
+        //id admin getting client information
         if (role && !StringUtils.isEmpty(request.getParameter(IClientConstants.CLIENT_ID))) {
             Long id = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
             client = clientService.getById(id);

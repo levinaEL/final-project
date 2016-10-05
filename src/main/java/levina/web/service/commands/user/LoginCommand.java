@@ -10,8 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * LoginCommand execute login command
+ */
 public class LoginCommand implements ActionCommand {
 
+    /**
+     *
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

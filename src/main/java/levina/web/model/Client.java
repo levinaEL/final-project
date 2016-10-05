@@ -1,7 +1,7 @@
 package levina.web.model;
 
 /**
- * Created by MY on 07.08.2016.
+ *Entity Client based on table clients from the DB
  */
 public class Client {
     private Long id;

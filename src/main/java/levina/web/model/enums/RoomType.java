@@ -1,7 +1,7 @@
 package levina.web.model.enums;
 
 /**
- * Created by MY on 08.08.2016.
+ * Defines values which can take field roomType of class Room
  */
 public enum RoomType {
     SINGLE,

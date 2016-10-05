@@ -1,10 +1,10 @@
 package levina.web.model.enums;
 
 /**
- * Created by MY on 08.08.2016.
+ * Defines values which can take field status of class Request
  */
 public enum StatusRequest {
     CANCEL,
     PENDING,
-    APPROVED;
+    APPROVED
 }
