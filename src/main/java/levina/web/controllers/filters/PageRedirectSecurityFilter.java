@@ -12,7 +12,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by MY on 04.09.2016.
+ * PageRedirectSecurityFilter performs the function of controlling,
+ * preventing direct access to pages without authorization
  */
 @WebFilter("/jsp/*")
 public class PageRedirectSecurityFilter implements Filter {
@@ -22,6 +23,15 @@ public class PageRedirectSecurityFilter implements Filter {
 
     }
 
+    /**
+     * PageRedirectSecurityFilter performs the function of controlling,
+     * preventing direct access to pages without authorization
+     * @param req
+     * @param res
+     * @param chain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;

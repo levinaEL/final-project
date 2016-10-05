@@ -31,10 +31,10 @@
             <h4><fmt:message key="form.booking.dates"/></h4>
 
             <div>
-                <label><fmt:message key="form.booking.label.start"/></label>
+                <label for="start"><fmt:message key="form.booking.label.start"/></label>
 
                 <div class="input-group date" data-provide="datepicker">
-                    <input type="text" name="start_date" value="${request.startDate}" class="form-control">
+                    <input id="start" type="text" name="start_date" value="${request.startDate}" class="form-control">
 
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
@@ -42,10 +42,10 @@
                 </div>
             </div>
             <div>
-                <label><fmt:message key="form.booking.label.end"/></label>
+                <label for="end"><fmt:message key="form.booking.label.end"/></label>
 
                 <div class="input-group date" data-provide="datepicker">
-                    <input type="text" name="end_date" value="${request.endDate}" class="form-control">
+                    <input id="end" type="text" name="end_date" value="${request.endDate}" class="form-control">
 
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>

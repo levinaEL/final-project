@@ -3,49 +3,55 @@ package levina.web.service.logic;
 import levina.web.dao.ClientDao;
 import levina.web.dao.impl.InMemoryClientDao;
 import levina.web.model.Client;
+import org.apache.log4j.Logger;
 
 import java.util.Collection;
 
 /**
- * Created by MY on 08.08.2016.
+ * ClientService connect dao level with logic
  */
 public class ClientService {
+    public static Logger logger = Logger.getLogger(ClientService.class);
+
     private ClientDao clientDao;
 
     public ClientService() {
-        clientDao = InMemoryClientDao.instance;
+        try {
+            clientDao = InMemoryClientDao.getInstance();
+        } catch (Exception e) {
+            logger.error("Exception in getting clientDao instance", e);
+        }
     }
 
-    public int getNoOfRecords(){
+    public int getNoOfRecords() {
         return clientDao.getNoOfRecords();
     }
 
+    /**
+     *
+     * @param offset      - use for pagination, number of start record on the page
+     * @param noOfRecords - use for pagination, number of records per page
+     * @return Collection
+     */
     public Collection<Client> getAll(int offset, int noOfRecords) {
         return clientDao.getAll(offset, noOfRecords);
     }
-
+    /**
+     *List of client sorted by name
+     * @param offset      - use for pagination, number of start record on the page
+     * @param noOfRecords - use for pagination, number of records per page
+     * @return Collection
+     */
     public Collection<Client> getSortedAll(int offset, int noOfRecords) {
         return clientDao.getSortedAll(offset, noOfRecords);
     }
 
-
-    public void createNew(Long userID, String email, String firstName, String patronymicName, String lastName, String address,
-                             String phoneNumber, String passportSeries, int passportNumber, String personalNumber,
-                             String birthday) {
-        Client client = new Client();
-        client.setUserID(userID);
-        client.setEmail(email);
-        client.setFirstName(firstName);
-        client.setPatronymicName(patronymicName);
-        client.setLastName(lastName);
-        client.setAddress(address);
-        client.setPhoneNumber(phoneNumber);
-        client.setPassportSeries(passportSeries);
-        client.setPassportNumber(passportNumber);
-        client.setPersonalNumber(personalNumber);
-        client.setBirthday(birthday);
-
-        if (clientDao.getClientByEmail(email) == null) {
+    /**
+     * Create new client
+     * @param client
+     */
+    public void createNew(Client client) {
+        if (clientDao.getClientByEmail(client.getEmail()) == null) {
             clientDao.save(client);
         }
     }
@@ -64,8 +70,8 @@ public class ClientService {
     }
 
 
-    public void banClient(Client client){
-       clientDao.banClient(client);
+    public void banClient(Client client) {
+        clientDao.banClient(client);
     }
 
 }

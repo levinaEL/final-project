@@ -41,7 +41,7 @@
 
             </div>
 
-            <a href="#registrationModal" data-toggle="modal" class="text-center new-account">Create an account </a>
+            <a href="#registrationModal" data-target="#registrationModal" data-toggle="modal" class="text-center new-account">Create an account </a>
         </div>
     </div>
 </main>
@@ -59,6 +59,11 @@
     </div>
 </div>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<%--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--%>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../app/assets/js/bootstrap.min.js"></script>
 <c:import url="../scripts-import.jsp"/>
 </body>
 </html>

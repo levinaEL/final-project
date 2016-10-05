@@ -16,6 +16,12 @@ import javax.servlet.http.HttpServletResponse;
  * Created by MY on 17.08.2016.
  */
 public class GetRequestCommand implements ActionCommand {
+    /**
+     * Get request if exist, if not empty form for fill
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

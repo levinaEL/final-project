@@ -4,6 +4,7 @@ import levina.web.constants.IClientConstants;
 import levina.web.constants.IRequestConstants;
 import levina.web.constants.IUserConstants;
 import levina.web.model.Client;
+import levina.web.model.Request;
 import levina.web.model.Room;
 import levina.web.model.enums.RoomType;
 import levina.web.model.enums.StatusRequest;
@@ -12,6 +13,7 @@ import levina.web.service.logic.ClientService;
 import levina.web.service.logic.RequestService;
 import levina.web.service.logic.RoomService;
 import levina.web.utils.ConfigurationManager;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,20 +25,49 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by MY on 14.08.2016.
- */
+
 public class BookingCommand implements ActionCommand {
     public final static Logger logger = Logger.getLogger(BookingCommand.class);
+    public final String[] DATE_FORMATS = {"MM/dd/yyyy", "yyyy-MM-dd"};
+    public static final String FREE_ROOMS = "availableRoom";
 
+    private Date toSqlDate(java.util.Date date) {
+        return new Date(date.getTime());
+    }
+
+    private Request getRequestFromParam(Map<String, String[]> paramMap) {
+        Request request = new Request();
+
+        request.setStartDate(toSqlDate(parseDate(paramMap.get(IRequestConstants.START_DATE)[0])));
+        request.setEndDate(toSqlDate(parseDate(paramMap.get(IRequestConstants.END_DATE)[0])));
+        request.setRoomType(RoomType.valueOf(paramMap.get(IRequestConstants.TYPE)[0]));
+        request.setPersonsCount(Integer.parseInt(paramMap.get(IRequestConstants.PERSONS_COUNT)[0]));
+
+        return request;
+    }
+
+    private java.util.Date parseDate(String value) {
+        for (String dateFormat : DATE_FORMATS) {
+            try {
+                return (new SimpleDateFormat(dateFormat)).parse(value);
+            } catch (ParseException e) {
+                logger.error("Exception in persing dates");
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Execute all operation with booking(create, approve, cancel)
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         Long roomID = null;
         Long clientID = null;
-        Date start = null;
-        Date end = null;
-        StatusRequest status;
 
         ClientService clientService = new ClientService();
         RequestService requestService = new RequestService();
@@ -44,30 +75,11 @@ public class BookingCommand implements ActionCommand {
 
         boolean role = (boolean) request.getSession().getAttribute(IUserConstants.ROLE);
         Long userID = (Long) request.getSession().getAttribute(IUserConstants.USER_ID);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
-        String startDateStr = request.getParameter(IRequestConstants.START_DATE);
-        String endDateStr = request.getParameter(IRequestConstants.END_DATE);
-        int numberSeats = Integer.parseInt(request.getParameter(IRequestConstants.PERSONS_COUNT));
-        RoomType type = RoomType.valueOf(request.getParameter(IRequestConstants.TYPE).toUpperCase());
-
-        try {
-            start = new Date(sdf.parse(startDateStr).getTime());
-            end = new Date(sdf.parse(endDateStr).getTime());
-        } catch (ParseException parseEx) {
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                start = new Date(sdf.parse(startDateStr).getTime());
-                end = new Date(sdf.parse(endDateStr).getTime());
-            } catch (ParseException e) {
-                logger.error("Wrong date format", e);
-            }
-        }
+        Request requestItem = getRequestFromParam(request.getParameterMap());
 
         //if click show rooms
-        if (request.getParameter("availableRoom") != null) {
-            Collection<Room> rooms = roomService.getAvailableRooms(start, end, numberSeats, type);
+        if (request.getParameter(FREE_ROOMS) != null) {
+            Collection<Room> rooms = roomService.getAvailableRooms(requestItem);
             if (rooms.isEmpty()) {
                 request.setAttribute("roomNotFound", true);
             }
@@ -76,39 +88,39 @@ public class BookingCommand implements ActionCommand {
         } else {
             if (role) {
                 // if admin create request for room
-                if ("".equals(request.getParameter(IRequestConstants.REQUEST_ID))) {
-                    if (!request.getParameter(IClientConstants.CLIENT_ID).equals("")) {
+                if (StringUtils.isEmpty(request.getParameter(IRequestConstants.REQUEST_ID))) {
+                    StatusRequest status;
+                    if (!StringUtils.isEmpty(request.getParameter(IClientConstants.CLIENT_ID))) {
                         clientID = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
                     }
-                    if (!"".equals(request.getParameter(IRequestConstants.ROOM))) {
+                    if (!StringUtils.isEmpty(request.getParameter(IRequestConstants.ROOM))) {
                         roomID = Long.parseLong(request.getParameter(IRequestConstants.ROOM));
                         status = StatusRequest.APPROVED;
                     } else {
-//                        request.getServletContext().setAttribute("sorry", true);
                         status = StatusRequest.CANCEL;
                     }
-                    requestService.createNew(clientID, roomID, type, start, end, numberSeats, status);
+                    requestItem.setClientID(clientID);
+                    requestItem.setRoomID(roomID);
+                    requestItem.setStatusRequest(status);
+                    requestService.createNew(requestItem);
                 } else { // if admin approve the clients request
                     Long requestId = Long.parseLong(request.getParameter(IRequestConstants.REQUEST_ID));
 
-                    if (!"".equals(request.getParameter(IRequestConstants.ROOM))) {
+                    if (!StringUtils.isEmpty((request.getParameter(IRequestConstants.ROOM)))) {
                         roomID = Long.parseLong(request.getParameter(IRequestConstants.ROOM));
                         requestService.approve(requestId, roomID);
-                    } else {
+                    } else { //if there no available rooms, then request cancel
                         Map<Long, Boolean> reqCancel = new HashMap<>();
                         reqCancel.put(requestId, true);
                         request.getServletContext().setAttribute("reqCancel", reqCancel);
-                        //request.getServletContext().setAttribute("sorry", true);
                         requestService.cancel(requestId);
                     }
                 }
-
             } else { // if client create the request for room
                 Client client = clientService.getByUserId(userID);
-                clientID = client.getId();
-                status = StatusRequest.PENDING;
-                requestService.createNew(clientID, roomID, type, start, end, numberSeats, status);
-
+                requestItem.setClientID(client.getId());
+                requestItem.setStatusRequest(StatusRequest.PENDING);
+                requestService.createNew(requestItem);
             }
             page = ConfigurationManager.getProperty("path.action.booking-list");
         }

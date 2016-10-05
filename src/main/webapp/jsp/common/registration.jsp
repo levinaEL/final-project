@@ -19,9 +19,7 @@
 
         <div class="col-sm-9">
             <input class="form-control"
-                   type="text" id="login" name="user_login" placeholder="Login" required
-                   pattern="\w+"
-                   title="Username must contain only letters, numbers and underscores">
+                   type="text" id="login" name="user_login" placeholder="Login" required>
             <c:if test="${errLogin==true}">
                 <strong class="text-danger text-center"><fmt:message key="message.wrong.login"/></strong>
             </c:if>

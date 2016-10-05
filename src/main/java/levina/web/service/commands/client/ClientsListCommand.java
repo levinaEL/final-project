@@ -14,12 +14,19 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by MY on 12.08.2016.
- */
 
 public class ClientsListCommand implements ActionCommand {
 
+    private static final String SORT_BY_NAME = "Sort By Name";
+    private static final String SORT_PARAM = "sort";
+    private static final String REVERT = "Revert";
+
+    /**
+     * Forms lists of clients including sorted list by name
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page = ConfigurationManager.getProperty("path.page.clients-list");
@@ -27,24 +34,25 @@ public class ClientsListCommand implements ActionCommand {
         Collection<Client> clients = null;
         ClientService clientService = new ClientService();
         RequestService requestService = new RequestService();
-        if(request.getSession().getAttribute("sort")==null) {
-            request.getSession().setAttribute("sort", false);
+
+        if(request.getSession().getAttribute(SORT_PARAM) == null) {
+            request.getSession().setAttribute(SORT_PARAM, false);
         }
 
         if (request.getParameter("page") != null) {
             noPage = Integer.parseInt(request.getParameter("page"));
         }
 
-        if("Sort By Name".equals(request.getParameter("sort")) || (boolean)request.getSession().getAttribute("sort")){
+        if(SORT_BY_NAME.equals(request.getParameter(SORT_PARAM)) || (boolean)request.getSession().getAttribute("sort")){
             clients = clientService.getSortedAll((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
                     IServiceConstants.RECORDS_PER_PAGE);
-            request.getSession().setAttribute("sort", true);
+            request.getSession().setAttribute(SORT_PARAM, true);
 
         }
-        if("Revert".equals(request.getParameter("sort")) || !(boolean)request.getSession().getAttribute("sort")){
+        if(REVERT.equals(request.getParameter(SORT_PARAM)) || !(boolean)request.getSession().getAttribute("sort")){
             clients = clientService.getAll((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
                     IServiceConstants.RECORDS_PER_PAGE);
-            request.getSession().setAttribute("sort", false);
+            request.getSession().setAttribute(SORT_PARAM, false);
 
         }
         int noOfRecords = clientService.getNoOfRecords();

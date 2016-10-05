@@ -7,10 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by MY on 05.09.2016.
+ * ValidationUtils define patterns for validation information
  */
-public class Validator {
-    private static Pattern usrNamePattern = Pattern.compile("[\\w+]{6,14}");
+public class ValidationUtils {
     private static Pattern namePattern = Pattern.compile("^[a-zA-Z\'\\s]+");
     private static Pattern emailPattern = Pattern.compile("(\\w{4,})@(\\w+\\.)([a-z]{2,4})");
     private static Pattern passwordPattern = Pattern.compile("(?=.*\\d)(?=.*[a-z]).{6,}");
@@ -24,11 +23,6 @@ public class Validator {
 
     public static boolean validateEmail(String email) {
         Matcher matcher = emailPattern.matcher(email);
-        return matcher.matches();
-    }
-
-    public static boolean validateUserName(String userName) {
-        Matcher matcher = usrNamePattern.matcher(userName);
         return matcher.matches();
     }
 

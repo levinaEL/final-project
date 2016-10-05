@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by MY on 11.08.2016.
- */
 public class LoginCommand implements ActionCommand {
 
     @Override
@@ -34,11 +31,6 @@ public class LoginCommand implements ActionCommand {
             if (userService.checkPassword(login, password)) {
                 session.setAttribute("user_id", id);
                 session.setAttribute("role", role);
-//                StringBuffer requestURL = request.getRequestURL();
-//                if (request.getQueryString() != null) {
-//                    requestURL.append("?").append(request.getQueryString());
-//                }
-//                String urr = requestURL.toString();
                page =  ConfigurationManager.getProperty("path.action.booking-list");
 
             } else {

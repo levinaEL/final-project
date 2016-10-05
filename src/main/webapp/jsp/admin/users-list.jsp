@@ -114,11 +114,8 @@
         <form class="pull-left" name="clients_list" method=post action="../../controller">
 
             <input type="hidden" name="command" value="clients_list"/>
-            <%--<input type="hidden" name="isSort" value="sort">--%>
-
-                <input type="submit" class="btn btn-primary btn-xs" name="sort" value="Sort By Name">
-
-                <input type="submit" class="btn btn-primary btn-xs" name="sort" value="Revert">
+            <input type="submit" class="btn btn-primary btn-xs" name="sort" value="<fmt:message key="button.sort"/>">
+            <input type="submit" class="btn btn-primary btn-xs" name="sort" value="<fmt:message key="button.revert"/>">
 
         </form>
     </div>

@@ -16,6 +16,12 @@ import java.util.Collection;
 
 public class BookingListCommand implements ActionCommand {
 
+    /**
+     * Forms list of requests for client and for admin
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
@@ -34,7 +40,7 @@ public class BookingListCommand implements ActionCommand {
 
         if (role) {
             requests = requestService.getAdminRequests((noPage - 1) * IServiceConstants.RECORDS_PER_PAGE,
-                    IServiceConstants.RECORDS_PER_PAGE);
+                    IServiceConstants.RECORDS_PER_PAGE); // params for pagination
             request.setAttribute("clientsName", ClientsUtils.getClientsName(requests));
 
             noOfRecords = requestService.getNoOfRecords();

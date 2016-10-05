@@ -6,7 +6,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 /**
- * Created by MY on 31.08.2016.
+ * AppContextListener used for set path for the logs
  */
 @WebListener
 public class AppContextListener implements ServletContextListener{

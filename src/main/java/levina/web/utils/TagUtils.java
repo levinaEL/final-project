@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by MY on 28.08.2016.
+ * TagUtils used in jsp for custom tag
  */
 public class TagUtils {
 

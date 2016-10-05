@@ -2,36 +2,52 @@ package levina.web.service.logic;
 
 import levina.web.dao.RoomDao;
 import levina.web.dao.impl.InMemoryRoomDao;
+import levina.web.model.Request;
 import levina.web.model.Room;
-import levina.web.model.enums.RoomType;
+import org.apache.log4j.Logger;
 
-import java.sql.Date;
 import java.util.Collection;
+import java.util.List;
 
 /**
- * Created by MY on 18.08.2016.
+ * RoomService connect dao level with logic
  */
 public class RoomService {
+    public static Logger logger = Logger.getLogger(RoomService.class);
     private RoomDao roomDao;
 
     public RoomService() {
-        roomDao = InMemoryRoomDao.instance;
+        try {
+            roomDao = InMemoryRoomDao.getInstance();
+        } catch (Exception e) {
+            logger.error("Exception in getting roomDao instance", e);
+        }
     }
 
-    public Collection<Room> getAvailableRooms(Date start, Date end, int personsCount, RoomType roomType){
-        return roomDao.getRoomsByParameters(start,end,personsCount,roomType);
+    /**
+     * List of available rooms, that satisfied by params
+     * @param request
+     * @return List
+     */
+    public List<Room> getAvailableRooms(Request request) {
+        return roomDao.getRoomsByParameters(
+                request.getStartDate(),
+                request.getPersonsCount(),
+                request.getRoomType()
+        );
     }
 
-    public Room getById(Long roomId){
+    public Room getById(Long roomId) {
         return roomDao.getById(roomId);
     }
 
-    public Room getByType(RoomType roomType){
-        return roomDao.getByType(roomType);
-    }
-
-    public Collection<Room> getAllAvailableRooms(){
+    /**
+     * List of all available rooms
+     * @return Collection
+     */
+    public Collection<Room> getAllAvailableRooms() {
         return roomDao.getAllAvailableRooms();
     }
 
 }
+

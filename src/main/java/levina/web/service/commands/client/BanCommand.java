@@ -9,11 +9,14 @@ import levina.web.utils.ConfigurationManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by MY on 15.08.2016.
- */
-public class BanCommand implements ActionCommand {
 
+public class BanCommand implements ActionCommand {
+    /**
+     * Update client, set field ban in true
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page = ConfigurationManager.getProperty("path.action.clients-list");

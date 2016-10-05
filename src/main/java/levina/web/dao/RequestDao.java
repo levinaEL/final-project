@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Created by MY on 15.08.2016.
+ * RequestDao defined methods which will be used during connection to DB, table requests
  */
 public interface RequestDao {
     Request getById(Long id);

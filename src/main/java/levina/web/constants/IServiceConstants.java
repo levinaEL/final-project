@@ -1,6 +1,9 @@
 package levina.web.constants;
 
+/**
+ * IServiceConstants holds shared constants which are used for pagination
+ */
 public interface IServiceConstants {
-   int RECORDS_PER_PAGE = 5;
-   int COUNT_REQUEST_FOR_SALE = 3;
+    int RECORDS_PER_PAGE = 5;
+    String COMMAND = "command";
 }

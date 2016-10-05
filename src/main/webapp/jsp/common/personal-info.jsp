@@ -30,6 +30,7 @@
 
         <input type="hidden" name="command" value="create_client"/>
         <input type="hidden" name="client_id" value="${client.id}"/>
+        <input type="hidden" name="is_banned" value="${client.ban}"/>
 
         <div class="form-group">
             <label for="fname" class="col-sm-2 control-label"><fmt:message key="client.info.firstName"/></label>

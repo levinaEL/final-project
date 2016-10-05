@@ -5,7 +5,7 @@ import levina.web.model.Client;
 import java.util.Collection;
 
 /**
- * Created by MY on 15.08.2016.
+ * ClientDao defined methods which will be used during connection to DB, table clients
  */
 public interface ClientDao {
 

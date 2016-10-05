@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
-/**
- * Created by MY on 20.08.2016.
- */
 public class RequestHistoryCommand implements ActionCommand {
 
+    /**
+     * Forms the list of all requests for all time
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         int noPage = 1;

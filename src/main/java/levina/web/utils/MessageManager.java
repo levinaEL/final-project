@@ -3,7 +3,7 @@ package levina.web.utils;
 import java.util.ResourceBundle;
 
 /**
- * Created by MY on 04.09.2016.
+ * MessageManager is service class for extracting information from properties files
  */
 public class MessageManager {
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");

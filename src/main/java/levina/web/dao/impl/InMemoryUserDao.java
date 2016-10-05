@@ -1,70 +1,133 @@
 package levina.web.dao.impl;
 
-/**
- * Created by MY on 07.08.2016.
- */
-
-
 import levina.web.constants.IUserConstants;
-import levina.web.dao.database.DBConnectionPool;
 import levina.web.dao.UserDao;
+import levina.web.dao.database.DBConnectionPool;
 import levina.web.model.User;
-
 import org.apache.log4j.Logger;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * InMemoryUserDao implementation of UserDao
+ */
 public class InMemoryUserDao implements UserDao {
     public static Logger logger = Logger.getLogger(InMemoryUserDao.class);
-    public static volatile InMemoryUserDao instance = new InMemoryUserDao();
-
     public DBConnectionPool dbConnectionPool;
+    public static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ? ";
+    public static final String SELECT_CHECK_PASSWORD = "SELECT * FROM users WHERE user_login=? and user_password=md5(?)";
+    public static final String INSERT_USER = "insert into users (user_login, user_password, is_admin) " +
+            "values(?, md5(?), ?)";
+    public static final String SELECT_USER_BY_LOGIN = "SELECT * FROM users WHERE user_login = ? ";
+    public static final String SELECT_ALL_USERS = "SELECT * FROM users";
 
-    private InMemoryUserDao() {
+    private InMemoryUserDao() throws Exception {
+        dbConnectionPool = DBConnectionPool.getInstance();
     }
 
+    private enum Singleton {
+        INSTANCE;
+
+        private UserDao instance;
+        private Exception exception;
+
+        Singleton() {
+            try {
+                instance = new InMemoryUserDao();
+            } catch (Exception e) {
+                instance = null;
+                exception = e;
+            }
+        }
+    }
+
+    public static UserDao getInstance() throws Exception {
+        if (Singleton.INSTANCE.instance == null) {
+            throw Singleton.INSTANCE.exception;
+        }
+        return Singleton.INSTANCE.instance;
+    }
+
+    /**
+     * Extract data from ResultSet and set it to User object
+     *
+     * @param rs {ResultSet}
+     * @return Client
+     * @throws SQLException on failing extraction
+     */
+    private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+        User user = new User();
+        Long id = rs.getLong(IUserConstants.USER_ID);
+        if (!rs.wasNull()) {
+            user.setId(id);
+        }
+        user.setLogin(rs.getString(IUserConstants.LOGIN).trim());
+        user.setPassword(rs.getString(IUserConstants.PASSWORD).trim());
+        user.setAdmin(rs.getBoolean("is_admin"));
+
+        return user;
+    }
+
+    /**
+     * Forms preparedStatement based on user information for the next execution
+     *
+     * @param user            -
+     * @param preparedStatement {PreparedStatement}
+     * @throws SQLException
+     */
+    private void prepareExecuteStatement(User user, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, user.getLogin());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setBoolean(3, false);
+    }
+
+    /**
+     *
+     * @param id - user id
+     * @return User
+     */
     @Override
     public User getById(Long id) {
-        String selectTableSQL = "SELECT * FROM users WHERE user_id = ? ";
-        ResultSet rs;
         User user = null;
+        Connection connection = null;
         try {
-            dbConnectionPool = DBConnectionPool.getInstance();
-            Connection connection = dbConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
+            connection = dbConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
             preparedStatement.setLong(1, id);
-            rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                String login = rs.getString(IUserConstants.LOGIN).trim();
-                String password = rs.getString(IUserConstants.PASSWORD).trim();
-                boolean role = rs.getBoolean("is_admin");
-
-                user = new User();
-
-                user.setLogin(login);
-                user.setPassword(password);
-                user.setAdmin(role);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                user = extractUserFromResultSet(resultSet);
             }
             preparedStatement.close();
-            rs.close();
-            dbConnectionPool.freeConnection(connection);
+            resultSet.close();
         } catch (SQLException e) {
             logger.error("SQL exception in getting user by id", e);
         } catch (Exception e) {
             logger.error("Exception in getting user by id", e);
+        } finally {
+            if (connection != null) {
+                dbConnectionPool.freeConnection(connection);
+            }
         }
         return user;
     }
 
+    /**
+     * Checking if such user exist
+     * @param userLogin - required login
+     * @param password - required password
+     * @return boolean - if it's matched - true, otherwise - false
+     */
     @Override
     public boolean checkPassword(String userLogin, String password) {
         boolean isMatched = false;
+        Connection connection = null;
         try {
-            dbConnectionPool = DBConnectionPool.getInstance();
-            Connection connection = dbConnectionPool.getConnection();
-            String sql = "SELECT * FROM users WHERE user_login=? and user_password=md5(?)";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            connection = dbConnectionPool.getConnection();
+
+            PreparedStatement stmt = connection.prepareStatement(SELECT_CHECK_PASSWORD);
             stmt.setString(1, userLogin);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
@@ -72,110 +135,104 @@ public class InMemoryUserDao implements UserDao {
 
             rs.close();
             stmt.close();
-            dbConnectionPool.freeConnection(connection);
-        } catch (SQLException e ) {
+        } catch (SQLException e) {
             logger.error("SQL exception in checking password", e);
         } catch (Exception e) {
             logger.error("Exception in checking password", e);
+        } finally {
+            if (connection != null) {
+                dbConnectionPool.freeConnection(connection);
+            }
         }
         return isMatched;
     }
-
+    /**
+     * Insert record into users table
+     *
+     * @param user - object that need to be save
+     */
     @Override
     public void save(User user) {
-        String login = user.getLogin();
-        String password = user.getPassword();
-        boolean role = false;
-
-        String insertTableSQL = "insert into users (user_login, user_password, is_admin) " +
-                "values(?, md5(?), ?)";
+        Connection connection = null;
         try {
-            dbConnectionPool = DBConnectionPool.getInstance();
-            Connection connection = dbConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            preparedStatement.setBoolean(3, role);
+            connection = dbConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
 
+            prepareExecuteStatement(user, preparedStatement);
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-            dbConnectionPool.freeConnection(connection);
 
         } catch (SQLException e) {
             logger.error("SQL exception in checking password", e);
         } catch (Exception e) {
             logger.error("Exception in checking password", e);
+        } finally {
+            if (connection != null) {
+                dbConnectionPool.freeConnection(connection);
+            }
         }
     }
 
 
+    /**
+     *
+     * @param userLogin - param for searching
+     * @return User
+     */
     @Override
     public User getUserByLogin(String userLogin) {
-        String selectTableSQL = "SELECT * FROM users WHERE user_login = ? ";
-        ResultSet rs;
+        Connection connection = null;
         User user = null;
         try {
-            dbConnectionPool = DBConnectionPool.getInstance();
-            Connection connection = dbConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(selectTableSQL);
+            connection = dbConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_LOGIN);
             preparedStatement.setString(1, userLogin);
-            rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                Long id = rs.getLong(IUserConstants.USER_ID);
-                String password = rs.getString(IUserConstants.PASSWORD).trim();
-                boolean role = rs.getBoolean("is_admin");
-
-                user = new User();
-
-                user.setId(id);
-                user.setLogin(userLogin);
-                user.setPassword(password);
-                user.setAdmin(role);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = extractUserFromResultSet(resultSet);
             }
             preparedStatement.close();
-            rs.close();
-            dbConnectionPool.freeConnection(connection);
+            resultSet.close();
 
         } catch (SQLException e) {
             logger.error("SQL exception in getting user by login", e);
         } catch (Exception e) {
             logger.error("Exception in getting user by login", e);
+        } finally {
+            if (connection != null) {
+                dbConnectionPool.freeConnection(connection);
+            }
         }
         return user;
     }
 
+    /**
+     * Get all records from users table
+     * @return Collection
+     */
     @Override
     public Collection<User> getAll() {
         Collection<User> users = new ArrayList<>();
-        String selectTableSQL = "SELECT "
-                + "user_id, "
-                + "user_login, "
-                + "from users";
-        ResultSet rs;
+        Connection connection = null;
         try {
-            dbConnectionPool = DBConnectionPool.getInstance();
-            Connection connection = dbConnectionPool.getConnection();
+            connection = dbConnectionPool.getConnection();
             Statement statement = connection.createStatement();
-            rs = statement.executeQuery(selectTableSQL);
-            while (rs.next()) {
-                Long id = rs.getLong(IUserConstants.USER_ID);
-                String login = rs.getString(IUserConstants.LOGIN).trim();
-
-                User user = new User();
-                user.setId(id);
-                user.setLogin(login);
-
-                users.add(user);
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_USERS);
+            while (resultSet.next()) {
+                users.add(extractUserFromResultSet(resultSet));
             }
             statement.close();
-            rs.close();
-            dbConnectionPool.freeConnection(connection);
+            resultSet.close();
 
         } catch (SQLException e) {
             logger.error("SQL exception in getting users", e);
         } catch (Exception e) {
             logger.error("Exception in getting users", e);
+        } finally {
+            if (connection != null) {
+                dbConnectionPool.freeConnection(connection);
+            }
         }
         return users;
     }

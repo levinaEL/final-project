@@ -4,17 +4,15 @@ import levina.web.model.Room;
 import levina.web.model.enums.RoomType;
 
 import java.sql.Date;
-import java.util.Collection;
+import java.util.List;
 
 /**
- * Created by MY on 18.08.2016.
+ * RoomDao defined methods which will be used during connection to DB, table room
  */
 public interface RoomDao {
     Room getById(Long roomId);
 
-    Room getByType(RoomType roomType);
+    List<Room> getRoomsByParameters(Date start, int personsCount, RoomType roomType);
 
-    Collection<Room> getRoomsByParameters(Date start, Date end, int personsCount, RoomType roomType);
-
-    Collection<Room> getAllAvailableRooms();
+    List<Room> getAllAvailableRooms();
 }

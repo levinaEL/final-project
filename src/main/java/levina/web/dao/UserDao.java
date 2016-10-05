@@ -5,7 +5,7 @@ import levina.web.model.User;
 import java.util.Collection;
 
 /**
- * Created by MY on 15.08.2016.
+ * UserDao defined methods which will be used during connection to DB, table users
  */
 public interface UserDao {
     User getById(Long id);

@@ -8,10 +8,13 @@ import levina.web.utils.ConfigurationManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by MY on 17.08.2016.
- */
 public class CancelRequestCommand implements ActionCommand {
+    /**
+     * Update request, set field status is cancel
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page = ConfigurationManager.getProperty("path.action.booking-list");

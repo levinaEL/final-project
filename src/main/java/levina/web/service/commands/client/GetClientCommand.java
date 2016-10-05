@@ -6,15 +6,21 @@ import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;
 import levina.web.utils.ConfigurationManager;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by MY on 17.08.2016.
- */
+
 public class GetClientCommand implements ActionCommand {
+
+    /**
+     * Get client if exist
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page = ConfigurationManager.getProperty("path.page.personal-info");
@@ -25,7 +31,7 @@ public class GetClientCommand implements ActionCommand {
         boolean role = (boolean) session.getAttribute(IUserConstants.ROLE);
         Long userID = (Long) session.getAttribute(IUserConstants.USER_ID);
 
-        if (role && !request.getParameter(IClientConstants.CLIENT_ID).equals("")) {
+        if (role && !StringUtils.isEmpty(request.getParameter(IClientConstants.CLIENT_ID))) {
             Long id = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
             client = clientService.getById(id);
         } else {

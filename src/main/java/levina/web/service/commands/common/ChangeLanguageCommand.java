@@ -8,19 +8,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by Alexey on 14.09.2016.
+ *ChangeLanguageCommand use for set localization param
  */
 public class ChangeLanguageCommand implements ActionCommand {
 
 	public static final String LANGUAGE_KEY_NAME = "language";
 
+    /**
+     * used for set localization param
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(false);
-		String targLang = request.getParameter(LANGUAGE_KEY_NAME);
-		if (session != null && !StringUtils.isEmpty(targLang)) {
-			session.setAttribute(LANGUAGE_KEY_NAME, targLang);
-			request.setAttribute(LANGUAGE_KEY_NAME, targLang);
+		String targetLang = request.getParameter(LANGUAGE_KEY_NAME);
+		if (session != null && !StringUtils.isEmpty(targetLang)) {
+			session.setAttribute(LANGUAGE_KEY_NAME, targetLang);
+			request.setAttribute(LANGUAGE_KEY_NAME, targetLang);
 		}
 		return "RD:"+request.getRequestURL() + "?command=" + session.getAttribute("lastCommand");
 	}

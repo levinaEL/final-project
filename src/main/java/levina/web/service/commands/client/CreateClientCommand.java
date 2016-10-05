@@ -6,73 +6,74 @@ import levina.web.model.Client;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.service.logic.ClientService;
 import levina.web.utils.ConfigurationManager;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * Created by MY on 11.08.2016.
  */
 public class CreateClientCommand implements ActionCommand {
+
+    /**
+     * Parsing request parameters and set to client
+     * @param paramMap - Map of the request parameters
+     * @return Client
+     */
+    private Client parseClientFromParam(Map<String, String[]> paramMap) {
+        Client client = new Client();
+
+        client.setFirstName(paramMap.get(IClientConstants.FIRST_NAME)[0]);
+        client.setPatronymicName(paramMap.get(IClientConstants.PATRONYMIC)[0]);
+        client.setLastName(paramMap.get(IClientConstants.LAST_NAME)[0]);
+        client.setPassportSeries(paramMap.get(IClientConstants.PASSPORT_SERIES)[0]);
+        client.setEmail(paramMap.get(IClientConstants.EMAIL)[0]);
+        client.setPassportNumber(Integer.parseInt(paramMap.get(IClientConstants.PASSPORT_NUMBER)[0]));
+        client.setPersonalNumber(paramMap.get(IClientConstants.PERSONAL_NUMBER)[0]);
+        client.setAddress(paramMap.get(IClientConstants.ADDRESS)[0]);
+        client.setBirthday(paramMap.get(IClientConstants.BIRTHDAY)[0]);
+        client.setPhoneNumber(paramMap.get(IClientConstants.PHONE)[0]);
+        client.setBan(Boolean.parseBoolean(paramMap.get(IClientConstants.BAN)[0]));
+
+        return client;
+    }
+
+    /**
+     * Create OR Update client
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         HttpSession session = request.getSession();
         ClientService clientService = new ClientService();
 
-        Long userID = (Long) session.getAttribute(IUserConstants.USER_ID);
         boolean role = (boolean) session.getAttribute(IUserConstants.ROLE);
 
-        Client client = null;
-        Long id = null;
+        Client storedClient = null;
+        Client requestClient = parseClientFromParam(request.getParameterMap());
 
-        if (!request.getParameter(IClientConstants.CLIENT_ID).equals("")) {
-            id = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
-            client = clientService.getById(id);
+        if (!StringUtils.isEmpty(request.getParameter(IClientConstants.CLIENT_ID))) {
+            Long id = Long.parseLong(request.getParameter(IClientConstants.CLIENT_ID));
+            storedClient = clientService.getById(id);
+            requestClient.setId(id);
+            requestClient.setUserID(storedClient.getUserID());
         }
 
-        String firstName = request.getParameter(IClientConstants.FIRST_NAME);
-        String patronName = request.getParameter(IClientConstants.PATRONYMIC);
-        String lastName = request.getParameter(IClientConstants.LAST_NAME);
-        String pSeries = request.getParameter(IClientConstants.PASSPORT_SERIES);
-        String email = request.getParameter(IClientConstants.EMAIL);
-        String pNumber = request.getParameter(IClientConstants.PASSPORT_NUMBER);
-        String personalNumb = request.getParameter(IClientConstants.PERSONAL_NUMBER);
-        String address = request.getParameter(IClientConstants.ADDRESS);
-        String birthday = request.getParameter(IClientConstants.BIRTHDAY);
-        String phone = request.getParameter(IClientConstants.PHONE);
-        boolean ban = Boolean.parseBoolean(request.getParameter(IClientConstants.BAN));
-        if (client != null) {
-            client.setId(id);
-            if (role) {
-                client.setUserID(null);
-            } else {
-                client.setUserID(userID);
+        if (storedClient != null) {
+            clientService.update(requestClient);
+        }else{
+            if(role){
+                requestClient.setUserID(null);
             }
-            client.setFirstName(firstName);
-            client.setPatronymicName(patronName);
-            client.setLastName(lastName);
-            client.setPassportSeries(pSeries);
-            client.setEmail(email);
-            client.setPassportNumber(Integer.parseInt(pNumber));
-            client.setPersonalNumber(personalNumb);
-            client.setAddress(address);
-            client.setBirthday(birthday);
-            client.setPhoneNumber(phone);
-            client.setBan(ban);
-
-            clientService.update(client);
-        } else {
-            if (role) {
-                clientService.createNew(null, email, firstName, patronName, lastName, address, phone, pSeries, Integer.parseInt(pNumber), personalNumb,
-                        birthday);
-
-            } else {
-                clientService.createNew(userID, email, firstName, patronName, lastName, address, phone, pSeries, Integer.parseInt(pNumber), personalNumb,
-                        birthday);
-            }
+            clientService.createNew(requestClient);
         }
+
         if (role) {
             page = ConfigurationManager.getProperty("path.action.clients-list");
         } else {

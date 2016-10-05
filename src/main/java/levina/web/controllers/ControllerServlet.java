@@ -1,6 +1,7 @@
 package levina.web.controllers;
 
-import levina.web.service.ActionFactory;
+import levina.web.constants.IServiceConstants;
+import levina.web.factories.ActionFactory;
 import levina.web.service.commands.interfaces.ActionCommand;
 import levina.web.utils.ConfigurationManager;
 import levina.web.utils.MessageManager;
@@ -16,11 +17,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by MY on 10.08.2016.
+ * ControllerServlet uses as controller of requests and responses
  */
 @WebServlet("/controller")
 public class ControllerServlet extends HttpServlet {
 
+    public static final String LAST_COMMAND = "lastCommand";
     public static final String LANGUAGE_DEFAULT = "en";
     public static final String LANGUAGE_KEY_NAME = "language";
 
@@ -34,10 +36,17 @@ public class ControllerServlet extends HttpServlet {
         processRequest(request, response);
     }
 
+    /**
+     * Process request: get request parameter and based on this define the command coming from jsp,
+     * execute it and generate response
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response) throws ServletException, IOException {
 
-        String page;
         HttpSession session = request.getSession(false);
         String paramLanguage = (String) session.getAttribute(LANGUAGE_KEY_NAME);
         String language = (session == null || StringUtils.isEmpty(paramLanguage)) ? LANGUAGE_DEFAULT : (paramLanguage);
@@ -46,15 +55,16 @@ public class ControllerServlet extends HttpServlet {
         }
         request.setAttribute(LANGUAGE_KEY_NAME, language);
 
-        // определение команды, пришедшей из JSP
-        ActionFactory client = new ActionFactory();
-        String commandParam = request.getParameter("command");
-        ActionCommand command = client.defineCommand(commandParam);
 
-        page = command.execute(request, response);
+        ActionFactory client = new ActionFactory();
+
+        String commandParam = request.getParameter(IServiceConstants.COMMAND);
+        ActionCommand command = client.defineCommand(commandParam); // define the command coming from JSP
+
+        String page = command.execute(request, response);
 
         if((session = request.getSession(false)) != null) {
-            session.setAttribute("lastCommand", commandParam);
+            session.setAttribute(LAST_COMMAND, commandParam);
         }
 
         if (page.startsWith("RD:")) {

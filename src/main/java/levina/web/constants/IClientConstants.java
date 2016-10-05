@@ -1,7 +1,7 @@
 package levina.web.constants;
 
 /**
- * Created by MY on 08.09.2016.
+ * IClientConstants holds shared constants which are related to clients fields
  */
 public interface IClientConstants {
     String CLIENT_ID = "client_id";

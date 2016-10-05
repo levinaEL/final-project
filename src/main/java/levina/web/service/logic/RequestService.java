@@ -3,25 +3,25 @@ package levina.web.service.logic;
 import levina.web.dao.RequestDao;
 import levina.web.dao.impl.InMemoryRequestDao;
 import levina.web.model.Request;
-import levina.web.model.enums.RoomType;
-import levina.web.model.enums.StatusRequest;
 import org.apache.log4j.Logger;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * Created by MY on 14.08.2016.
+ * RequestService connect dao level with logic
  */
 public class RequestService {
     public static Logger logger = Logger.getLogger(RequestService.class);
     private RequestDao requestDao;
 
     public RequestService() {
-        requestDao = InMemoryRequestDao.instance;
+        try {
+            requestDao = InMemoryRequestDao.getInstance();
+        } catch (Exception e) {
+            logger.error("Exception in getting requestDao instance", e);
+        }
     }
 
     public Request getById(Long id){
@@ -32,46 +32,49 @@ public class RequestService {
         return requestDao.getByClientId(id);
     }
 
+    /**
+     *
+     * @param id - client id
+     * @param offset      - use for pagination, number of start record on the page
+     * @param noOfRecords - use for pagination, number of records per page
+     * @return Collection
+     */
     public Collection<Request> getAllClientsRequests(Long id, int offset, int noOfRecords){
         return requestDao.getAllClientsRequests(id, offset, noOfRecords);
     }
 
+    /**
+     *Get all records that should be process by admin
+     * @param offset      - use for pagination, number of start record on the page
+     * @param noOfRecords - use for pagination, number of records per page
+     * @return Collection
+     */
     public Collection<Request> getAdminRequests(int offset, int noOfRecords) {
         return requestDao.getAdminRequests(offset, noOfRecords);
     }
 
-    public void createNew(Long clientID, Long roomID, RoomType type, Date startDate, Date endDate,
-                          int personsCount, StatusRequest status) {
-        Request request = new Request();
-        Timestamp reqDate = null;
-        java.util.Date dt = new java.util.Date();
-
-        java.text.SimpleDateFormat sdf =
-                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        String currentTime = sdf.format(dt);
-        try {
-            reqDate = new Timestamp(sdf.parse(currentTime).getTime());
-        } catch (ParseException e) {
-            logger.error("SQL exception in creating request", e);
-        }
-        request.setClientID(clientID);
-        request.setRoomID(roomID);
-        request.setRoomType(type);
-        request.setRequestDate(reqDate);
-        request.setStartDate(startDate);
-        request.setEndDate(endDate);
-        request.setPersonsCount(personsCount);
-        request.setStatusRequest(status);
-
+    /**
+     * Create new request
+     * @param request
+     */
+    public void createNew(Request request) {
+        request.setRequestDate(new Timestamp(System.currentTimeMillis()));
         requestDao.save(request);
-
     }
 
+    /**
+     * Cancel request
+     * @param id - client id
+     */
     public void cancel(Long id){
          requestDao.cancel(id);
     }
 
+    /**
+     * Approve request
+     * @param reqId - request id
+     * @param roomId - number of the room, that need to be set
+     */
     public void approve(Long reqId, Long roomId){
         requestDao.approve(reqId, roomId);
     }
@@ -80,6 +83,12 @@ public class RequestService {
         return requestDao.getAll(offset, noOfRecords);
     }
 
+    /**
+     *
+     * @param offset      - use for pagination, number of start record on the page
+     * @param noOfPages - use for pagination, number of records per page
+     * @return Map: key - client id, value -count requests
+     */
     public Map<Long, Integer> countClientRequest(int offset, int noOfPages){
         return requestDao.countClientRequest(offset, noOfPages);
     }

@@ -3,7 +3,7 @@ package levina.web.utils;
 import java.util.ResourceBundle;
 
 /**
- * Created by MY on 02.09.2016.
+ *ConfigurationManager is service class for extracting information from properties files
  */
 public class ConfigurationManager {
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("config");

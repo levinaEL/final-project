@@ -4,8 +4,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by MY on 11.08.2016.
+ * ActionCommand instances used for declaring app command
  */
 public interface ActionCommand {
+    /**
+     * Called for executing command
+     *
+     * @param request  {HttpServletRequest}
+     * @param response {HttpServletResponse}
+     * @return String - target page after execution
+     */
     String execute(HttpServletRequest request, HttpServletResponse response);
 }

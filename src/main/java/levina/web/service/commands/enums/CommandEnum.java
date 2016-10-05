@@ -12,7 +12,7 @@ import levina.web.service.commands.user.LogoutCommand;
 import levina.web.service.commands.user.RegisterCommand;
 
 /**
- * Created by MY on 11.08.2016.
+ * CommandEnum contains enumeration og all app commands(actions)
  */
 public enum CommandEnum {
     LOGIN {

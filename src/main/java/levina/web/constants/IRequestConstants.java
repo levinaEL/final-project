@@ -1,7 +1,7 @@
 package levina.web.constants;
 
 /**
- * Created by MY on 09.09.2016.
+ * IRequestConstants holds shared constants which are related to requests fields
  */
 public interface IRequestConstants {
     String REQUEST_ID = "req_id";
