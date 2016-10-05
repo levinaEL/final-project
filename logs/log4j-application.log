@@ -3225,3 +3225,7 @@ com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Colu
 2016-10-05 02:49:55 ERROR BookingCommand:54 - Exception in persing dates
 2016-10-05 02:50:00 ERROR BookingCommand:54 - Exception in persing dates
 2016-10-05 02:50:00 ERROR BookingCommand:54 - Exception in persing dates
+2016-10-05 15:06:20 ERROR BookingCommand:54 - Exception in parsing dates
+2016-10-05 15:06:20 ERROR BookingCommand:54 - Exception in parsing dates
+2016-10-05 15:06:31 ERROR BookingCommand:54 - Exception in parsing dates
+2016-10-05 15:06:31 ERROR BookingCommand:54 - Exception in parsing dates

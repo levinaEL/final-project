@@ -160,6 +160,14 @@ h1 {
 .validation {
     color: #D63301;
     background-color: #FFCCBA;
-    /*background-image: url('validation.png');*/
 }
+
+.center-error {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
 

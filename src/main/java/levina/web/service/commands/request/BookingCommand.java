@@ -51,7 +51,7 @@ public class BookingCommand implements ActionCommand {
             try {
                 return (new SimpleDateFormat(dateFormat)).parse(value);
             } catch (ParseException e) {
-                logger.error("Exception in persing dates");
+                logger.error("Exception in parsing dates");
             }
         }
         return null;
@@ -59,6 +59,7 @@ public class BookingCommand implements ActionCommand {
 
     /**
      * Execute all operation with booking(create, approve, cancel)
+     *
      * @param request  {HttpServletRequest}
      * @param response {HttpServletResponse}
      * @return String - target page after execution
@@ -76,6 +77,10 @@ public class BookingCommand implements ActionCommand {
         boolean role = (boolean) request.getSession().getAttribute(IUserConstants.ROLE);
         Long userID = (Long) request.getSession().getAttribute(IUserConstants.USER_ID);
         Request requestItem = getRequestFromParam(request.getParameterMap());
+
+        if (requestItem.getStartDate() == null || requestItem.getEndDate() == null) {
+            logger.error("Wrong date format");
+        }
 
         //if click show rooms
         if (request.getParameter(FREE_ROOMS) != null) {
